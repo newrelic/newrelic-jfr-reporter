@@ -2,7 +2,7 @@ plugins {
     java
 }
 
-group = "com.newrelic.agent.library"
+group = "com.newrelic.agent.library" // TODO decide on group name
 version = "1.0-SNAPSHOT"
 
 repositories {
