@@ -1,2 +1,2 @@
-rootProject.name = "nr-jfr-profiler"
+rootProject.name = "jfr-reporter"
 
