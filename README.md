@@ -7,6 +7,10 @@ A library for sending JFR profiling data to New Relic.
 TBD
 ```
 
+## Versioning
+
+This project adheres to the [Semantic Versioning Specification](https://semver.org/spec/v2.0.0.html) of `MAJOR.MINOR.PATCH`.
+
 ## Release Process
 
 #### Publish to Staging Repo
