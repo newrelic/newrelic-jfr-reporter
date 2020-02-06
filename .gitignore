@@ -13,3 +13,6 @@ target/
 *.iml
 .idea
 .shelf
+
+# Ignore secretKeyRingFile
+secring.gpg
