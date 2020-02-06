@@ -1,5 +1,4 @@
 # JFR Reporter
-
 A library for sending JFR profiling data to New Relic.
 
 ## Usage
@@ -8,11 +7,9 @@ TBD
 ```
 
 ## Versioning
-
 This project adheres to the [Semantic Versioning Specification](https://semver.org/spec/v2.0.0.html) of `MAJOR.MINOR.PATCH`.
 
 ## Release Process
-
 #### Publish to Staging Repo
 // TODO update with correct link when available
 The release job can be kicked off on Grand Central:
