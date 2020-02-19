@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.newrelic</groupId>
+    <groupId>com.newrelic</groupId>
     <artifactId>jfr-reporter</artifactId>
     <version>0.1-SNAPSHOT</version>
 
@@ -143,7 +143,8 @@
         <repository>
             <id>newrelic</id>
             <name>New Relic repository</name>
-            <url>https://pdx-artifacts.pdx.vm.datanerd.us/repo</url>
+<!--            <url>https://pdx-artifacts.pdx.vm.datanerd.us/repo</url>-->
+            <url>https://pdx-artifacts.pdx.vm.datanerd.us/newrelic-snapshot-local</url>
         </repository>
     </distributionManagement>
 
