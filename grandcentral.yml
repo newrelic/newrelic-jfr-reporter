@@ -18,11 +18,11 @@ build:
     dockerfile: |
       FROM cf-registry.nr-ops.net/newrelic/ubuntu-1804-java:14-30-ea-1
       RUN apt-get update && apt-get install -y maven
-    secret_env_vars:
-      - name: SONATYPE_USERNAME
-      - name: SONATYPE_PASSWORD
-      - name: SIGNING_KEYID
-      - name: SIGNING_PASSWORD
-      - name: SIGNING_SECRETKEYRINGFILE
+#    secret_env_vars:
+#      - name: SONATYPE_USERNAME
+#      - name: SONATYPE_PASSWORD
+#      - name: SIGNING_KEYID
+#      - name: SIGNING_PASSWORD
+#      - name: SIGNING_SECRETKEYRINGFILE
   publish:
-    command: ./release.sh
+    command: mvn package
