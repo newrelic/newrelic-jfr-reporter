@@ -7,9 +7,11 @@ disable_default_environments: true
 deploy_mechanism: none
 test_suites:
   - name: Unit Tests
-    command: ./gradlew clean test
+    command: mvn test
     environment:
-      docker_image: cf-registry.nr-ops.net/newrelic/ubuntu-1804-java:14-30-ea-1
+      dockerfile: |
+        FROM cf-registry.nr-ops.net/newrelic/ubuntu-1804-java:14-30-ea-1
+        RUN apt-get update && apt-get install -y maven
     reports:
       junit:
         pattern: '**/build/test-results/**/*.xml'
