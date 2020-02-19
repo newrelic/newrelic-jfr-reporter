@@ -20,10 +20,11 @@ build:
     dockerfile: |
       FROM cf-registry.nr-ops.net/newrelic/ubuntu-1804-java:14-30-ea-1
       RUN apt-get update && apt-get install -y maven
+      RUN mkdir -p ${HOME}/
     secret_env_vars:
       - name: ARTIFACTORY_USERNAME
         shared_path: artifactory
       - name: ARTIFACTORY_PASSWORD
         shared_path: artifactory
   publish:
-    command: mvn package deploy
+    command: cp settings.xml ${HOME}/.m2/ && mvn package deploy
