@@ -9,13 +9,15 @@ test_suites:
   - name: Unit Tests
     command: ./gradlew clean test
     environment:
-      docker_image: java:8
+      docker_image: cf-registry.nr-ops.net/newrelic/ubuntu-1804-java:14-30-ea-1
     reports:
       junit:
         pattern: '**/build/test-results/**/*.xml'
 build:
   environment:
-    docker_image: java:8
+    dockerfile: |
+      FROM cf-registry.nr-ops.net/newrelic/ubuntu-1804-java:14-30-ea-1
+      RUN apt-get update && apt-get install -y maven
     secret_env_vars:
       - name: SONATYPE_USERNAME
       - name: SONATYPE_PASSWORD
