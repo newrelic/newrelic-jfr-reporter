@@ -139,4 +139,12 @@
             </plugin>
         </plugins>
     </build>
+    <distributionManagement>
+        <repository>
+            <id>newrelic</id>
+            <name>New Relic repository</name>
+            <url>https://pdx-artifacts.pdx.vm.datanerd.us/repo</url>
+        </repository>
+    </distributionManagement>
+
 </project>
