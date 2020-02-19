@@ -1,6 +1,6 @@
 <servers>
     <server>
-        <id>my-repo</id>
+        <id>newrelic</id>
         <username>${env.ARTIFACTORY_USERNAME}</username>
         <password>${env.ARTIFACTORY_PASSWORD}</password>
     </server>
