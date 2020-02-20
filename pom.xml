@@ -144,7 +144,7 @@
             <id>newrelic-snapshots</id>
             <name>New Relic repository</name>
             <url>https://pdx-artifacts.pdx.vm.datanerd.us/newrelic-snapshot-local</url>
-            <layout>legacy</layout>
+            <layout>default</layout>
         </snapshotRepository>
         <repository>
             <id>newrelic-releases</id>
