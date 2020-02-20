@@ -8,7 +8,7 @@
     <artifactId>jfr-reporter</artifactId>
     <version>0.1-SNAPSHOT</version>
 
-    <name>jfr-reportern</name>
+    <name>jfr-reporter</name>
     <organization>
         <name>newrelic</name>
     </organization>
@@ -137,6 +137,10 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.22.2</version>
             </plugin>
+            <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>3.0.0-M1</version>
+            </plugin>
         </plugins>
     </build>
     <distributionManagement>
@@ -146,11 +150,5 @@
             <url>https://pdx-artifacts.pdx.vm.datanerd.us/newrelic-snapshot-local</url>
             <layout>default</layout>
         </snapshotRepository>
-        <repository>
-            <id>newrelic-releases</id>
-            <name>New Relic releases repository</name>
-            <url>https://pdx-artifacts.pdx.vm.datanerd.us/newrelic-release-local</url>
-        </repository>
     </distributionManagement>
-
 </project>
