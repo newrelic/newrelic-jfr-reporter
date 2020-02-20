@@ -21,10 +21,11 @@ build:
       FROM cf-registry.nr-ops.net/newrelic/ubuntu-1804-java:14-30-ea-1
       RUN apt-get update && apt-get install -y maven
       RUN mkdir -p ${HOME}/
+      RUN mvn package
     secret_env_vars:
       - name: ARTIFACTORY_USERNAME
         shared_path: artifactory
       - name: ARTIFACTORY_PASSWORD
         shared_path: artifactory
   publish:
-    command: mvn -s settings.xml package deploy
+    command: mvn -s settings.xml deploy
