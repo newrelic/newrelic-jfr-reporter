@@ -11,6 +11,13 @@ or via grandcentral with
 `grandcentral build`
 
 ## Usage
+
+* Gradle
+
+```
+compile(group: 'com.newrelic.agent.java', name: 'jfr-reporter', version: '0.1-SNAPSHOT')
+```
+
 ```java
 
 var config = Config.builder()
