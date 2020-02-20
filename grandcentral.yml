@@ -27,4 +27,4 @@ build:
       - name: ARTIFACTORY_PASSWORD
         shared_path: artifactory
   publish:
-    command: cp settings.xml ${HOME}/.m2/ && mvn package deploy
+    command: mvn -s settings.xml package deploy

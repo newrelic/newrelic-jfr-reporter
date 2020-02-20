@@ -22,7 +22,7 @@
     </properties>
     <repositories>
         <repository>
-            <id>New Relic repository</id>
+            <id>newrelic</id>
             <url>https://pdx-artifacts.pdx.vm.datanerd.us/repo</url>
             <releases>
                 <enabled>true</enabled>
@@ -140,11 +140,15 @@
         </plugins>
     </build>
     <distributionManagement>
-        <repository>
-            <id>newrelic</id>
+        <snapshotRepository>
+            <id>newrelic-snapshots</id>
             <name>New Relic repository</name>
-<!--            <url>https://pdx-artifacts.pdx.vm.datanerd.us/repo</url>-->
             <url>https://pdx-artifacts.pdx.vm.datanerd.us/newrelic-snapshot-local</url>
+        </snapshotRepository>
+        <repository>
+            <id>newrelic-releases</id>
+            <name>New Relic releases repository</name>
+            <url>https://pdx-artifacts.pdx.vm.datanerd.us/newrelic-release-local</url>
         </repository>
     </distributionManagement>
 

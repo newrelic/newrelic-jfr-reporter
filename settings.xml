@@ -1,6 +1,11 @@
 <servers>
     <server>
-        <id>newrelic</id>
+        <id>newrelic-snapshots</id>
+        <username>${env.ARTIFACTORY_USERNAME}</username>
+        <password>${env.ARTIFACTORY_PASSWORD}</password>
+    </server>
+    <server>
+        <id>newrelic-releases</id>
         <username>${env.ARTIFACTORY_USERNAME}</username>
         <password>${env.ARTIFACTORY_PASSWORD}</password>
     </server>
