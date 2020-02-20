@@ -32,7 +32,7 @@ public class Reporter {
     private MetricBuffer startTelemetrySdkReporter(ScheduledExecutorService batchSendService) throws MalformedURLException {
         var metricBuffer = new MetricBuffer(config.getCommonAttributes());
         var apiKey = config.getApiKey();
-        var metricsApiUrl = config.getMetricsApiUrl();
+        var metricsApiUrl = config.metricsIngestUrl();
         MetricBatchSender metricBatchSender = SimpleMetricBatchSender.builder(apiKey)
                 .uriOverride(metricsApiUrl)
                 .enableAuditLogging()

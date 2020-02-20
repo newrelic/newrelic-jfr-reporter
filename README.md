@@ -11,7 +11,10 @@ or via grandcentral with
 `grandcentral build`
 
 ## Usage
-```yaml
-TBD
+```java
+
+var config = Config.builder().build()
+    
+
 ```
 
