@@ -17,7 +17,7 @@ public class JfrMonitor {
         this(cpuEventConsumer, RecordingStream::new);
     }
 
-    public JfrMonitor(JfrStreamEventConsumer cpuEventConsumer, Supplier<RecordingStream> recordingStreamSupplier) {
+    JfrMonitor(JfrStreamEventConsumer cpuEventConsumer, Supplier<RecordingStream> recordingStreamSupplier) {
         this.cpuEventConsumer = cpuEventConsumer;
         this.recordingStreamSupplier = recordingStreamSupplier;
     }
