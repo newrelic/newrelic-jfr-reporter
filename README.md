@@ -13,8 +13,14 @@ or via grandcentral with
 ## Usage
 ```java
 
-var config = Config.builder().build()
-    
+var config = Config.builder()
+    .apiKey(yourApiKey)
+    .commonAttributes(yourCommonAttrs)
+    .logger(yourLogger)
+    .metricsIngestUrl(optionalOverrideUri)
+    .build();
+var reporter = new Reporter(config);
+reporter.start();
 
 ```
 
