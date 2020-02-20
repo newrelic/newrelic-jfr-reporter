@@ -18,6 +18,8 @@ or via grandcentral with
 compile(group: 'com.newrelic.agent.java', name: 'jfr-reporter', version: '0.1-SNAPSHOT')
 ```
 
+And then in code:
+
 ```java
 
 var config = Config.builder()
