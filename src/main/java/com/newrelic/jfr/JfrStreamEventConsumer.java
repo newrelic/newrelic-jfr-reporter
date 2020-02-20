@@ -21,7 +21,6 @@ public class JfrStreamEventConsumer implements Consumer<RecordedEvent> {
 
     @Override
     public void accept(RecordedEvent event) {
-        // FIXME we can also filter at this point, e.g. to drop MONITOR_WAIT events from JFR threads themselves
         // A single JFR event can produce several different dimensional metrics
         mapper.apply(event)
             .forEach(metricBuffer::addMetric);

@@ -27,7 +27,7 @@ public class Config {
         return apiKey;
     }
 
-    public URI metricsIngestUrl() {
+    public URI getMetricsIngestUri() {
         return metricsIngestUri;
     }
 
