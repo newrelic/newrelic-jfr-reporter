@@ -41,7 +41,7 @@ public class Config {
     return new Builder();
   }
 
-  static class Builder {
+  public static class Builder {
 
     private Attributes attributes;
     private String apiKey;
