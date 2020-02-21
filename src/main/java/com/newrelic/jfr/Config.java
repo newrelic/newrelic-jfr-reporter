@@ -67,5 +67,9 @@ public class Config {
       this.logger = logger;
       return this;
     }
+
+    public Config build(){
+      return new Config(this);
+    }
   }
 }
