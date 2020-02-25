@@ -28,7 +28,7 @@ public class Entrypoint {
                     .commonAttributes(commonAttributes)
                     .logger(logger);
 
-            if (metricIngestUri != null) {
+            if ((metricIngestUri != null) && (!metricIngestUri.isEmpty())) {
                 builder = builder.metricsIngestUri(URI.create(metricIngestUri));
             }
             var config = builder.build();
