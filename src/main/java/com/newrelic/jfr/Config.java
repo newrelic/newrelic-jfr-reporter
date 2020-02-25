@@ -41,7 +41,7 @@ public class Config {
     return new Builder();
   }
 
-  static class Builder {
+  public static class Builder {
 
     private Attributes attributes;
     private String apiKey;
@@ -66,6 +66,10 @@ public class Config {
     public Builder logger(Logger logger) {
       this.logger = logger;
       return this;
+    }
+
+    public Config build(){
+      return new Config(this);
     }
   }
 }
