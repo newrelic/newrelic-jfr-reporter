@@ -18,7 +18,7 @@
         <maven.compiler.source>14</maven.compiler.source>
         <maven.compiler.target>14</maven.compiler.target>
         <junit.version>5.6.0</junit.version>
-        <agent.version>5.10.0</agent.version>
+        <agent.version>5.MASTER-SNAPSHOT</agent.version>
     </properties>
     <repositories>
         <repository>
@@ -42,6 +42,11 @@
             <groupId>com.newrelic.telemetry</groupId>
             <artifactId>telemetry-http-okhttp</artifactId>
             <version>0.3.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.newrelic.agent.java</groupId>
+            <artifactId>newrelic-api</artifactId>
+            <version>${agent.version}</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>

@@ -1,9 +1,9 @@
 package com.newrelic.jfr;
 
+import com.newrelic.api.agent.Logger;
 import com.newrelic.telemetry.Attributes;
 
 import java.net.URI;
-import java.util.logging.Logger;
 
 public class Config {
 
