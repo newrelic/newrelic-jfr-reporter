@@ -21,7 +21,7 @@ public class Entrypoint {
 
             var agentConfig = NewRelic.getAgent().getConfig();
             String insertApiKey = agentConfig.getValue("insert_api_key");
-            String metricIngestUri = agentConfig.getValue("metric_ingest_uri");
+            String metricIngestUri = agentConfig.getValue("jfr.metric_ingest_uri");
 
             var builder = Config.builder()
                     .insertApiKey(insertApiKey)
