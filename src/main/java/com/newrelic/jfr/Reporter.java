@@ -12,7 +12,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 public class Reporter {
-
     private final Config config;
 
     public Reporter(Config config) {
@@ -26,15 +25,15 @@ public class Reporter {
         var cpuEventConsumer = new JfrStreamEventConsumer(cpuMapper, metricBuffer);
         var jfrMonitor = new JfrMonitor(cpuEventConsumer);
         jfrMonitor.start();
-
     }
 
     private MetricBuffer startTelemetrySdkReporter(ScheduledExecutorService batchSendService) throws MalformedURLException {
         var metricBuffer = new MetricBuffer(config.getCommonAttributes());
-        var apiKey = config.getApiKey();
-        var metricsApiUrl = config.getMetricsIngestUri();
-        MetricBatchSender metricBatchSender = SimpleMetricBatchSender.builder(apiKey)
-                .uriOverride(metricsApiUrl)
+        var insertApiKey = config.getInsertApiKey();
+        var metricIngestUri = config.getMetricIngestUri();
+
+        MetricBatchSender metricBatchSender = SimpleMetricBatchSender.builder(insertApiKey)
+                .uriOverride(metricIngestUri)
                 .enableAuditLogging()
                 .build();
 

@@ -19,21 +19,22 @@ public class Entrypoint {
                     .put("instrumentation.provider", "JFR Agent Extension")
                     .put("collector.name", "JFR Agent Extension");
 
-            String apiKey = NewRelic.getAgent().getConfig().getValue("jfr.insert_api_key");
-            String ingestUri = NewRelic.getAgent().getConfig().getValue("jfr.ingest_uri");
+            var agentConfig = NewRelic.getAgent().getConfig();
+            String insertApiKey = agentConfig.getValue("jfr.insert_api_key");
+            String metricIngestUri = agentConfig.getValue("jfr.metric_ingest_uri");
 
-            Config.Builder builder = Config.builder()
-                    .apiKey(apiKey)
+            var builder = Config.builder()
+                    .insertApiKey(insertApiKey)
                     .commonAttributes(commonAttributes)
                     .logger(logger);
 
-            if (ingestUri != null) {
-                builder = builder.metricsIngestUrl(URI.create(ingestUri));
+            if (metricIngestUri != null) {
+                builder = builder.metricsIngestUri(URI.create(metricIngestUri));
             }
             var config = builder.build();
             new Reporter(config).start();
         } catch (Throwable t) {
-            NewRelic.getAgent().getLogger().log(Level.SEVERE, t, "Unable to attach New Relic JFR Monitor");
+            logger.log(Level.SEVERE, t, "Unable to attach New Relic JFR Monitor");
         }
     }
 }

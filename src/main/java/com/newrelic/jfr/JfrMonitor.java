@@ -8,7 +8,6 @@ import java.util.concurrent.Executors;
 import java.util.function.Supplier;
 
 public class JfrMonitor {
-
     private final Supplier<RecordingStream> recordingStreamSupplier;
     private final JfrStreamEventConsumer cpuEventConsumer;
     private ExecutorService jfrMonitorService;
@@ -28,7 +27,7 @@ public class JfrMonitor {
             try (var recordingStream = recordingStreamSupplier.get()) {
                 recordingStream.enable("jdk.CPULoad").withPeriod(Duration.ofSeconds(1));
                 recordingStream.onEvent("jdk.CPULoad", cpuEventConsumer);
-                recordingStream.start();    //run forever
+                recordingStream.start(); //run forever
             }
         });
     }
