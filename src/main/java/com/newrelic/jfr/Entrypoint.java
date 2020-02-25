@@ -20,7 +20,7 @@ public class Entrypoint {
                     .put("collector.name", "JFR Agent Extension");
 
             var agentConfig = NewRelic.getAgent().getConfig();
-            String insertApiKey = agentConfig.getValue("jfr.insert_api_key");
+            String insertApiKey = agentConfig.getValue("insert_api_key");
             String metricIngestUri = agentConfig.getValue("jfr.metric_ingest_uri");
 
             var builder = Config.builder()
