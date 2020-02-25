@@ -24,6 +24,9 @@ public class Reporter {
         var cpuMapper = new CPULoadMapper();
         var cpuEventConsumer = new JfrStreamEventConsumer(cpuMapper, metricBuffer);
         var jfrMonitor = new JfrMonitor(cpuEventConsumer);
+
+        config.getLogger().log(Level.INFO, "Starting JFR monitor with ingest URI => " + config.getMetricIngestUri());
+
         jfrMonitor.start();
     }
 
