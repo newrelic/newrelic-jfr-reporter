@@ -11,14 +11,14 @@ class ConfigTest {
     @Test
     void testUriDefaults() throws Exception {
         Config testClass = Config.builder().build();
-        assertEquals(Config.DEFAULT_INGEST_URI, (testClass.getMetricsIngestUri()));
+        assertEquals(Config.DEFAULT_METRIC_INGEST_URI, (testClass.getMetricIngestUri()));
     }
 
     @Test
     void testUriOverride() throws Exception {
         URI uri = URI.create("http://newrelic.com/v99/something");
-        Config testClass = Config.builder().metricsIngestUrl(uri).build();
-        assertEquals(uri, (testClass.getMetricsIngestUri()));
+        Config testClass = Config.builder().metricsIngestUri(uri).build();
+        assertEquals(uri, (testClass.getMetricIngestUri()));
     }
 
 }

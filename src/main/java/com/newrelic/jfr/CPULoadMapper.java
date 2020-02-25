@@ -8,8 +8,6 @@ import jdk.jfr.consumer.RecordedEvent;
 import java.util.List;
 
 public class CPULoadMapper implements EventMapper {
-
-
     @Override
     public List<? extends Metric> apply(RecordedEvent ev) {
         var timestamp = ev.getStartTime().toEpochMilli();

@@ -10,7 +10,6 @@ import java.util.function.Consumer;
  * a list of new relic dimensional Metrics and adds those to a MetricBuffer.
  */
 public class JfrStreamEventConsumer implements Consumer<RecordedEvent> {
-
     private final EventMapper mapper;
     private final MetricBuffer metricBuffer;
 
@@ -22,7 +21,6 @@ public class JfrStreamEventConsumer implements Consumer<RecordedEvent> {
     @Override
     public void accept(RecordedEvent event) {
         // A single JFR event can produce several different dimensional metrics
-        mapper.apply(event)
-            .forEach(metricBuffer::addMetric);
+        mapper.apply(event).forEach(metricBuffer::addMetric);
     }
 }
