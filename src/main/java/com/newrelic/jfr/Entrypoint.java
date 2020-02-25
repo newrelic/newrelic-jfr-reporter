@@ -14,16 +14,11 @@ public class Entrypoint {
         logger.log(Level.INFO, "Attaching New Relic JFR Monitor");
 
         try {
-//                waitForAgentLinkingMetadata(logger);
             var commonAttributes = new Attributes()
-//                        .put("host", Util.getHostName())
-//                        .put("appName", Util.getAppName())
-//                        .put("service.name", Util.getAppName())
                     .put("instrumentation.name", "JFR")
                     .put("instrumentation.provider", "JFR Agent Extension")
                     .put("collector.name", "JFR Agent Extension");
 
-//            String enabled = NewRelic.getAgent().getConfig().getValue("jfr.enabled");
             String apiKey = NewRelic.getAgent().getConfig().getValue("jfr.insert_api_key");
             String ingestUri = NewRelic.getAgent().getConfig().getValue("jfr.ingest_uri");
 
