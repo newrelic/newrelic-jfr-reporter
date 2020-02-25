@@ -12,9 +12,11 @@ public class Entrypoint {
     public static void premain(String agentArgs, Instrumentation inst) {
         Logger logger = NewRelic.getAgent().getLogger();
         logger.log(Level.INFO, "Attaching New Relic JFR Monitor");
+        Object appName = NewRelic.getAgent().getConfig().getValue("app_name");
 
         try {
             var commonAttributes = new Attributes()
+                    .put("appName", appName.toString())
                     .put("instrumentation.name", "JFR")
                     .put("instrumentation.provider", "JFR Agent Extension")
                     .put("collector.name", "JFR Agent Extension");
