@@ -47,6 +47,7 @@
             <groupId>com.newrelic.agent.java</groupId>
             <artifactId>newrelic-api</artifactId>
             <version>${agent.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -138,7 +139,7 @@
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <manifestEntries>
-                                        <Premain-Class>com.newrelic.agent.jfr.Entrypoint</Premain-Class>
+                                        <Premain-Class>com.newrelic.jfr.Entrypoint</Premain-Class>
                                         <Can-Redefine-Classes>false</Can-Redefine-Classes>
                                         <Can-Retransform-Classes>false</Can-Retransform-Classes>
                                     </manifestEntries>
