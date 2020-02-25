@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 
 public class Config {
 
-  private static final URI DEFAULT_INGEST_URI = URI.create("https://metric-api.newrelic.com");
+  public static final URI DEFAULT_INGEST_URI = URI.create("https://metric-api.newrelic.com");
   private final Attributes attributes;
   private final String apiKey;
   private final URI metricsIngestUri;

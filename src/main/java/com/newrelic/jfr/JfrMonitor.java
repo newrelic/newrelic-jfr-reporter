@@ -26,7 +26,7 @@ public class JfrMonitor {
         jfrMonitorService = Executors.newSingleThreadExecutor();
         jfrMonitorService.submit(() -> {
             try (var recordingStream = recordingStreamSupplier.get()) {
-                recordingStream.enable("jdk.CPULoad").withPeriod(Duration.ofSeconds(1));;
+                recordingStream.enable("jdk.CPULoad").withPeriod(Duration.ofSeconds(1));
                 recordingStream.onEvent("jdk.CPULoad", cpuEventConsumer);
                 recordingStream.start();    //run forever
             }
