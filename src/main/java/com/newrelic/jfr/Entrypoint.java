@@ -5,18 +5,22 @@ import com.newrelic.api.agent.NewRelic;
 import com.newrelic.telemetry.Attributes;
 
 import java.lang.instrument.Instrumentation;
+import java.net.InetAddress;
 import java.net.URI;
+import java.net.UnknownHostException;
 import java.util.logging.Level;
 
 public class Entrypoint {
     public static void premain(String agentArgs, Instrumentation inst) {
         Logger logger = NewRelic.getAgent().getLogger();
         logger.log(Level.INFO, "Attaching New Relic JFR Monitor");
-        Object appName = NewRelic.getAgent().getConfig().getValue("app_name");
+        String appName = NewRelic.getAgent().getConfig().getValue("app_name");
 
         try {
             var commonAttributes = new Attributes()
-                    .put("appName", appName.toString())
+                    .put("host", getHostName())
+                    .put("appName", appName)
+                    .put("service.name", appName)
                     .put("instrumentation.name", "JFR")
                     .put("instrumentation.provider", "JFR Agent Extension")
                     .put("collector.name", "JFR Agent Extension");
@@ -37,6 +41,14 @@ public class Entrypoint {
             new Reporter(config).start();
         } catch (Throwable t) {
             logger.log(Level.SEVERE, t, "Unable to attach New Relic JFR Monitor");
+        }
+    }
+
+    static String getHostName() {
+        try {
+            return InetAddress.getLocalHost().getHostName();
+        } catch (UnknownHostException e) {
+            return "unknown";
         }
     }
 }
