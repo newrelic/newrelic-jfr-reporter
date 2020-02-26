@@ -2,7 +2,7 @@ project_name: jfr-reporter
 display_name: Java Agent - JFR Reporter Library
 team_name: java-agent
 slack_channel: java-agent-bots
-require_sidekick_approval: true
+require_sidekick_approval: false
 disable_default_environments: true
 deploy_mechanism: none
 test_suites:
