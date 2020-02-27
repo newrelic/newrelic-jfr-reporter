@@ -1,5 +1,6 @@
 package com.newrelic.jfr;
 
+import com.newrelic.jfr.attributes.BaseAttributes;
 import com.newrelic.telemetry.Attributes;
 import com.newrelic.telemetry.metrics.Gauge;
 import com.newrelic.telemetry.metrics.Metric;
@@ -19,7 +20,7 @@ class CPULoadMapperTest {
     void testMap() {
         var now = System.currentTimeMillis();
         Instant startTime = Instant.ofEpochMilli(now);
-        var attr = new Attributes();
+        var attr = new BaseAttributes().get();
         var jvmUser = 21.77;
         var jvmSystem = 22.98;
         var machineTotal = 1203987.22;

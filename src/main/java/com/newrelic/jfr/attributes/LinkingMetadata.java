@@ -8,14 +8,14 @@ import java.util.logging.Level;
 
 /**
  * A map of linking metadata returned by the agent potentially containing the following:
- * trace.id, span.id, entity.name, entity.type, entity.guid, hostname
+ * trace.id, span.id, hostname, entity.name, entity.type, entity.guid
+ *
+ * The entity attributes automatically get added to dimensional metrics as nr.entity.* prefixed
+ * values by a backend service, so we omit them in the reporter.
  */
 public class LinkingMetadata {
     public static final String TRACE_ID = "trace.id";
     public static final String SPAN_ID = "span.id";
-    public static final String ENTITY_NAME = "entity.name";
-    public static final String ENTITY_TYPE = "entity.type";
-    public static final String ENTITY_GUID = "entity.guid";
     public static final String HOSTNAME = "hostname";
 
     /**
@@ -53,18 +53,6 @@ public class LinkingMetadata {
 
     public static String getSpanId() {
         return getLinkingMetadata().getOrDefault(SPAN_ID, "");
-    }
-
-    public static String getEntityName() {
-        return getLinkingMetadata().getOrDefault(ENTITY_NAME, "");
-    }
-
-    public static String getEntityType() {
-        return getLinkingMetadata().getOrDefault(ENTITY_TYPE, "");
-    }
-
-    public static String getEntityGuid() {
-        return getLinkingMetadata().getOrDefault(ENTITY_GUID, "");
     }
 
     public static String getHostname() {
