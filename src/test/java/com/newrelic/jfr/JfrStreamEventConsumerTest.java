@@ -1,5 +1,6 @@
 package com.newrelic.jfr;
 
+import com.newrelic.jfr.attributes.BaseAttributes;
 import com.newrelic.telemetry.Attributes;
 import com.newrelic.telemetry.metrics.Count;
 import com.newrelic.telemetry.metrics.Gauge;
@@ -19,8 +20,8 @@ class JfrStreamEventConsumerTest {
     var metricBuffer = mock(MetricBuffer.class);
     var event = mock(RecordedEvent.class);
     var testClass = new JfrStreamEventConsumer(eventMapper, metricBuffer);
-    var countMetric = new Count("foo", 2.0, 30, 50, new Attributes());
-    var gaugeMetric = new Gauge( "bar", 4,566, new Attributes());
+    var countMetric = new Count("foo", 2.0, 30, 50, new BaseAttributes().get());
+    var gaugeMetric = new Gauge( "bar", 4,566, new BaseAttributes().get());
     var metrics = List.of(gaugeMetric, countMetric);
 
     doReturn(metrics).when(eventMapper).apply(event);
