@@ -4,7 +4,10 @@ import com.newrelic.telemetry.Attributes;
 
 import java.util.function.Supplier;
 
-import static com.newrelic.jfr.attributes.LinkingMetadata.*;
+import static com.newrelic.jfr.attributes.AttributeUtil.SPAN_ID;
+import static com.newrelic.jfr.attributes.AttributeUtil.TRACE_ID;
+import static com.newrelic.jfr.attributes.LinkingMetadata.getSpanId;
+import static com.newrelic.jfr.attributes.LinkingMetadata.getTraceId;
 
 public class BaseAttributes implements Supplier<Attributes> {
     @Override

@@ -7,6 +7,8 @@ import java.net.URI;
 
 public class Config {
     public static final URI DEFAULT_METRIC_INGEST_URI = URI.create("https://metric-api.newrelic.com");
+    public static final String METRIC_INGEST_URI = "metric_ingest_uri";
+    public static final String INSERT_API_KEY = "insert_api_key";
     private final Attributes attributes;
     private final String insertApiKey;
     private final URI metricIngestUri;

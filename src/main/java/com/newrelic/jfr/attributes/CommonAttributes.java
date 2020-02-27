@@ -5,19 +5,22 @@ import com.newrelic.telemetry.Attributes;
 
 import java.util.function.Supplier;
 
-import static com.newrelic.jfr.attributes.LinkingMetadata.*;
+import static com.newrelic.jfr.attributes.AttributeUtil.*;
+import static com.newrelic.jfr.attributes.LinkingMetadata.getHostname;
 
 public class CommonAttributes implements Supplier<Attributes> {
-    String appName = NewRelic.getAgent().getConfig().getValue("app_name");
+    private final String appName = NewRelic.getAgent().getConfig().getValue("app_name");
+
     @Override
     public Attributes get() {
+        final String hostname = getHostname();
         return new Attributes()
-                .put("host", getHostname())
-                .put(HOSTNAME, getHostname())
-                .put("appName", appName)
-                .put("service.name", appName)
-                .put("instrumentation.name", "JFR")
-                .put("instrumentation.provider", "JFR Agent Extension")
-                .put("collector.name", "JFR Agent Extension");
+                .put(HOST, hostname)
+                .put(HOSTNAME, hostname)
+                .put(APP_NAME, appName)
+                .put(SERVICE_NAME, appName)
+                .put(INSTRUMENTATION_NAME, "JFR")
+                .put(INSTRUMENTATION_PROVIDER, "JFR Agent Extension")
+                .put(COLLECTOR_NAME, "JFR Agent Extension");
     }
 }

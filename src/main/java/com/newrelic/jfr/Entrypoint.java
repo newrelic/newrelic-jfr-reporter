@@ -10,6 +10,9 @@ import java.net.URI;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
 
+import static com.newrelic.jfr.Config.INSERT_API_KEY;
+import static com.newrelic.jfr.Config.METRIC_INGEST_URI;
+
 public class Entrypoint {
     public static void premain(String agentArgs, Instrumentation inst) {
         Logger logger = NewRelic.getAgent().getLogger();
@@ -22,14 +25,14 @@ public class Entrypoint {
                 LinkingMetadata.waitForAgentInitialization(logger);
 
                 var agentConfig = NewRelic.getAgent().getConfig();
-                String insertApiKey = agentConfig.getValue("insert_api_key");
+                String insertApiKey = agentConfig.getValue(INSERT_API_KEY);
 
                 var builder = Config.builder()
                         .insertApiKey(insertApiKey)
                         .commonAttributes(new CommonAttributes().get())
                         .logger(logger);
 
-                String metricIngestUri = agentConfig.getValue("metric_ingest_uri");
+                String metricIngestUri = agentConfig.getValue(METRIC_INGEST_URI);
                 if ((metricIngestUri != null) && (!metricIngestUri.isEmpty())) {
                     builder = builder.metricsIngestUri(URI.create(metricIngestUri));
                 }

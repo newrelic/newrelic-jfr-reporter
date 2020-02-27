@@ -6,17 +6,16 @@ import com.newrelic.api.agent.NewRelic;
 import java.util.Map;
 import java.util.logging.Level;
 
+import static com.newrelic.jfr.attributes.AttributeUtil.*;
+
 /**
  * A map of linking metadata returned by the agent potentially containing the following:
  * trace.id, span.id, hostname, entity.name, entity.type, entity.guid
- *
+ * <p>
  * The entity attributes automatically get added to dimensional metrics as nr.entity.* prefixed
  * values by a backend service, so we omit them in the reporter.
  */
 public class LinkingMetadata {
-    public static final String TRACE_ID = "trace.id";
-    public static final String SPAN_ID = "span.id";
-    public static final String HOSTNAME = "hostname";
 
     /**
      * Gets an opaque map of key/value pairs that can be used to correlate this application in the New Relic backend.
