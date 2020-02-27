@@ -13,8 +13,15 @@ import java.util.logging.Level;
 public class Entrypoint {
     public static void premain(String agentArgs, Instrumentation inst) {
         Logger logger = NewRelic.getAgent().getLogger();
-        logger.log(Level.INFO, "Attaching New Relic JFR Monitor");
         var agentConfig = NewRelic.getAgent().getConfig();
+        var isJfrEnabled = new AgentJfrConfigSetting(agentConfig).isJfrEnabled();
+
+        if(!isJfrEnabled){
+            logger.log(Level.INFO, "JFR Monitor is disabled: JFR config has not been enabled in the Java agent.");
+            return;
+        }
+
+        logger.log(Level.INFO, "Attaching New Relic JFR Monitor");
 
         try {
             String appName = agentConfig.getValue("app_name");
