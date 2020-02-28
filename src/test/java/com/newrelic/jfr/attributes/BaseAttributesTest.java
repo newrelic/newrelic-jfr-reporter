@@ -3,8 +3,8 @@ package com.newrelic.jfr.attributes;
 import com.newrelic.telemetry.Attributes;
 import org.junit.jupiter.api.Test;
 
-import static com.newrelic.jfr.attributes.AttributeUtil.SPAN_ID;
-import static com.newrelic.jfr.attributes.AttributeUtil.TRACE_ID;
+import static com.newrelic.jfr.attributes.AttributeNames.SPAN_ID;
+import static com.newrelic.jfr.attributes.AttributeNames.TRACE_ID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class BaseAttributesTest {

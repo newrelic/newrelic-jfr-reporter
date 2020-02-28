@@ -4,8 +4,8 @@ import com.newrelic.telemetry.Attributes;
 
 import java.util.function.Supplier;
 
-import static com.newrelic.jfr.attributes.AttributeUtil.SPAN_ID;
-import static com.newrelic.jfr.attributes.AttributeUtil.TRACE_ID;
+import static com.newrelic.jfr.attributes.AttributeNames.SPAN_ID;
+import static com.newrelic.jfr.attributes.AttributeNames.TRACE_ID;
 import static com.newrelic.jfr.attributes.LinkingMetadata.getSpanId;
 import static com.newrelic.jfr.attributes.LinkingMetadata.getTraceId;
 

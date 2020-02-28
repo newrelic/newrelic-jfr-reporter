@@ -4,7 +4,7 @@ import com.newrelic.telemetry.Attributes;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static com.newrelic.jfr.attributes.AttributeUtil.*;
+import static com.newrelic.jfr.attributes.AttributeNames.*;
 
 class CommonAttributesTest {
 

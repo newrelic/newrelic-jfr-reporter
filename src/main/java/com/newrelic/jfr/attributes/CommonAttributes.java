@@ -5,7 +5,7 @@ import com.newrelic.telemetry.Attributes;
 
 import java.util.function.Supplier;
 
-import static com.newrelic.jfr.attributes.AttributeUtil.*;
+import static com.newrelic.jfr.attributes.AttributeNames.*;
 import static com.newrelic.jfr.attributes.LinkingMetadata.getHostname;
 
 public class CommonAttributes implements Supplier<Attributes> {

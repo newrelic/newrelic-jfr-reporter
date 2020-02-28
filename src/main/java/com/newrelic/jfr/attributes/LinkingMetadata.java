@@ -6,7 +6,7 @@ import com.newrelic.api.agent.NewRelic;
 import java.util.Map;
 import java.util.logging.Level;
 
-import static com.newrelic.jfr.attributes.AttributeUtil.*;
+import static com.newrelic.jfr.attributes.AttributeNames.*;
 
 /**
  * A map of linking metadata returned by the agent potentially containing the following:
