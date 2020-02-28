@@ -7,15 +7,20 @@ import static org.mockito.Mockito.when;
 import com.newrelic.api.agent.Config;
 import org.junit.jupiter.api.Test;
 
-class AgentJfrConfigSettingTest {
+class EntrypointTest {
   @Test
-  void JfrRespectsAgentFalseConfigSetting() {
+  void JfrDisabledWhenConfigIsFalse() {
     var mockAgentConfig = mock(Config.class);
     when(mockAgentConfig.getValue("jfr.enabled", false)).thenReturn(false);
-    var testClass = new AgentJfrConfigSetting(mockAgentConfig);
 
-    boolean jfrConfigSetting = testClass.isJfrEnabled();
+    assertTrue(Entrypoint.isJfrDisabled(mockAgentConfig));
+  }
 
-    assertFalse(jfrConfigSetting);
+  @Test
+  void JfrEnabledWhenConfigIsTrue() {
+    var mockAgentConfig = mock(Config.class);
+    when(mockAgentConfig.getValue("jfr.enabled", false)).thenReturn(true);
+
+    assertFalse(Entrypoint.isJfrDisabled(mockAgentConfig));
   }
 }
