@@ -13,10 +13,17 @@ import java.util.logging.Level;
 public class Entrypoint {
     public static void premain(String agentArgs, Instrumentation inst) {
         Logger logger = NewRelic.getAgent().getLogger();
+        var agentConfig = NewRelic.getAgent().getConfig();
+
+        if(isJfrDisabled(agentConfig)){
+            logger.log(Level.INFO, "JFR Monitor is disabled: JFR config has not been enabled in the Java agent.");
+            return;
+        }
+
         logger.log(Level.INFO, "Attaching New Relic JFR Monitor");
-        String appName = NewRelic.getAgent().getConfig().getValue("app_name");
 
         try {
+            String appName = agentConfig.getValue("app_name");
             var commonAttributes = new Attributes()
                     .put("host", getHostName())
                     .put("appName", appName)
@@ -25,7 +32,6 @@ public class Entrypoint {
                     .put("instrumentation.provider", "JFR Agent Extension")
                     .put("collector.name", "JFR Agent Extension");
 
-            var agentConfig = NewRelic.getAgent().getConfig();
             String insertApiKey = agentConfig.getValue("insert_api_key");
             String metricIngestUri = agentConfig.getValue("metric_ingest_uri");
 
@@ -42,6 +48,10 @@ public class Entrypoint {
         } catch (Throwable t) {
             logger.log(Level.SEVERE, t, "Unable to attach New Relic JFR Monitor");
         }
+    }
+
+    static boolean isJfrDisabled(com.newrelic.api.agent.Config agentConfig) {
+      return !agentConfig.getValue("jfr.enabled", false);
     }
 
     static String getHostName() {
