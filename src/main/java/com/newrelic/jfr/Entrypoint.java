@@ -17,9 +17,14 @@ public class Entrypoint {
         Agent agent = NewRelic.getAgent();
         Logger logger = agent.getLogger();
         logger.log(Level.INFO, "Attaching New Relic JFR Monitor");
+        var agentConfig = agent.getConfig();
 
+        if(isJfrDisabled(agentConfig)){
+            logger.log(Level.INFO, "JFR Monitor is disabled: JFR config has not been enabled in the Java agent.");
+            return;
+        }
+      
         try {
-            var agentConfig = agent.getConfig();
             String insertApiKey = agentConfig.getValue(INSERT_API_KEY);
             CommonAttributes commonAttributes = new CommonAttributes(agent);
 
@@ -37,5 +42,9 @@ public class Entrypoint {
         } catch (Throwable t) {
             logger.log(Level.SEVERE, t, "Unable to attach New Relic JFR Monitor");
         }
+    }
+      
+    static boolean isJfrDisabled(com.newrelic.api.agent.Config agentConfig) {
+      return !agentConfig.getValue("jfr.enabled", false);
     }
 }
