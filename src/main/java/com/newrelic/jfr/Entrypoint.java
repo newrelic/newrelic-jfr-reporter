@@ -16,13 +16,14 @@ public class Entrypoint {
     public static void premain(String agentArgs, Instrumentation inst) {
         Agent agent = NewRelic.getAgent();
         Logger logger = agent.getLogger();
-        logger.log(Level.INFO, "Attaching New Relic JFR Monitor");
         var agentConfig = agent.getConfig();
 
         if (isJfrDisabled(agentConfig)) {
             logger.log(Level.INFO, "New Relic JFR Monitor is disabled: JFR config has not been enabled in the Java agent.");
             return;
         }
+
+        logger.log(Level.INFO, "Attaching New Relic JFR Monitor");
 
         try {
             String insertApiKey = agentConfig.getValue(INSERT_API_KEY);
