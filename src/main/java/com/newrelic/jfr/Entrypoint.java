@@ -19,18 +19,18 @@ public class Entrypoint {
         logger.log(Level.INFO, "Attaching New Relic JFR Monitor");
         var agentConfig = agent.getConfig();
 
-        if(isJfrDisabled(agentConfig)){
-            logger.log(Level.INFO, "JFR Monitor is disabled: JFR config has not been enabled in the Java agent.");
+        if (isJfrDisabled(agentConfig)) {
+            logger.log(Level.INFO, "New Relic JFR Monitor is disabled: JFR config has not been enabled in the Java agent.");
             return;
         }
-      
+
         try {
             String insertApiKey = agentConfig.getValue(INSERT_API_KEY);
             CommonAttributes commonAttributes = new CommonAttributes(agent);
 
             var builder = Config.builder()
                     .insertApiKey(insertApiKey)
-                    .commonAttributes(commonAttributes.get())
+                    .commonAttributes(commonAttributes)
                     .logger(logger);
 
             String metricIngestUri = agentConfig.getValue(METRIC_INGEST_URI);
@@ -43,8 +43,8 @@ public class Entrypoint {
             logger.log(Level.SEVERE, t, "Unable to attach New Relic JFR Monitor");
         }
     }
-      
+
     static boolean isJfrDisabled(com.newrelic.api.agent.Config agentConfig) {
-      return !agentConfig.getValue("jfr.enabled", false);
+        return !agentConfig.getValue("jfr.enabled", false);
     }
 }

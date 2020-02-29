@@ -39,7 +39,8 @@ public class CommonAttributes implements Supplier<Attributes> {
                         .put(HOSTNAME, hostname);
             }
         } catch (Throwable t) {
-            agent.getLogger().log(Level.SEVERE, t, "New Relic JFR Monitor is unable to get agent linking metadata.");
+            agent.getLogger().log(Level.WARNING, "New Relic JFR Monitor failed to get agent linking metadata. " +
+                    "Another attempt will be made when the agent is fully initialized.");
         }
         return commonAttributes;
     }
