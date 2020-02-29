@@ -24,6 +24,7 @@ public class CommonAttributes implements Supplier<Attributes> {
 
         String appName = agent.getConfig().getValue("app_name");
         if (appName != null && !appName.isEmpty()) {
+            // TODO do we need both appName and service.name as attributes?
             commonAttributes
                     .put(APP_NAME, appName)
                     .put(SERVICE_NAME, appName);
@@ -34,9 +35,10 @@ public class CommonAttributes implements Supplier<Attributes> {
             var linkingMetadata = agent.getLinkingMetadata();
             final var hostname = linkingMetadata.getOrDefault(HOSTNAME, "");
             if (hostname != null && !hostname.isEmpty()) {
+                // TODO do we need both host and hostname as attributes?
                 commonAttributes
-                        .put(HOST, hostname)
-                        .put(HOSTNAME, hostname);
+//                        .put(HOSTNAME, hostname)
+                        .put(HOST, hostname);
             }
         } catch (Throwable t) {
             agent.getLogger().log(Level.WARNING, "New Relic JFR Monitor failed to get agent linking metadata. " +

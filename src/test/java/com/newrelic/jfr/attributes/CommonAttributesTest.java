@@ -42,7 +42,7 @@ class CommonAttributesTest {
     void testNoOpAgentUnexpectedEmptyAttributes() {
         Attributes unexpectedAttributes = new Attributes();
         unexpectedAttributes.put(APP_NAME, "");
-        unexpectedAttributes.put(HOSTNAME, "");
+//        unexpectedAttributes.put(HOSTNAME, "");
         unexpectedAttributes.put(HOST, "");
         unexpectedAttributes.put(SERVICE_NAME, "");
         unexpectedAttributes.put(COLLECTOR_NAME, "JFR Agent Extension");
@@ -67,7 +67,7 @@ class CommonAttributesTest {
         Attributes expectedAttributes = new Attributes();
         expectedAttributes.put(APP_NAME, "Mock App Name");
         expectedAttributes.put(SERVICE_NAME, "Mock App Name");
-        expectedAttributes.put(HOSTNAME, "Mock Host");
+//        expectedAttributes.put(HOSTNAME, "Mock Host");
         expectedAttributes.put(HOST, "Mock Host");
         expectedAttributes.put(COLLECTOR_NAME, "JFR Agent Extension");
         expectedAttributes.put(INSTRUMENTATION_NAME, "JFR");
@@ -90,7 +90,7 @@ class CommonAttributesTest {
         Attributes unexpectedAttributes = new Attributes();
         unexpectedAttributes.put(APP_NAME, "");
         unexpectedAttributes.put(SERVICE_NAME, "");
-        unexpectedAttributes.put(HOSTNAME, "");
+//        unexpectedAttributes.put(HOSTNAME, "");
         unexpectedAttributes.put(HOST, "");
         unexpectedAttributes.put(COLLECTOR_NAME, "JFR Agent Extension");
         unexpectedAttributes.put(INSTRUMENTATION_NAME, "JFR");
