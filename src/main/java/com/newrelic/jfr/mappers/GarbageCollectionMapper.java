@@ -14,7 +14,7 @@ public class GarbageCollectionMapper implements EventMapper {
     @Override
     public List<? extends Metric> apply(RecordedEvent ev) {
         var timestamp = ev.getStartTime().toEpochMilli();
-        long longestPause = ev.getValue("longestPause");
+        double longestPause = ev.getDouble("longestPause");
 
         Attributes attr = new Attributes()
                 .put("gcId", ev.getInt("gcId"))
