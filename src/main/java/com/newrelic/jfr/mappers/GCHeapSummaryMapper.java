@@ -15,22 +15,20 @@ public class GCHeapSummaryMapper implements EventMapper {
     @Override
     public List<? extends Metric> apply(RecordedEvent ev) {
         var timestamp = ev.getStartTime().toEpochMilli();
+        long heapUsed = ev.getLong("heapUsed");
         RecordedObject heapSpace = ev.getValue("heapSpace");
-        long memoryStart = heapSpace.getLong("start");
-        long committedEnd = heapSpace.getLong("committedEnd");
         long committedSize = heapSpace.getLong("committedSize");
-        long reservedEnd = heapSpace.getLong("reservedEnd");
         long reservedSize = heapSpace.getLong("reservedSize");
 
         Attributes attr = new Attributes()
                 .put("gcId", ev.getInt("gcId"))
                 .put("when", ev.getString("when"))
-                .put("heapStart", memoryStart)
-                .put("committedEnd", committedEnd)
-                .put("reservedEnd", reservedEnd);
+                .put("heapStart", heapSpace.getLong("start"))
+                .put("committedEnd", heapSpace.getLong("committedEnd"))
+                .put("reservedEnd", heapSpace.getLong("reservedEnd"));
 
         return List.of(
-                new Gauge("jfr:GCHeapSummary.heapUsed", ev.getLong("heapUsed"), timestamp, attr),
+                new Gauge("jfr:GCHeapSummary.heapUsed", heapUsed, timestamp, attr),
                 new Gauge("jfr:GCHeapSummary.heapCommittedSize", committedSize, timestamp, attr),
                 new Gauge("jfr:GCHeapSummary.reservedSize", reservedSize, timestamp, attr)
         );
