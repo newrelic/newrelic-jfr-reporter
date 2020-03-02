@@ -31,9 +31,8 @@ public class Reporter {
         var metricBuffer = new MetricBuffer(config.getCommonAttributes());
         AtomicReference<MetricBuffer> metricBufferReference = new AtomicReference<>(metricBuffer);
         Consumer<MetricBuffer> sender = startTelemetrySdkReporter(batchSendService, metricBufferReference::get);
-        var cpuMapper = new CPULoadMapper();
-        var cpuEventConsumer = new JfrStreamEventConsumer(cpuMapper, metricBufferReference::get);
-        var jfrMonitor = new JfrMonitor(cpuEventConsumer);
+        var registry = new MapperRegistry(metricBufferReference::get);
+        var jfrMonitor = new JfrMonitor(registry);
 
         config.getLogger().log(Level.INFO, "Starting New Relic JFR Monitor with ingest URI => " + config.getMetricIngestUri());
 

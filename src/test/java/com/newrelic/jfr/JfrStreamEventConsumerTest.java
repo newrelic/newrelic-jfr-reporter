@@ -1,5 +1,6 @@
 package com.newrelic.jfr;
 
+import com.newrelic.jfr.mappers.EventMapper;
 import com.newrelic.telemetry.Attributes;
 import com.newrelic.telemetry.metrics.Count;
 import com.newrelic.telemetry.metrics.Gauge;
@@ -9,12 +10,15 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 class JfrStreamEventConsumerTest {
 
     @Test
-    void testApplyMetrics() throws NoSuchMethodException {
+    void testApplyMetrics() {
         var eventMapper = mock(EventMapper.class);
         var metricBuffer = mock(MetricBuffer.class);
         var event = mock(RecordedEvent.class);

@@ -1,21 +1,19 @@
 package com.newrelic.jfr;
 
-import java.time.Duration;
+import com.newrelic.telemetry.metrics.MetricBuffer;
 import jdk.jfr.EventSettings;
-import jdk.jfr.consumer.RecordedEvent;
 import jdk.jfr.consumer.RecordingStream;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
-
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.mock;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -25,22 +23,23 @@ class JfrMonitorTest {
     void testStartWiresUpConsumerThatHandlesEvent() throws InterruptedException {
         var latch = new CountDownLatch(1);
         var recordingStream = mock(RecordingStream.class);
-        var cpuEventConsumer = mock(JfrStreamEventConsumer.class);
+        var metricBuffer = mock(MetricBuffer.class);
         var eventSettings = mock(EventSettings.class);
         when(recordingStream.enable("jdk.CPULoad")).thenReturn(eventSettings);
+        when(recordingStream.enable("jdk.GCHeapSummary")).thenReturn(eventSettings);
+        when(recordingStream.enable("jdk.GarbageCollection")).thenReturn(eventSettings);
         doAnswer(invocationOnMock -> {
             latch.countDown();
             return null;
         }).when(recordingStream).start();
 
-        Supplier < RecordingStream > rsSupplier = () -> recordingStream;
-        var testClass = new JfrMonitor(cpuEventConsumer, rsSupplier);
+        Supplier<RecordingStream> rsSupplier = () -> recordingStream;
+        var testClass = new JfrMonitor(rsSupplier, new MapperRegistry(() -> metricBuffer));
 
         testClass.start();
 
         assertTrue(latch.await(10, TimeUnit.SECONDS));
-        verify(recordingStream).onEvent("jdk.CPULoad", cpuEventConsumer);
-        verify(eventSettings).withPeriod(Duration.ofSeconds(1));
+        verify(eventSettings, times(3)).withPeriod(Duration.ofSeconds(1));
     }
 
 }

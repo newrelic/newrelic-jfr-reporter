@@ -1,4 +1,4 @@
-package com.newrelic.jfr;
+package com.newrelic.jfr.mappers;
 
 import com.newrelic.telemetry.Attributes;
 import com.newrelic.telemetry.metrics.Gauge;
@@ -8,6 +8,9 @@ import jdk.jfr.consumer.RecordedEvent;
 import java.util.List;
 
 public class CPULoadMapper implements EventMapper {
+
+    public static final String EVENT_NAME = "jdk.CPULoad";
+
     @Override
     public List<? extends Metric> apply(RecordedEvent ev) {
         var timestamp = ev.getStartTime().toEpochMilli();

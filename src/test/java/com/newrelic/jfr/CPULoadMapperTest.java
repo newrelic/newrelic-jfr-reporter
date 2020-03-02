@@ -1,5 +1,6 @@
 package com.newrelic.jfr;
 
+import com.newrelic.jfr.mappers.CPULoadMapper;
 import com.newrelic.telemetry.Attributes;
 import com.newrelic.telemetry.metrics.Gauge;
 import com.newrelic.telemetry.metrics.Metric;
@@ -40,6 +41,5 @@ class CPULoadMapperTest {
 
         assertEquals(expected, result);
     }
-
 
 }
