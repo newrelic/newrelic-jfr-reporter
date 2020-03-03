@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 import static com.newrelic.jfr.attributes.AttributeNames.APP_NAME;
 import static com.newrelic.jfr.attributes.AttributeNames.SERVICE_NAME;
 
-public class AppNamePoller {
+class AppNamePoller {
     private final AtomicBoolean gotAppName = new AtomicBoolean(false);
     private final Agent agent;
     private final Consumer<Attributes> attributesListener;

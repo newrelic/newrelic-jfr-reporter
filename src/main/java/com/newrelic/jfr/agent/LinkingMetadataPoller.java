@@ -10,7 +10,7 @@ import java.util.logging.Level;
 
 import static com.newrelic.jfr.attributes.AttributeNames.HOSTNAME;
 
-public class LinkingMetadataPoller {
+class LinkingMetadataPoller {
     private final AtomicBoolean gotLinkingMetadata = new AtomicBoolean(false);
     private final Agent agent;
     private final Consumer<Attributes> attributesListener;
