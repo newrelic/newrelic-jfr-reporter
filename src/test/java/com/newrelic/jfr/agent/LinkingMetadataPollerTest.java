@@ -1,7 +1,6 @@
 package com.newrelic.jfr.agent;
 
 import com.newrelic.api.agent.Agent;
-import com.newrelic.telemetry.Attributes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -26,7 +25,7 @@ class LinkingMetadataPollerTest {
 
     @Test
     void testThrowsNPE() {
-        Consumer<Attributes> mockAttributesConsumer = mock(Consumer.class);
+        Consumer<Map<String,String>> mockAttributesConsumer = mock(Consumer.class);
         when(agent.getLinkingMetadata()).thenThrow(new NullPointerException("NPE"));
 
         var testClass = new LinkingMetadataPoller(agent, mockAttributesConsumer);
@@ -36,7 +35,7 @@ class LinkingMetadataPollerTest {
 
     @Test
     void testReturnsNull() {
-        Consumer<Attributes> mockAttributesConsumer = mock(Consumer.class);
+        Consumer<Map<String,String>> mockAttributesConsumer = mock(Consumer.class);
         when(agent.getLinkingMetadata()).thenReturn(null);
 
         var testClass = new LinkingMetadataPoller(agent, mockAttributesConsumer);
@@ -46,9 +45,9 @@ class LinkingMetadataPollerTest {
 
     @Test
     void testSuccess() {
-        var expectedAttributes = new Attributes().put(HOSTNAME, "MockHostname");
+        var expectedAttributes = Map.of(HOSTNAME, "MockHostname");
 
-        Consumer<Attributes> mockAttributesConsumer = mock(Consumer.class);
+        Consumer<Map<String,String>> mockAttributesConsumer = mock(Consumer.class);
         mockLinkingMetadata.put(HOSTNAME, "MockHostname");
         when(agent.getLinkingMetadata()).thenReturn(mockLinkingMetadata);
 

@@ -1,8 +1,8 @@
 package com.newrelic.jfr.agent;
 
 import com.newrelic.api.agent.Agent;
-import com.newrelic.telemetry.Attributes;
 
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -29,7 +29,7 @@ public class AgentPoller {
         this.pollPeriodMs = pollPeriodMs;
     }
 
-    public static AgentPoller create(Agent agent, Consumer<Attributes> listener){
+    public static AgentPoller create(Agent agent, Consumer<Map<String,String>> listener){
         return new AgentPoller(agent, new AppNamePoller(agent, listener), new LinkingMetadataPoller(agent, listener));
     }
 

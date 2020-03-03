@@ -1,5 +1,7 @@
 package com.newrelic.jfr;
 
+import com.newrelic.api.agent.NewRelic;
+import com.newrelic.jfr.agent.AgentPoller;
 import com.newrelic.telemetry.Attributes;
 import com.newrelic.telemetry.SimpleMetricBatchSender;
 import com.newrelic.telemetry.TelemetryClient;
@@ -8,6 +10,7 @@ import com.newrelic.telemetry.metrics.MetricBatchSender;
 import com.newrelic.telemetry.metrics.MetricBuffer;
 
 import java.net.MalformedURLException;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -36,19 +39,19 @@ public class Reporter {
 
         jfrMonitor.start();
 
-        ScheduledExecutorService sched = Executors.newSingleThreadScheduledExecutor();
-        sched.scheduleAtFixedRate(() -> {
+        Consumer<Map<String, String>> agentChangeListener = attrs -> {
             config.getLogger().log(Level.INFO, "Refreshing the MetricBuffer for the New Relic JFR Monitor");
 
             Attributes commonAttributes = new Attributes(config.getCommonAttributes());
-            commonAttributes.put("setup.time", System.currentTimeMillis());
+            attrs.forEach(commonAttributes::put);
 
             var newBuffer = new MetricBuffer(commonAttributes);
-            MetricBuffer oldBuffer = metricBufferReference.getAndSet(newBuffer);
 
+            MetricBuffer oldBuffer = metricBufferReference.getAndSet(newBuffer);
             config.getLogger().log(Level.INFO, "New Relic JFR Monitor: Sending with remaining old batch...");
             sender.accept(oldBuffer);
-        }, 10, 10, TimeUnit.SECONDS);
+        };
+        AgentPoller.create(NewRelic.getAgent(), agentChangeListener).run();
     }
 
     private Consumer<MetricBuffer> startTelemetrySdkReporter(ScheduledExecutorService batchSendService,

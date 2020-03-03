@@ -1,7 +1,6 @@
 package com.newrelic.jfr.agent;
 
 import com.newrelic.api.agent.Agent;
-import com.newrelic.telemetry.Attributes;
 
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -13,9 +12,9 @@ import static com.newrelic.jfr.attributes.AttributeNames.HOSTNAME;
 class LinkingMetadataPoller {
     private final AtomicBoolean gotLinkingMetadata = new AtomicBoolean(false);
     private final Agent agent;
-    private final Consumer<Attributes> attributesListener;
+    private final Consumer<Map<String,String>> attributesListener;
 
-    public LinkingMetadataPoller(Agent agent,  Consumer<Attributes> attributesListener) {
+    public LinkingMetadataPoller(Agent agent,  Consumer<Map<String,String>> attributesListener) {
         this.agent = agent;
         this.attributesListener = attributesListener;
     }
@@ -30,7 +29,7 @@ class LinkingMetadataPoller {
                 var hostname = linkingMetadata.getOrDefault(HOSTNAME, "");
                 if (hostname != null && !hostname.isEmpty()) {
                     gotLinkingMetadata.set(true);
-                    attributesListener.accept(new Attributes().put(HOSTNAME, hostname));
+                    attributesListener.accept(Map.of(HOSTNAME, hostname));
                     return true;
                 }
             }
