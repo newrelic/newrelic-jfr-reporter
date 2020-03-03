@@ -2,6 +2,7 @@ package com.newrelic.jfr;
 
 import com.newrelic.api.agent.Logger;
 import com.newrelic.api.agent.NewRelic;
+import com.newrelic.jfr.agent.AgentChangeListener;
 import com.newrelic.jfr.agent.AgentPoller;
 import com.newrelic.telemetry.Attributes;
 import com.newrelic.telemetry.SimpleMetricBatchSender;
@@ -12,7 +13,6 @@ import com.newrelic.telemetry.metrics.MetricBuffer;
 
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -51,17 +51,7 @@ public class Reporter {
 
         jfrMonitor.start();
 
-        Consumer<Map<String, String>> agentChangeListener = attrs -> {
-            logger.log(Level.INFO, "Refreshing the MetricBuffer for the New Relic JFR Monitor");
-
-            attrs.forEach(commonAttributes::put);
-
-            var newBuffer = new MetricBuffer(commonAttributes);
-
-            MetricBuffer oldBuffer = metricBufferReference.getAndSet(newBuffer);
-            logger.log(Level.INFO, "New Relic JFR Monitor: Sending with remaining old batch...");
-            sender.accept(oldBuffer);
-        };
+        var agentChangeListener = new AgentChangeListener(logger, commonAttributes, metricBufferReference, sender);
         AgentPoller.create(NewRelic.getAgent(), agentChangeListener).run();
     }
 
