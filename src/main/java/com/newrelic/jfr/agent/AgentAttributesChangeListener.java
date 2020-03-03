@@ -9,14 +9,22 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 
-public class AgentChangeListener implements Consumer<Map<String, String>> {
+/**
+ * Responsible for handling a change in attributes coming from the agent.
+ * It must do the following:
+ * + modify/mutate an Attributes instance
+ * + create a new MetricBuffer instance using the new Attributes
+ * + assign the new MetricBuffer to an AtomicReference
+ * + cause any remaining metrics in the old MetricBuffer to be sent
+ */
+public class AgentAttributesChangeListener implements Consumer<Map<String, String>> {
 
     private final Logger logger;
     private final Attributes commonAttributes;
     private final AtomicReference<MetricBuffer> metricBufferReference;
     private final Consumer<MetricBuffer> sender;
 
-    public AgentChangeListener(Logger logger, Attributes commonAttributes, AtomicReference<MetricBuffer> metricBufferReference, Consumer<MetricBuffer> sender) {
+    public AgentAttributesChangeListener(Logger logger, Attributes commonAttributes, AtomicReference<MetricBuffer> metricBufferReference, Consumer<MetricBuffer> sender) {
         this.logger = logger;
         this.commonAttributes = commonAttributes;
         this.metricBufferReference = metricBufferReference;
@@ -31,7 +39,7 @@ public class AgentChangeListener implements Consumer<Map<String, String>> {
 
         var newBuffer = new MetricBuffer(commonAttributes);
 
-        MetricBuffer oldBuffer = metricBufferReference.getAndSet(newBuffer);
+        var oldBuffer = metricBufferReference.getAndSet(newBuffer);
         logger.log(Level.INFO, "New Relic JFR Monitor: Sending with remaining old batch...");
         sender.accept(oldBuffer);
 

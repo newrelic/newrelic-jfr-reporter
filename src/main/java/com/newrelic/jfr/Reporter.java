@@ -2,7 +2,7 @@ package com.newrelic.jfr;
 
 import com.newrelic.api.agent.Logger;
 import com.newrelic.api.agent.NewRelic;
-import com.newrelic.jfr.agent.AgentChangeListener;
+import com.newrelic.jfr.agent.AgentAttributesChangeListener;
 import com.newrelic.jfr.agent.AgentPoller;
 import com.newrelic.telemetry.Attributes;
 import com.newrelic.telemetry.SimpleMetricBatchSender;
@@ -42,8 +42,8 @@ public class Reporter {
     public void start() throws MalformedURLException {
         var batchSendService = Executors.newSingleThreadScheduledExecutor();
         var metricBuffer = new MetricBuffer(commonAttributes);
-        AtomicReference<MetricBuffer> metricBufferReference = new AtomicReference<>(metricBuffer);
-        Consumer<MetricBuffer> sender = startTelemetrySdkReporter(batchSendService, metricBufferReference::get);
+        var metricBufferReference = new AtomicReference<>(metricBuffer);
+        var sender = startTelemetrySdkReporter(batchSendService, metricBufferReference::get);
         var registry = new MapperRegistry(metricBufferReference::get);
         var jfrMonitor = new JfrMonitor(registry);
 
@@ -51,7 +51,7 @@ public class Reporter {
 
         jfrMonitor.start();
 
-        var agentChangeListener = new AgentChangeListener(logger, commonAttributes, metricBufferReference, sender);
+        var agentChangeListener = new AgentAttributesChangeListener(logger, commonAttributes, metricBufferReference, sender);
         AgentPoller.create(NewRelic.getAgent(), agentChangeListener).run();
     }
 
