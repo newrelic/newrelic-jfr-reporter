@@ -11,12 +11,11 @@ public class CPULoadMapper implements EventMapper {
     @Override
     public List<? extends Metric> apply(RecordedEvent ev) {
         var timestamp = ev.getStartTime().toEpochMilli();
-        //TODO: Wire up base attributes that get propagated for all metrics
-        var attr = new Attributes();
+        var baseAttributes = new Attributes();
         return List.of(
-                new Gauge("jfr:CPULoad.jvmUser", ev.getDouble("jvmUser"), timestamp, attr),
-                new Gauge("jfr:CPULoad.jvmSystem", ev.getDouble("jvmSystem"), timestamp, attr),
-                new Gauge("jfr:CPULoad.machineTotal", ev.getDouble("machineTotal"), timestamp, attr)
+                new Gauge("jfr:CPULoad.jvmUser", ev.getDouble("jvmUser"), timestamp, baseAttributes),
+                new Gauge("jfr:CPULoad.jvmSystem", ev.getDouble("jvmSystem"), timestamp, baseAttributes),
+                new Gauge("jfr:CPULoad.machineTotal", ev.getDouble("machineTotal"), timestamp, baseAttributes)
         );
     }
 }

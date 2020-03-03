@@ -4,6 +4,7 @@ import com.newrelic.telemetry.metrics.MetricBuffer;
 import jdk.jfr.consumer.RecordedEvent;
 
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * A very thin binding that applies an EventMapper to convert a JFR Event into
@@ -11,16 +12,17 @@ import java.util.function.Consumer;
  */
 public class JfrStreamEventConsumer implements Consumer<RecordedEvent> {
     private final EventMapper mapper;
-    private final MetricBuffer metricBuffer;
+    private final Supplier<MetricBuffer> metricBufferSupplier;
 
-    public JfrStreamEventConsumer(EventMapper mapper, MetricBuffer metricBuffer) {
+    public JfrStreamEventConsumer(EventMapper mapper, Supplier<MetricBuffer> metricBufferSupplier) {
         this.mapper = mapper;
-        this.metricBuffer = metricBuffer;
+        this.metricBufferSupplier = metricBufferSupplier;
     }
 
     @Override
     public void accept(RecordedEvent event) {
         // A single JFR event can produce several different dimensional metrics
+        MetricBuffer metricBuffer = metricBufferSupplier.get();
         mapper.apply(event).forEach(metricBuffer::addMetric);
     }
 }
