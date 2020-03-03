@@ -1,5 +1,6 @@
 package com.newrelic.jfr;
 
+import com.newrelic.api.agent.Logger;
 import com.newrelic.api.agent.NewRelic;
 import com.newrelic.jfr.agent.AgentPoller;
 import com.newrelic.telemetry.Attributes;
@@ -22,14 +23,16 @@ import java.util.logging.Level;
 public class Reporter {
     private final Config config;
     private final Attributes commonAttributes;
+    private final Logger logger;
 
-    Reporter(Config config, Attributes initialCommonAttributes) {
+    Reporter(Config config, Attributes initialCommonAttributes, Logger logger) {
         this.config = config;
         this.commonAttributes = new Attributes(initialCommonAttributes);
+        this.logger = logger;
     }
 
     public static Reporter build(Config config) {
-        return new Reporter(config, config.getCommonAttributes());
+        return new Reporter(config, config.getCommonAttributes(), config.getLogger());
     }
 
     public void start() throws MalformedURLException {
@@ -40,19 +43,19 @@ public class Reporter {
         var registry = new MapperRegistry(metricBufferReference::get);
         var jfrMonitor = new JfrMonitor(registry);
 
-        config.getLogger().log(Level.INFO, "Starting New Relic JFR Monitor with ingest URI => " + config.getMetricIngestUri());
+        logger.log(Level.INFO, "Starting New Relic JFR Monitor with ingest URI => " + config.getMetricIngestUri());
 
         jfrMonitor.start();
 
         Consumer<Map<String, String>> agentChangeListener = attrs -> {
-            config.getLogger().log(Level.INFO, "Refreshing the MetricBuffer for the New Relic JFR Monitor");
+            logger.log(Level.INFO, "Refreshing the MetricBuffer for the New Relic JFR Monitor");
 
             attrs.forEach(commonAttributes::put);
 
             var newBuffer = new MetricBuffer(commonAttributes);
 
             MetricBuffer oldBuffer = metricBufferReference.getAndSet(newBuffer);
-            config.getLogger().log(Level.INFO, "New Relic JFR Monitor: Sending with remaining old batch...");
+            logger.log(Level.INFO, "New Relic JFR Monitor: Sending with remaining old batch...");
             sender.accept(oldBuffer);
         };
         AgentPoller.create(NewRelic.getAgent(), agentChangeListener).run();
@@ -73,7 +76,7 @@ public class Reporter {
 
         Consumer<MetricBuffer> send = metricBuffer -> {
             MetricBatch batch = metricBuffer.createBatch();
-            config.getLogger().log(Level.FINE, "Sending JFR metrics batch size " + batch.getTelemetry().size() + " to New Relic");
+            logger.log(Level.FINE, "Sending JFR metrics batch size " + batch.getTelemetry().size() + " to New Relic");
             telemetryClient.sendBatch(batch);
         };
 
