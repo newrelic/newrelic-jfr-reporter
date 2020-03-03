@@ -42,7 +42,7 @@ public class Reporter {
         Consumer<Map<String, String>> agentChangeListener = attrs -> {
             config.getLogger().log(Level.INFO, "Refreshing the MetricBuffer for the New Relic JFR Monitor");
 
-            Attributes commonAttributes = new Attributes(config.getCommonAttributes());
+            Attributes commonAttributes = config.getCommonAttributes();
             attrs.forEach(commonAttributes::put);
 
             var newBuffer = new MetricBuffer(commonAttributes);
