@@ -26,7 +26,7 @@ class LinkingMetadataPoller {
         try {
             Map<String, String> linkingMetadata = agent.getLinkingMetadata();
             if (linkingMetadata != null) {
-                var hostname = linkingMetadata.getOrDefault(HOSTNAME, "");
+                var hostname = linkingMetadata.getOrDefault("hostname", "");
                 if (hostname != null && !hostname.isEmpty()) {
                     gotLinkingMetadata.set(true);
                     attributesListener.accept(Map.of(HOSTNAME, hostname));

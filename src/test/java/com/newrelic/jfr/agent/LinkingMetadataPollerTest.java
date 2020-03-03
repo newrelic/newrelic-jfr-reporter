@@ -48,7 +48,7 @@ class LinkingMetadataPollerTest {
         var expectedAttributes = Map.of(HOSTNAME, "MockHostname");
 
         Consumer<Map<String,String>> mockAttributesConsumer = mock(Consumer.class);
-        mockLinkingMetadata.put(HOSTNAME, "MockHostname");
+        mockLinkingMetadata.put("hostname", "MockHostname");
         when(agent.getLinkingMetadata()).thenReturn(mockLinkingMetadata);
 
         var testClass = new LinkingMetadataPoller(agent, mockAttributesConsumer);
