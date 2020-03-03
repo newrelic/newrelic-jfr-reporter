@@ -1,4 +1,4 @@
-package com.newrelic.jfr;
+package com.newrelic.jfr.mappers;
 
 import com.newrelic.telemetry.metrics.Metric;
 import jdk.jfr.consumer.RecordedEvent;

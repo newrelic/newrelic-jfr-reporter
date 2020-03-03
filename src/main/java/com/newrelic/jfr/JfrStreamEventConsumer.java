@@ -1,5 +1,6 @@
 package com.newrelic.jfr;
 
+import com.newrelic.jfr.mappers.EventMapper;
 import com.newrelic.telemetry.metrics.MetricBuffer;
 import jdk.jfr.consumer.RecordedEvent;
 

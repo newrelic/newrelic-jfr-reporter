@@ -1,5 +1,6 @@
 package com.newrelic.jfr;
 
+import com.newrelic.telemetry.metrics.MetricBuffer;
 import jdk.jfr.consumer.RecordingStream;
 
 import java.time.Duration;
@@ -9,24 +10,26 @@ import java.util.function.Supplier;
 
 public class JfrMonitor {
     private final Supplier<RecordingStream> recordingStreamSupplier;
-    private final JfrStreamEventConsumer cpuEventConsumer;
     private ExecutorService jfrMonitorService;
+    private MapperRegistry mapperRegistry;
 
-    public JfrMonitor(JfrStreamEventConsumer cpuEventConsumer) {
-        this(cpuEventConsumer, RecordingStream::new);
+    public JfrMonitor(MapperRegistry registry) {
+        this(RecordingStream::new, registry);
     }
 
-    JfrMonitor(JfrStreamEventConsumer cpuEventConsumer, Supplier<RecordingStream> recordingStreamSupplier) {
-        this.cpuEventConsumer = cpuEventConsumer;
+    JfrMonitor(Supplier<RecordingStream> recordingStreamSupplier, MapperRegistry registry) {
         this.recordingStreamSupplier = recordingStreamSupplier;
+        this.mapperRegistry = registry;
     }
 
     public void start() {
         jfrMonitorService = Executors.newSingleThreadExecutor();
         jfrMonitorService.submit(() -> {
             try (var recordingStream = recordingStreamSupplier.get()) {
-                recordingStream.enable("jdk.CPULoad").withPeriod(Duration.ofSeconds(1));
-                recordingStream.onEvent("jdk.CPULoad", cpuEventConsumer);
+                mapperRegistry.getMappers().forEach((name, consumer) -> {
+                    recordingStream.enable(name).withPeriod(Duration.ofSeconds(1));
+                    recordingStream.onEvent(name, consumer);
+                });
                 recordingStream.start(); //run forever
             }
         });
