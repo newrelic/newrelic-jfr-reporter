@@ -27,9 +27,7 @@ class GCHeapSummaryMapperTest {
         long heapStart = 123;
         long committedEnd = 321;
         long reservedEnd = 456;
-        int gcId = 1;
         String when = "when";
-        attr.put("gcId", gcId);
         attr.put("when", when);
         attr.put("heapStart", heapStart);
         attr.put("committedEnd", committedEnd);
@@ -53,7 +51,6 @@ class GCHeapSummaryMapperTest {
         when(event.getStartTime()).thenReturn(startTime);
         when(event.getLong("heapUsed")).thenReturn(heapUsed);
         when(event.getValue("heapSpace")).thenReturn(recordedObject);
-        when(event.getInt("gcId")).thenReturn(gcId);
         when(event.getString("when")).thenReturn(when);
 
         List<? extends Metric> result = testClass.apply(event);

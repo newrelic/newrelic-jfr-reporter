@@ -17,7 +17,6 @@ public class GarbageCollectionMapper implements EventMapper {
         double longestPause = ev.getDouble("longestPause");
 
         Attributes attr = new Attributes()
-                .put("gcId", ev.getInt("gcId"))
                 .put("name", ev.getString("name"))
                 .put("cause", ev.getString("cause"));
 

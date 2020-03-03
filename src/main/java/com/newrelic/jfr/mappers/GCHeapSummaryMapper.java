@@ -21,7 +21,6 @@ public class GCHeapSummaryMapper implements EventMapper {
         long reservedSize = heapSpace.getLong("reservedSize");
 
         Attributes attr = new Attributes()
-                .put("gcId", ev.getInt("gcId"))
                 .put("when", ev.getString("when"))
                 .put("heapStart", heapSpace.getLong("start"))
                 .put("committedEnd", heapSpace.getLong("committedEnd"))

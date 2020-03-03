@@ -12,35 +12,34 @@ import java.util.List;
 public class MetaspaceSummaryMapper implements EventMapper {
 
     public static final String EVENT_NAME = "jdk.MetaspaceSummary";
-    private final String nrMetricPrefix = "jfr:MetaspaceSummary.";
-    private final String metaspaceKey = "metaspace";
-    private final String dataSpaceKey = "dataSpace";
-    private final String classSpaceKey = "classSpace";
+    static final String NR_METRIC_PREFIX = "jfr:MetaspaceSummary.";
+    static final String METASPACE_KEY = "metaspace";
+    static final String DATA_SPACE_KEY = "dataSpace";
+    static final String CLASS_SPACE_KEY = "classSpace";
 
     @Override
     public List<? extends Metric> apply(RecordedEvent ev) {
         var timestamp = ev.getStartTime().toEpochMilli();
-        RecordedObject metaspace = ev.getValue(metaspaceKey);
-        RecordedObject dataSpace = ev.getValue(dataSpaceKey);
-        RecordedObject classSpace = ev.getValue(classSpaceKey);
+        RecordedObject metaspace = ev.getValue(METASPACE_KEY);
+        RecordedObject dataSpace = ev.getValue(DATA_SPACE_KEY);
+        RecordedObject classSpace = ev.getValue(CLASS_SPACE_KEY);
 
         Attributes attr = new Attributes()
-                .put("gcId", ev.getInt("gcId"))
                 .put("when", ev.getString("when"));
 
         List<Metric> metrics = new ArrayList<>(9);
-        metrics.addAll(generateMetric(metaspaceKey, metaspace, attr, timestamp));
-        metrics.addAll(generateMetric(dataSpaceKey, dataSpace, attr, timestamp));
-        metrics.addAll(generateMetric(classSpaceKey, classSpace, attr, timestamp));
+        metrics.addAll(generateMetric(METASPACE_KEY, metaspace, attr, timestamp));
+        metrics.addAll(generateMetric(DATA_SPACE_KEY, dataSpace, attr, timestamp));
+        metrics.addAll(generateMetric(CLASS_SPACE_KEY, classSpace, attr, timestamp));
 
         return metrics;
     }
 
     private List<? extends Metric> generateMetric(String name, RecordedObject recordedObject, Attributes attr, long timestamp) {
         return List.of(
-                new Gauge(nrMetricPrefix + name + ".committed", recordedObject.getDouble("committed"), timestamp, attr),
-                new Gauge(nrMetricPrefix + name + ".used", recordedObject.getDouble("used"), timestamp, attr),
-                new Gauge(nrMetricPrefix + name + ".reserved", recordedObject.getDouble("reserved"), timestamp, attr)
+                new Gauge(NR_METRIC_PREFIX + name + ".committed", recordedObject.getDouble("committed"), timestamp, attr),
+                new Gauge(NR_METRIC_PREFIX + name + ".used", recordedObject.getDouble("used"), timestamp, attr),
+                new Gauge(NR_METRIC_PREFIX + name + ".reserved", recordedObject.getDouble("reserved"), timestamp, attr)
         );
 
     }

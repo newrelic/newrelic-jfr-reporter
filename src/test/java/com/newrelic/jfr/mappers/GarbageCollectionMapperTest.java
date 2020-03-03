@@ -22,10 +22,8 @@ class GarbageCollectionMapperTest {
         var attr = new Attributes();
         var name = "myName";
         var cause = "too huge";
-        var gcId = 8;
         attr.put("name", name);
         attr.put("cause", cause);
-        attr.put("gcId", gcId);
         var longestPause = 21.77;
         var gauge1 = new Gauge("jfr:GarbageCollection.longestPause", longestPause, now, attr);
         List<Metric> expected = List.of(gauge1);
@@ -37,7 +35,6 @@ class GarbageCollectionMapperTest {
         when(event.getDouble("longestPause")).thenReturn(longestPause);
         when(event.getString("name")).thenReturn(name);
         when(event.getString("cause")).thenReturn(cause);
-        when(event.getInt("gcId")).thenReturn(gcId);
 
         List<? extends Metric> result = testClass.apply(event);
 
