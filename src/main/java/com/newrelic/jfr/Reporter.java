@@ -23,9 +23,13 @@ public class Reporter {
     private final Config config;
     private final Attributes commonAttributes;
 
-    public Reporter(Config config) {
+    Reporter(Config config, Attributes initialCommonAttributes) {
         this.config = config;
-        this.commonAttributes = new Attributes(config.getCommonAttributes());
+        this.commonAttributes = new Attributes(initialCommonAttributes);
+    }
+
+    public static Reporter build(Config config) {
+        return new Reporter(config, config.getCommonAttributes());
     }
 
     public void start() throws MalformedURLException {
