@@ -11,6 +11,7 @@ import com.newrelic.telemetry.metrics.MetricBatchSender;
 import com.newrelic.telemetry.metrics.MetricBuffer;
 
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -21,20 +22,21 @@ import java.util.function.Supplier;
 import java.util.logging.Level;
 
 public class Reporter {
-    private final Config config;
     private final Attributes commonAttributes;
     private final Logger logger;
     private final String insertApiKey;
+    private final URI metricIngestUri;
 
     public static Reporter build(Config config) {
-        return new Reporter(config, config.getCommonAttributes(), config.getLogger(), config.getInsertApiKey());
+        return new Reporter(config.getCommonAttributes(), config.getLogger(), config.getInsertApiKey(),
+                config.getMetricIngestUri());
     }
 
-    Reporter(Config config, Attributes initialCommonAttributes, Logger logger, String insertApiKey) {
-        this.config = config;
+    Reporter(Attributes initialCommonAttributes, Logger logger, String insertApiKey, URI metricsIngestUri) {
         this.commonAttributes = new Attributes(initialCommonAttributes);
         this.logger = logger;
         this.insertApiKey = insertApiKey;
+        this.metricIngestUri = metricsIngestUri;
     }
 
     public void start() throws MalformedURLException {
@@ -45,7 +47,7 @@ public class Reporter {
         var registry = new MapperRegistry(metricBufferReference::get);
         var jfrMonitor = new JfrMonitor(registry);
 
-        logger.log(Level.INFO, "Starting New Relic JFR Monitor with ingest URI => " + config.getMetricIngestUri());
+        logger.log(Level.INFO, "Starting New Relic JFR Monitor with ingest URI => " + metricIngestUri);
 
         jfrMonitor.start();
 
@@ -66,7 +68,6 @@ public class Reporter {
     private Consumer<MetricBuffer> startTelemetrySdkReporter(ScheduledExecutorService batchSendService,
                                                              Supplier<MetricBuffer> metricBufferSupplier)
             throws MalformedURLException {
-        var metricIngestUri = config.getMetricIngestUri();
 
         MetricBatchSender metricBatchSender = SimpleMetricBatchSender.builder(insertApiKey)
                 .uriOverride(metricIngestUri)
