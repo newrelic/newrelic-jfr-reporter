@@ -24,15 +24,17 @@ public class Reporter {
     private final Config config;
     private final Attributes commonAttributes;
     private final Logger logger;
+    private final String insertApiKey;
 
-    Reporter(Config config, Attributes initialCommonAttributes, Logger logger) {
+    public static Reporter build(Config config) {
+        return new Reporter(config, config.getCommonAttributes(), config.getLogger(), config.getInsertApiKey());
+    }
+
+    Reporter(Config config, Attributes initialCommonAttributes, Logger logger, String insertApiKey) {
         this.config = config;
         this.commonAttributes = new Attributes(initialCommonAttributes);
         this.logger = logger;
-    }
-
-    public static Reporter build(Config config) {
-        return new Reporter(config, config.getCommonAttributes(), config.getLogger());
+        this.insertApiKey = insertApiKey;
     }
 
     public void start() throws MalformedURLException {
@@ -64,7 +66,6 @@ public class Reporter {
     private Consumer<MetricBuffer> startTelemetrySdkReporter(ScheduledExecutorService batchSendService,
                                                              Supplier<MetricBuffer> metricBufferSupplier)
             throws MalformedURLException {
-        var insertApiKey = config.getInsertApiKey();
         var metricIngestUri = config.getMetricIngestUri();
 
         MetricBatchSender metricBatchSender = SimpleMetricBatchSender.builder(insertApiKey)
