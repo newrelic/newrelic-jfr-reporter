@@ -3,6 +3,7 @@ package com.newrelic.jfr;
 import com.newrelic.jfr.mappers.CPULoadMapper;
 import com.newrelic.jfr.mappers.GCHeapSummaryMapper;
 import com.newrelic.jfr.mappers.GarbageCollectionMapper;
+import com.newrelic.jfr.mappers.MetaspaceSummaryMapper;
 import com.newrelic.telemetry.metrics.MetricBuffer;
 
 import java.util.HashMap;
@@ -18,6 +19,7 @@ public class MapperRegistry {
         mappers.put(CPULoadMapper.EVENT_NAME, new JfrStreamEventConsumer(new CPULoadMapper(), metricBuffer));
         mappers.put(GCHeapSummaryMapper.EVENT_NAME, new JfrStreamEventConsumer(new GCHeapSummaryMapper(), metricBuffer));
         mappers.put(GarbageCollectionMapper.EVENT_NAME, new JfrStreamEventConsumer(new GarbageCollectionMapper(), metricBuffer));
+        mappers.put(MetaspaceSummaryMapper.EVENT_NAME, new JfrStreamEventConsumer(new MetaspaceSummaryMapper(), metricBuffer));
     }
 
     public Map<String, JfrStreamEventConsumer> getMappers() {

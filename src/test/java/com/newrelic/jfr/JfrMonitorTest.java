@@ -28,6 +28,7 @@ class JfrMonitorTest {
         when(recordingStream.enable("jdk.CPULoad")).thenReturn(eventSettings);
         when(recordingStream.enable("jdk.GCHeapSummary")).thenReturn(eventSettings);
         when(recordingStream.enable("jdk.GarbageCollection")).thenReturn(eventSettings);
+        when(recordingStream.enable("jdk.MetaspaceSummary")).thenReturn(eventSettings);
         doAnswer(invocationOnMock -> {
             latch.countDown();
             return null;
@@ -39,7 +40,7 @@ class JfrMonitorTest {
         testClass.start();
 
         assertTrue(latch.await(10, TimeUnit.SECONDS));
-        verify(eventSettings, times(3)).withPeriod(Duration.ofSeconds(1));
+        verify(eventSettings, times(4)).withPeriod(Duration.ofSeconds(1));
     }
 
 }
