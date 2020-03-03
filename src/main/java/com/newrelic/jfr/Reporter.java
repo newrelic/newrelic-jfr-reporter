@@ -70,7 +70,6 @@ public class Reporter {
         Consumer<MetricBuffer> send = metricBuffer -> {
             MetricBatch batch = metricBuffer.createBatch();
             config.getLogger().log(Level.FINE, "Sending JFR metrics batch size " + batch.getTelemetry().size() + " to New Relic");
-            config.getLogger().log(Level.FINE, "    mb -> " + metricBuffer.hashCode());
             telemetryClient.sendBatch(batch);
         };
 
