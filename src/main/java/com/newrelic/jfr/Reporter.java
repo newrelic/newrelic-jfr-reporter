@@ -21,14 +21,16 @@ import java.util.logging.Level;
 
 public class Reporter {
     private final Config config;
+    private final Attributes commonAttributes;
 
     public Reporter(Config config) {
         this.config = config;
+        this.commonAttributes = new Attributes(config.getCommonAttributes());
     }
 
     public void start() throws MalformedURLException {
         var batchSendService = Executors.newSingleThreadScheduledExecutor();
-        var metricBuffer = new MetricBuffer(config.getCommonAttributes());
+        var metricBuffer = new MetricBuffer(commonAttributes);
         AtomicReference<MetricBuffer> metricBufferReference = new AtomicReference<>(metricBuffer);
         Consumer<MetricBuffer> sender = startTelemetrySdkReporter(batchSendService, metricBufferReference::get);
         var registry = new MapperRegistry(metricBufferReference::get);
@@ -41,7 +43,6 @@ public class Reporter {
         Consumer<Map<String, String>> agentChangeListener = attrs -> {
             config.getLogger().log(Level.INFO, "Refreshing the MetricBuffer for the New Relic JFR Monitor");
 
-            Attributes commonAttributes = config.getCommonAttributes();
             attrs.forEach(commonAttributes::put);
 
             var newBuffer = new MetricBuffer(commonAttributes);
