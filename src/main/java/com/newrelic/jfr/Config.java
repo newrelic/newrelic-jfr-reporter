@@ -1,7 +1,6 @@
 package com.newrelic.jfr;
 
 import com.newrelic.api.agent.Logger;
-import com.newrelic.jfr.attributes.CommonAttributes;
 import com.newrelic.telemetry.Attributes;
 
 import java.net.URI;
@@ -10,7 +9,7 @@ public class Config {
     public static final URI DEFAULT_METRIC_INGEST_URI = URI.create("https://metric-api.newrelic.com");
     public static final String METRIC_INGEST_URI = "metric_ingest_uri";
     public static final String INSERT_API_KEY = "insert_api_key";
-    private final CommonAttributes commonAttributes;
+    private final Attributes commonAttributes;
     private final String insertApiKey;
     private final URI metricIngestUri;
     private final Logger logger;
@@ -23,7 +22,7 @@ public class Config {
     }
 
     public Attributes getCommonAttributes() {
-        return commonAttributes.get();
+        return commonAttributes;
     }
 
     public String getInsertApiKey() {
@@ -44,12 +43,12 @@ public class Config {
 
     public static class Builder {
 
-        private CommonAttributes commonAttributes;
+        private Attributes commonAttributes;
         private String insertApiKey;
         private URI metricIngestUri;
         private Logger logger;
 
-        public Builder commonAttributes(CommonAttributes commonAttributes) {
+        public Builder commonAttributes(Attributes commonAttributes) {
             this.commonAttributes = commonAttributes;
             return this;
         }

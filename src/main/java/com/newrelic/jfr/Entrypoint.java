@@ -3,7 +3,7 @@ package com.newrelic.jfr;
 import com.newrelic.api.agent.Agent;
 import com.newrelic.api.agent.Logger;
 import com.newrelic.api.agent.NewRelic;
-import com.newrelic.jfr.attributes.CommonAttributes;
+import com.newrelic.telemetry.Attributes;
 
 import java.lang.instrument.Instrumentation;
 import java.net.URI;
@@ -11,8 +11,15 @@ import java.util.logging.Level;
 
 import static com.newrelic.jfr.Config.INSERT_API_KEY;
 import static com.newrelic.jfr.Config.METRIC_INGEST_URI;
+import static com.newrelic.jfr.attributes.AttributeNames.*;
 
 public class Entrypoint {
+
+    private static final Attributes COMMON_ATTRIBUTES = new Attributes()
+            .put(INSTRUMENTATION_NAME, "JFR")
+            .put(INSTRUMENTATION_PROVIDER, "JFR Agent Extension")
+            .put(COLLECTOR_NAME, "JFR Agent Extension");
+
     public static void premain(String agentArgs, Instrumentation inst) {
         Agent agent = NewRelic.getAgent();
         Logger logger = agent.getLogger();
@@ -27,11 +34,10 @@ public class Entrypoint {
 
         try {
             String insertApiKey = agentConfig.getValue(INSERT_API_KEY);
-            CommonAttributes commonAttributes = new CommonAttributes(agent);
 
             var builder = Config.builder()
                     .insertApiKey(insertApiKey)
-                    .commonAttributes(commonAttributes)
+                    .commonAttributes(COMMON_ATTRIBUTES)
                     .logger(logger);
 
             String metricIngestUri = agentConfig.getValue(METRIC_INGEST_URI);
