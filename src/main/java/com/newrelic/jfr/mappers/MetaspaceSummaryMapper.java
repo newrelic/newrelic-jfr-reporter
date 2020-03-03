@@ -24,7 +24,7 @@ public class MetaspaceSummaryMapper implements EventMapper {
         RecordedObject dataSpace = ev.getValue(DATA_SPACE_KEY);
         RecordedObject classSpace = ev.getValue(CLASS_SPACE_KEY);
 
-        Attributes attr = new Attributes()
+        var attr = new Attributes()
                 .put("when", ev.getString("when"));
 
         List<Metric> metrics = new ArrayList<>(9);

@@ -20,7 +20,7 @@ public class GCHeapSummaryMapper implements EventMapper {
         long committedSize = heapSpace.getLong("committedSize");
         long reservedSize = heapSpace.getLong("reservedSize");
 
-        Attributes attr = new Attributes()
+        var attr = new Attributes()
                 .put("when", ev.getString("when"))
                 .put("heapStart", heapSpace.getLong("start"))
                 .put("committedEnd", heapSpace.getLong("committedEnd"))

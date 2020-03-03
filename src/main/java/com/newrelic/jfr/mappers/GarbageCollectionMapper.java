@@ -16,7 +16,7 @@ public class GarbageCollectionMapper implements EventMapper {
         var timestamp = ev.getStartTime().toEpochMilli();
         double longestPause = ev.getDouble("longestPause");
 
-        Attributes attr = new Attributes()
+        var attr = new Attributes()
                 .put("name", ev.getString("name"))
                 .put("cause", ev.getString("cause"));
 
