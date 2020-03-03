@@ -45,7 +45,8 @@ public class Entrypoint {
                 builder = builder.metricsIngestUri(URI.create(metricIngestUri));
             }
             var config = builder.build();
-            new Reporter(config).start();
+            var reporter = Reporter.build(config);
+            reporter.start();
         } catch (Throwable t) {
             logger.log(Level.SEVERE, t, "Unable to attach New Relic JFR Monitor");
         }
