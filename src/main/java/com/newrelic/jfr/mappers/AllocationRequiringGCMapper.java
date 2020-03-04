@@ -4,23 +4,22 @@ import com.newrelic.telemetry.Attributes;
 import com.newrelic.telemetry.metrics.Gauge;
 import com.newrelic.telemetry.metrics.Metric;
 import jdk.jfr.consumer.RecordedEvent;
+import jdk.jfr.consumer.RecordedThread;
 
 import java.util.List;
 
-public class GarbageCollectionMapper implements EventMapper {
-    public static final String EVENT_NAME = "jdk.GarbageCollection";
+public class AllocationRequiringGCMapper implements EventMapper {
+    public static final String EVENT_NAME = "jdk.AllocationRequiringGC";
 
     @Override
     public List<? extends Metric> apply(RecordedEvent ev) {
         var timestamp = ev.getStartTime().toEpochMilli();
-        double longestPause = ev.getDouble("longestPause");
-
+        RecordedThread t = ev.getValue("eventThread");
         var attr = new Attributes()
-                .put("name", ev.getString("name"))
-                .put("cause", ev.getString("cause"));
+                .put("thread.name", t.getJavaName());
 
         return List.of(
-                new Gauge("jfr:GarbageCollection.longestPause", longestPause, timestamp, attr)
+                new Gauge("jfr:AllocationRequiringGC.allocationSize", ev.getLong("size"), timestamp, attr)
         );
     }
 

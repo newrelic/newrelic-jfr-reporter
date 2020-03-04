@@ -9,7 +9,6 @@ import jdk.jfr.consumer.RecordedObject;
 import java.util.List;
 
 public class GCHeapSummaryMapper implements EventMapper {
-
     public static final String EVENT_NAME = "jdk.GCHeapSummary";
 
     @Override

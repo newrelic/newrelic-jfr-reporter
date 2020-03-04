@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MetaspaceSummaryMapper implements EventMapper {
-
     public static final String EVENT_NAME = "jdk.MetaspaceSummary";
     static final String NR_METRIC_PREFIX = "jfr:MetaspaceSummary.";
     static final String METASPACE_KEY = "metaspace";

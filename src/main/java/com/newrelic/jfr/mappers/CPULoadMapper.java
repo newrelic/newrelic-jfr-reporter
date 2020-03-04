@@ -12,17 +12,16 @@ import java.util.Optional;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class CPULoadMapper implements EventMapper {
-
     public static final String EVENT_NAME = "jdk.CPULoad";
 
     @Override
     public List<? extends Metric> apply(RecordedEvent ev) {
         var timestamp = ev.getStartTime().toEpochMilli();
-        var baseAttributes = new Attributes();
+        var attr = new Attributes();
         return List.of(
-                new Gauge("jfr:CPULoad.jvmUser", ev.getDouble("jvmUser"), timestamp, baseAttributes),
-                new Gauge("jfr:CPULoad.jvmSystem", ev.getDouble("jvmSystem"), timestamp, baseAttributes),
-                new Gauge("jfr:CPULoad.machineTotal", ev.getDouble("machineTotal"), timestamp, baseAttributes)
+                new Gauge("jfr:CPULoad.jvmUser", ev.getDouble("jvmUser"), timestamp, attr),
+                new Gauge("jfr:CPULoad.jvmSystem", ev.getDouble("jvmSystem"), timestamp, attr),
+                new Gauge("jfr:CPULoad.machineTotal", ev.getDouble("machineTotal"), timestamp, attr)
         );
     }
 

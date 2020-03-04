@@ -26,6 +26,10 @@ class JfrMonitorTest {
         when(recordingStream.enable("jdk.GCHeapSummary")).thenReturn(eventSettings);
         when(recordingStream.enable("jdk.GarbageCollection")).thenReturn(eventSettings);
         when(recordingStream.enable("jdk.MetaspaceSummary")).thenReturn(eventSettings);
+        when(recordingStream.enable("jdk.AllocationRequiringGC")).thenReturn(eventSettings);
+        when(recordingStream.enable("jdk.ObjectAllocationInNewTLAB")).thenReturn(eventSettings);
+        when(recordingStream.enable("jdk.ObjectAllocationOutsideTLAB")).thenReturn(eventSettings);
+        when(recordingStream.enable("jdk.ThreadAllocationStatistics")).thenReturn(eventSettings);
         doAnswer(invocationOnMock -> {
             latch.countDown();
             return null;

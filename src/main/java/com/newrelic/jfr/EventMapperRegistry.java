@@ -15,7 +15,11 @@ public class EventMapperRegistry {
                 new CPULoadMapper(),
                 new GCHeapSummaryMapper(),
                 new GarbageCollectionMapper(),
-                new MetaspaceSummaryMapper()
+                new MetaspaceSummaryMapper(),
+                new AllocationRequiringGCMapper(),
+                new ObjectAllocationInNewTLABMapper(),
+                new ObjectAllocationOutsideTLABMapper(),
+                new ThreadAllocationStatisticsMapper()
         ));
     }
 
