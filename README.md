@@ -12,7 +12,7 @@ or via grandcentral with
 
 ## Maven
 
-The extension requires the JVM to be run with JDK 14 which isn't presently supported by gradle. The `jfr-reporter` dependecny can be added from [Artifactory](https://pdx-artifacts.pdx.vm.datanerd.us/repo) via maven.
+The extension requires the JVM to be run with JDK 14 which isn't presently supported by gradle. The `jfr-reporter` dependency can be added from [Artifactory](https://pdx-artifacts.pdx.vm.datanerd.us/repo) via maven.
 
 ```    
 <dependency>
