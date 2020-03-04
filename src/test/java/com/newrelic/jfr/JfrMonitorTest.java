@@ -36,7 +36,7 @@ class JfrMonitorTest {
         testClass.start();
 
         assertTrue(latch.await(10, TimeUnit.SECONDS));
-        verify(eventSettings, times(4)).withPeriod(Duration.ofSeconds(1));
+        verify(eventSettings, times(1)).withPeriod(Duration.ofSeconds(1));
     }
 
 }

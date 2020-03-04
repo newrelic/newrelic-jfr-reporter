@@ -26,17 +26,14 @@ public class Reporter {
     private final Logger logger;
     private final String insertApiKey;
     private final URI metricIngestUri;
+    private final EventMapperRegistry registry;
 
-    public static Reporter build(Config config) {
-        return new Reporter(config.getCommonAttributes(), config.getLogger(), config.getInsertApiKey(),
-                config.getMetricIngestUri());
-    }
-
-    Reporter(Attributes initialCommonAttributes, Logger logger, String insertApiKey, URI metricsIngestUri) {
-        this.commonAttributes = new Attributes(initialCommonAttributes);
-        this.logger = logger;
-        this.insertApiKey = insertApiKey;
-        this.metricIngestUri = metricsIngestUri;
+    Reporter(Config config) {
+        this.commonAttributes = config.getCommonAttributes();
+        this.logger = config.getLogger();
+        this.insertApiKey = config.getInsertApiKey();
+        this.metricIngestUri = config.getMetricIngestUri();
+        this.registry = config.getRegistry();
     }
 
     public void start() throws MalformedURLException {
@@ -44,7 +41,6 @@ public class Reporter {
         var metricBuffer = new MetricBuffer(commonAttributes);
         var metricBufferReference = new AtomicReference<>(metricBuffer);
         var sender = startTelemetrySdkReporter(batchSendService, metricBufferReference::get);
-        var registry = EventMapperRegistry.createDefault();
         var jfrMonitor = new JfrMonitor(registry, metricBufferReference::get);
 
         logger.log(Level.INFO, "Starting New Relic JFR Monitor with ingest URI => " + metricIngestUri);
@@ -79,4 +75,9 @@ public class Reporter {
         );
         return send;
     }
+
+    public static Reporter build(Config config) {
+        return new Reporter(config);
+    }
+
 }

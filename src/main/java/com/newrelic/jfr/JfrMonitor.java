@@ -30,14 +30,14 @@ public class JfrMonitor {
         jfrMonitorService = Executors.newSingleThreadExecutor();
         jfrMonitorService.submit(() -> {
             try (var recordingStream = recordingStreamSupplier.get()) {
-                var registerMapper = registerMapper(recordingStream);
-                eventMapperRegistry.getMappers().forEach(registerMapper);
+                var enableEvent = eventEnablerFor(recordingStream);
+                eventMapperRegistry.getMappers().forEach(enableEvent);
                 recordingStream.start(); //run forever
             }
         });
     }
 
-    private Consumer<EventMapper> registerMapper(RecordingStream recordingStream) {
+    private Consumer<EventMapper> eventEnablerFor(RecordingStream recordingStream) {
         return mapper -> {
             EventSettings eventSettings = recordingStream.enable(mapper.getEventName());
             mapper.getPollingDuration().ifPresent(eventSettings::withPeriod);
