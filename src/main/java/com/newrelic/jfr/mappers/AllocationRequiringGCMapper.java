@@ -23,4 +23,9 @@ public class AllocationRequiringGCMapper implements EventMapper {
                 new Gauge("jfr:AllocationRequiringGC.allocationSize", ev.getLong("size"), timestamp, attr)
         );
     }
+
+    @Override
+    public String getEventName() {
+        return EVENT_NAME;
+    }
 }

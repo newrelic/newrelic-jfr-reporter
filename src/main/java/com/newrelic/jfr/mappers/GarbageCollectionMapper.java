@@ -8,7 +8,6 @@ import jdk.jfr.consumer.RecordedEvent;
 import java.util.List;
 
 public class GarbageCollectionMapper implements EventMapper {
-
     public static final String EVENT_NAME = "jdk.GarbageCollection";
 
     @Override
@@ -23,5 +22,10 @@ public class GarbageCollectionMapper implements EventMapper {
         return List.of(
                 new Gauge("jfr:GarbageCollection.longestPause", longestPause, timestamp, attr)
         );
+    }
+
+    @Override
+    public String getEventName() {
+        return EVENT_NAME;
     }
 }

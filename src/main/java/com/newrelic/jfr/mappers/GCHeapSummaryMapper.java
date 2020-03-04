@@ -9,7 +9,6 @@ import jdk.jfr.consumer.RecordedObject;
 import java.util.List;
 
 public class GCHeapSummaryMapper implements EventMapper {
-
     public static final String EVENT_NAME = "jdk.GCHeapSummary";
 
     @Override
@@ -31,5 +30,10 @@ public class GCHeapSummaryMapper implements EventMapper {
                 new Gauge("jfr:GCHeapSummary.heapCommittedSize", committedSize, timestamp, attr),
                 new Gauge("jfr:GCHeapSummary.reservedSize", reservedSize, timestamp, attr)
         );
+    }
+
+    @Override
+    public String getEventName() {
+        return EVENT_NAME;
     }
 }

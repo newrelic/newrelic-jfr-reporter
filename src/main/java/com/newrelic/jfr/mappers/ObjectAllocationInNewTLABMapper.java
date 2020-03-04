@@ -23,4 +23,9 @@ public class ObjectAllocationInNewTLABMapper implements EventMapper {
                 new Count("jfr:ObjectAllocationInNewTLAB.allocation", 0.0 + ev.getLong("allocationSize"), start, end, attr)
         );
     }
+
+    @Override
+    public String getEventName() {
+        return EVENT_NAME;
+    }
 }

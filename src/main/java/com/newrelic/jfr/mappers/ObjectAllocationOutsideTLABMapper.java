@@ -26,4 +26,9 @@ public class ObjectAllocationOutsideTLABMapper implements EventMapper {
                         start, end, attr)
         );
     }
+
+    @Override
+    public String getEventName() {
+        return EVENT_NAME;
+    }
 }

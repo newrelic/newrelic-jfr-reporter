@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MetaspaceSummaryMapper implements EventMapper {
-
     public static final String EVENT_NAME = "jdk.MetaspaceSummary";
     static final String NR_METRIC_PREFIX = "jfr:MetaspaceSummary.";
     static final String METASPACE_KEY = "metaspace";
@@ -42,5 +41,10 @@ public class MetaspaceSummaryMapper implements EventMapper {
                 new Gauge(NR_METRIC_PREFIX + name + ".reserved", recordedObject.getDouble("reserved"), timestamp, attr)
         );
 
+    }
+
+    @Override
+    public String getEventName() {
+        return EVENT_NAME;
     }
 }

@@ -27,4 +27,9 @@ public class ThreadAllocationStatisticsMapper implements EventMapper {
                 new Gauge("jfr:ThreadAllocationStatistics.allocated", allocated, time, attr)
         );
     }
+
+    @Override
+    public String getEventName() {
+        return EVENT_NAME;
+    }
 }

@@ -13,12 +13,14 @@ public class Config {
     private final String insertApiKey;
     private final URI metricIngestUri;
     private final Logger logger;
+    private final EventMapperRegistry registry;
 
     public Config(Builder builder) {
         this.commonAttributes = builder.commonAttributes;
         this.insertApiKey = builder.insertApiKey;
-        this.metricIngestUri = builder.metricIngestUri == null ? DEFAULT_METRIC_INGEST_URI : builder.metricIngestUri;
+        this.metricIngestUri = builder.metricIngestUri;
         this.logger = builder.logger;
+        this.registry = builder.registry;
     }
 
     public Attributes getCommonAttributes() {
@@ -37,6 +39,10 @@ public class Config {
         return logger;
     }
 
+    public EventMapperRegistry getRegistry() {
+        return registry;
+    }
+
     public static Builder builder() {
         return new Builder();
     }
@@ -45,8 +51,9 @@ public class Config {
 
         private Attributes commonAttributes;
         private String insertApiKey;
-        private URI metricIngestUri;
+        private URI metricIngestUri = DEFAULT_METRIC_INGEST_URI;
         private Logger logger;
+        private EventMapperRegistry registry;
 
         public Builder commonAttributes(Attributes commonAttributes) {
             this.commonAttributes = commonAttributes;
@@ -58,6 +65,13 @@ public class Config {
             return this;
         }
 
+        public Builder metricsIngestUri(String metricIngestUri) {
+            if ((metricIngestUri != null) && (!metricIngestUri.isEmpty())) {
+                return metricsIngestUri(URI.create(metricIngestUri));
+            }
+            return this;
+        }
+
         public Builder metricsIngestUri(URI metricIngestUri) {
             this.metricIngestUri = metricIngestUri;
             return this;
@@ -65,6 +79,11 @@ public class Config {
 
         public Builder logger(Logger logger) {
             this.logger = logger;
+            return this;
+        }
+
+        public Builder registry(EventMapperRegistry registry) {
+            this.registry = registry;
             return this;
         }
 
