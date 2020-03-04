@@ -23,9 +23,7 @@ class ObjectAllocationOutsideTLABMapperTest {
 
         // RecordedThread
         var recordedThread = mock(RecordedThread.class);
-        var threadId = 20L;
         var eventThread = "pool-2-thread-1";
-        when(recordedThread.getId()).thenReturn(threadId);
         when(recordedThread.getJavaName()).thenReturn(eventThread);
 
         // RecordedClass
@@ -46,7 +44,6 @@ class ObjectAllocationOutsideTLABMapperTest {
 
         // Expected dimensional metric
         var attr = new Attributes()
-                .put("thread.id", threadId)
                 .put("thread.name", eventThread)
                 .put("class", objectClass);
         var count = new Count("jfr:ObjectAllocationOutsideTLAB.allocation", 0.0 + recordedEvent.getLong("allocationSize"), now, end, attr);
