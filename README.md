@@ -25,7 +25,7 @@ The extension requires the JVM to be run with JDK 14 which isn't presently suppo
 
 ## Usage
 
-The `jfr-reporter-0.1.1-SNAPSHOT.jar` must be present in the `newrelic/extensions/` directory during agent startup.
+The `jfr-reporter-0.1.1-SNAPSHOT.jar` must be present in the `newrelic/extensions/` directory during agent startup and requires the JVM to be run with JDK 14.
 
 The JFR Reporter can be configured via the agent as follows and requires an [insert API key](https://docs.newrelic.com/docs/apis/get-started/intro-apis/types-new-relic-api-keys#event-insert-key) to send dimensional metrics in to metric ingest API:
 
