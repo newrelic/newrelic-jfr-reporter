@@ -23,7 +23,7 @@ public class EventMapperRegistry {
         this.mappers = mappers;
     }
 
-    public Stream<EventMapper> getMappers() {
+    public Stream<EventMapper> stream() {
         return mappers.stream();
     }
 }

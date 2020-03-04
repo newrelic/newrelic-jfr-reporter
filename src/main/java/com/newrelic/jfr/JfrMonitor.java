@@ -31,7 +31,7 @@ public class JfrMonitor {
         jfrMonitorService.submit(() -> {
             try (var recordingStream = recordingStreamSupplier.get()) {
                 var enableEvent = eventEnablerFor(recordingStream);
-                eventMapperRegistry.getMappers().forEach(enableEvent);
+                eventMapperRegistry.stream().forEach(enableEvent);
                 recordingStream.start(); //run forever
             }
         });
