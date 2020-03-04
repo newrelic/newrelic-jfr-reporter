@@ -26,4 +26,8 @@ public class JfrStreamEventConsumer implements Consumer<RecordedEvent> {
         MetricBuffer metricBuffer = metricBufferSupplier.get();
         mapper.apply(event).forEach(metricBuffer::addMetric);
     }
+
+    public String getEventName() {
+        return mapper.getEventName();
+    }
 }

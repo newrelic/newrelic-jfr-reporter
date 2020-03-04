@@ -43,4 +43,9 @@ public class MetaspaceSummaryMapper implements EventMapper {
         );
 
     }
+
+    @Override
+    public String getEventName() {
+        return EVENT_NAME;
+    }
 }

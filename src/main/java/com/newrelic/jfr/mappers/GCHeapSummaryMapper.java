@@ -32,4 +32,9 @@ public class GCHeapSummaryMapper implements EventMapper {
                 new Gauge("jfr:GCHeapSummary.reservedSize", reservedSize, timestamp, attr)
         );
     }
+
+    @Override
+    public String getEventName() {
+        return EVENT_NAME;
+    }
 }

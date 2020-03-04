@@ -1,6 +1,5 @@
 package com.newrelic.jfr.mappers;
 
-import com.newrelic.jfr.mappers.CPULoadMapper;
 import com.newrelic.telemetry.Attributes;
 import com.newrelic.telemetry.metrics.Gauge;
 import com.newrelic.telemetry.metrics.Metric;
@@ -11,6 +10,7 @@ import java.time.Instant;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -40,6 +40,12 @@ class CPULoadMapperTest {
         List<? extends Metric> result = testClass.apply(event);
 
         assertEquals(expected, result);
+    }
+
+    @Test
+    void hasDuration() {
+        var testClass = new CPULoadMapper();
+        assertFalse(testClass.getPollingDuration().isEmpty());
     }
 
 }

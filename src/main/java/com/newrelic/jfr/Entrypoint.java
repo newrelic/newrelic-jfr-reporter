@@ -6,7 +6,6 @@ import com.newrelic.api.agent.NewRelic;
 import com.newrelic.telemetry.Attributes;
 
 import java.lang.instrument.Instrumentation;
-import java.net.URI;
 import java.util.logging.Level;
 
 import static com.newrelic.jfr.Config.INSERT_API_KEY;
@@ -34,17 +33,17 @@ public class Entrypoint {
 
         try {
             String insertApiKey = agentConfig.getValue(INSERT_API_KEY);
+            String metricIngestUri = agentConfig.getValue(METRIC_INGEST_URI);
+            EventMapperRegistry registry = EventMapperRegistry.createDefault();
 
-            var builder = Config.builder()
+            var config = Config.builder()
                     .insertApiKey(insertApiKey)
                     .commonAttributes(COMMON_ATTRIBUTES)
-                    .logger(logger);
+                    .metricsIngestUri(metricIngestUri)
+                    .registry(registry)
+                    .logger(logger)
+                    .build();
 
-            String metricIngestUri = agentConfig.getValue(METRIC_INGEST_URI);
-            if ((metricIngestUri != null) && (!metricIngestUri.isEmpty())) {
-                builder = builder.metricsIngestUri(URI.create(metricIngestUri));
-            }
-            var config = builder.build();
             var reporter = Reporter.build(config);
             reporter.start();
         } catch (Throwable t) {
