@@ -44,8 +44,8 @@ public class Reporter {
         var metricBuffer = new MetricBuffer(commonAttributes);
         var metricBufferReference = new AtomicReference<>(metricBuffer);
         var sender = startTelemetrySdkReporter(batchSendService, metricBufferReference::get);
-        var registry = new MapperRegistry(metricBufferReference::get);
-        var jfrMonitor = new JfrMonitor(registry);
+        var registry = EventMapperRegistry.createDefault();
+        var jfrMonitor = new JfrMonitor(registry, metricBufferReference::get);
 
         logger.log(Level.INFO, "Starting New Relic JFR Monitor with ingest URI => " + metricIngestUri);
 

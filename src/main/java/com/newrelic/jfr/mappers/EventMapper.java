@@ -10,5 +10,5 @@ import java.util.function.Function;
  * Convenience/Tag interface for defining how JFR events should turn into metrics.
  */
 public interface EventMapper extends Function<RecordedEvent, List<? extends Metric>> {
-
+    String getEventName();
 }

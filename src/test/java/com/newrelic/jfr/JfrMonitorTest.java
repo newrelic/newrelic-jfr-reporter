@@ -8,20 +8,17 @@ import org.junit.jupiter.api.Test;
 import java.time.Duration;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class JfrMonitorTest {
 
     @Test
     void testStartWiresUpConsumerThatHandlesEvent() throws InterruptedException {
         var latch = new CountDownLatch(1);
+        var registry = EventMapperRegistry.createDefault();
+
         var recordingStream = mock(RecordingStream.class);
         var metricBuffer = mock(MetricBuffer.class);
         var eventSettings = mock(EventSettings.class);
@@ -34,8 +31,7 @@ class JfrMonitorTest {
             return null;
         }).when(recordingStream).start();
 
-        Supplier<RecordingStream> rsSupplier = () -> recordingStream;
-        var testClass = new JfrMonitor(rsSupplier, new MapperRegistry(() -> metricBuffer));
+        var testClass = new JfrMonitor(registry, () -> metricBuffer, () -> recordingStream);
 
         testClass.start();
 

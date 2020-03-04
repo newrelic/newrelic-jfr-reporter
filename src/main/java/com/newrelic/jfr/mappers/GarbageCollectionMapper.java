@@ -24,4 +24,9 @@ public class GarbageCollectionMapper implements EventMapper {
                 new Gauge("jfr:GarbageCollection.longestPause", longestPause, timestamp, attr)
         );
     }
+
+    @Override
+    public String getEventName() {
+        return EVENT_NAME;
+    }
 }

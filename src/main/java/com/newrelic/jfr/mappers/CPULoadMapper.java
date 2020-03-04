@@ -21,4 +21,9 @@ public class CPULoadMapper implements EventMapper {
                 new Gauge("jfr:CPULoad.machineTotal", ev.getDouble("machineTotal"), timestamp, baseAttributes)
         );
     }
+
+    @Override
+    public String getEventName() {
+        return EVENT_NAME;
+    }
 }
