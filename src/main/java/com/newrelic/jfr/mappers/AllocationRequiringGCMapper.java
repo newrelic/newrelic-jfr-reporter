@@ -19,6 +19,7 @@ public class AllocationRequiringGCMapper implements EventMapper {
                 .put("thread.id", t.getId())
                 .put("thread.name", t.getJavaName())
                 .put("gcId", ev.getInt("gcId"));
+
         return List.of(
                 new Gauge("jfr:AllocationRequiringGC.allocationSize", ev.getLong("size"), timestamp, attr)
         );
