@@ -17,32 +17,30 @@ class ThreadAllocationStatisticsMapperTest {
 
     @Test
     void testMapper() {
-        var now = System.currentTimeMillis();
-
-        // RecordedThread
         var recordedThread = mock(RecordedThread.class);
         var threadName = "main";
         var threadOsName = "main";
-        when(recordedThread.getJavaName()).thenReturn(threadName);
-        when(recordedThread.getOSName()).thenReturn(threadOsName);
 
-        // RecordedEvent
         var recordedEvent = mock(RecordedEvent.class);
+        var now = System.currentTimeMillis();
         var startTime = Instant.ofEpochMilli(now);
         var allocated = 1250229920d;
-        when(recordedEvent.getStartTime()).thenReturn(startTime);
-        when(recordedEvent.getDouble("allocated")).thenReturn(allocated);
-        when(recordedEvent.getValue("thread")).thenReturn(recordedThread);
 
-        // Expected dimensional metric
         var attr = new Attributes()
                 .put("thread.name", threadName)
                 .put("thread.osName", threadOsName);
         var gauge = new Gauge("jfr:ThreadAllocationStatistics.allocated", allocated, now, attr);
         var expected = List.of(gauge);
 
-        // Assertions
         var testClass = new ThreadAllocationStatisticsMapper();
+
+        when(recordedThread.getJavaName()).thenReturn(threadName);
+        when(recordedThread.getOSName()).thenReturn(threadOsName);
+
+        when(recordedEvent.getStartTime()).thenReturn(startTime);
+        when(recordedEvent.getDouble("allocated")).thenReturn(allocated);
+        when(recordedEvent.getValue("thread")).thenReturn(recordedThread);
+
         var result = testClass.apply(recordedEvent);
         assertEquals(expected, result);
     }

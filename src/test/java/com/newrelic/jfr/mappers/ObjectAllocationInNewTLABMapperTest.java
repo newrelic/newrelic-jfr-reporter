@@ -18,25 +18,33 @@ class ObjectAllocationInNewTLABMapperTest {
 
     @Test
     void testMapper() {
-        var now = System.currentTimeMillis();
-        var end = now + 1;
-
-        // RecordedThread
         var recordedThread = mock(RecordedThread.class);
         var eventThread = "pool-3-thread-1";
-        when(recordedThread.getJavaName()).thenReturn(eventThread);
 
-        // RecordedClass
         var recordedClass = mock(RecordedClass.class);
         var objectClass = "java.lang.String";
-        when(recordedClass.getName()).thenReturn(objectClass);
 
-        // RecordedEvent
         var recordedEvent = mock(RecordedEvent.class);
+        var now = System.currentTimeMillis();
+        var end = now + 1;
         var startTime = Instant.ofEpochMilli(now);
         var endTime = Instant.ofEpochMilli(end);
         long tlabSize = 206864;
         long allocationSize = 24;
+
+        var attr = new Attributes()
+                .put("thread", eventThread)
+                .put("class", objectClass)
+                .put("tlabSize", tlabSize);
+        var count = new Count("jfr:ObjectAllocationInNewTLAB.allocation", 0.0 + allocationSize, now, end, attr);
+        var expected = List.of(count);
+
+        var testClass = new ObjectAllocationInNewTLABMapper();
+
+        when(recordedThread.getJavaName()).thenReturn(eventThread);
+
+        when(recordedClass.getName()).thenReturn(objectClass);
+
         when(recordedEvent.getStartTime()).thenReturn(startTime);
         when(recordedEvent.getEndTime()).thenReturn(endTime);
         when(recordedEvent.getThread("eventThread")).thenReturn(recordedThread);
@@ -44,16 +52,6 @@ class ObjectAllocationInNewTLABMapperTest {
         when(recordedEvent.getLong("tlabSize")).thenReturn(tlabSize);
         when(recordedEvent.getLong("allocationSize")).thenReturn(allocationSize);
 
-        // Expected dimensional metric
-        var attr = new Attributes()
-                .put("thread", eventThread)
-                .put("class", objectClass)
-                .put("tlabSize", tlabSize);
-        var count = new Count("jfr:ObjectAllocationInNewTLAB.allocation", 0.0 + recordedEvent.getLong("allocationSize"), now, end, attr);
-        var expected = List.of(count);
-
-        // Assertions
-        var testClass = new ObjectAllocationInNewTLABMapper();
         var result = testClass.apply(recordedEvent);
         assertEquals(expected, result);
     }
