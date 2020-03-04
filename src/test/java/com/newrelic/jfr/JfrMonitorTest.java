@@ -1,5 +1,6 @@
 package com.newrelic.jfr;
 
+import com.newrelic.jfr.mappers.*;
 import com.newrelic.telemetry.metrics.MetricBuffer;
 import jdk.jfr.EventSettings;
 import jdk.jfr.consumer.RecordingStream;
@@ -25,10 +26,13 @@ class JfrMonitorTest {
         var recordingStream = mock(RecordingStream.class);
         var metricBuffer = mock(MetricBuffer.class);
         var eventSettings = mock(EventSettings.class);
-        when(recordingStream.enable("jdk.CPULoad")).thenReturn(eventSettings);
-        when(recordingStream.enable("jdk.GCHeapSummary")).thenReturn(eventSettings);
-        when(recordingStream.enable("jdk.GarbageCollection")).thenReturn(eventSettings);
-        when(recordingStream.enable("jdk.MetaspaceSummary")).thenReturn(eventSettings);
+        when(recordingStream.enable(CPULoadMapper.EVENT_NAME)).thenReturn(eventSettings);
+        when(recordingStream.enable(GCHeapSummaryMapper.EVENT_NAME)).thenReturn(eventSettings);
+        when(recordingStream.enable(GarbageCollectionMapper.EVENT_NAME)).thenReturn(eventSettings);
+        when(recordingStream.enable(MetaspaceSummaryMapper.EVENT_NAME)).thenReturn(eventSettings);
+        when(recordingStream.enable(ThreadAllocationStatisticsMapper.EVENT_NAME)).thenReturn(eventSettings);
+        when(recordingStream.enable(ObjectAllocationInNewTLABMapper.EVENT_NAME)).thenReturn(eventSettings);
+        when(recordingStream.enable(ObjectAllocationOutsideTLABMapper.EVENT_NAME)).thenReturn(eventSettings);
         doAnswer(invocationOnMock -> {
             latch.countDown();
             return null;
@@ -40,7 +44,7 @@ class JfrMonitorTest {
         testClass.start();
 
         assertTrue(latch.await(10, TimeUnit.SECONDS));
-        verify(eventSettings, times(4)).withPeriod(Duration.ofSeconds(1));
+        verify(eventSettings, times(7)).withPeriod(Duration.ofSeconds(1));
     }
 
 }

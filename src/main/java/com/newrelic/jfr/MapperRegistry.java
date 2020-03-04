@@ -1,9 +1,6 @@
 package com.newrelic.jfr;
 
-import com.newrelic.jfr.mappers.CPULoadMapper;
-import com.newrelic.jfr.mappers.GCHeapSummaryMapper;
-import com.newrelic.jfr.mappers.GarbageCollectionMapper;
-import com.newrelic.jfr.mappers.MetaspaceSummaryMapper;
+import com.newrelic.jfr.mappers.*;
 import com.newrelic.telemetry.metrics.MetricBuffer;
 
 import java.util.Map;
@@ -15,10 +12,14 @@ public class MapperRegistry {
 
     public MapperRegistry(Supplier<MetricBuffer> metricBuffer) {
         mappers = Map.of(
-        CPULoadMapper.EVENT_NAME, new JfrStreamEventConsumer(new CPULoadMapper(), metricBuffer),
-        GCHeapSummaryMapper.EVENT_NAME, new JfrStreamEventConsumer(new GCHeapSummaryMapper(), metricBuffer),
-        GarbageCollectionMapper.EVENT_NAME, new JfrStreamEventConsumer(new GarbageCollectionMapper(), metricBuffer),
-        MetaspaceSummaryMapper.EVENT_NAME, new JfrStreamEventConsumer(new MetaspaceSummaryMapper(), metricBuffer));
+                CPULoadMapper.EVENT_NAME, new JfrStreamEventConsumer(new CPULoadMapper(), metricBuffer),
+                GCHeapSummaryMapper.EVENT_NAME, new JfrStreamEventConsumer(new GCHeapSummaryMapper(), metricBuffer),
+                GarbageCollectionMapper.EVENT_NAME, new JfrStreamEventConsumer(new GarbageCollectionMapper(), metricBuffer),
+                MetaspaceSummaryMapper.EVENT_NAME, new JfrStreamEventConsumer(new MetaspaceSummaryMapper(), metricBuffer),
+                ThreadAllocationStatisticsMapper.EVENT_NAME, new JfrStreamEventConsumer(new ThreadAllocationStatisticsMapper(), metricBuffer),
+                ObjectAllocationInNewTLABMapper.EVENT_NAME, new JfrStreamEventConsumer(new ObjectAllocationInNewTLABMapper(), metricBuffer),
+                ObjectAllocationOutsideTLABMapper.EVENT_NAME, new JfrStreamEventConsumer(new ObjectAllocationOutsideTLABMapper(), metricBuffer)
+        );
     }
 
     public Map<String, JfrStreamEventConsumer> getMappers() {
