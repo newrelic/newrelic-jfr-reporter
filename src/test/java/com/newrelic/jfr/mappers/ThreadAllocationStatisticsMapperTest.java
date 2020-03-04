@@ -24,11 +24,9 @@ class ThreadAllocationStatisticsMapperTest {
         var threadName = "main";
         var threadJavaId = 1L;
         var threadOsName = "main";
-        var threadOsId = 7683L;
         when(recordedThread.getJavaName()).thenReturn(threadName);
         when(recordedThread.getJavaThreadId()).thenReturn(threadJavaId);
         when(recordedThread.getOSName()).thenReturn(threadOsName);
-        when(recordedThread.getOSThreadId()).thenReturn(threadOsId);
 
         // RecordedEvent
         var recordedEvent = mock(RecordedEvent.class);
@@ -42,8 +40,7 @@ class ThreadAllocationStatisticsMapperTest {
         var attr = new Attributes()
                 .put("thread.name", threadName)
                 .put("thread.javaId", threadJavaId)
-                .put("thread.osName", threadOsName)
-                .put("thread.osId", threadOsId);
+                .put("thread.osName", threadOsName);
         var gauge = new Gauge("jfr:ThreadAllocationStatistics.allocated", allocated, now, attr);
         var expected = List.of(gauge);
 

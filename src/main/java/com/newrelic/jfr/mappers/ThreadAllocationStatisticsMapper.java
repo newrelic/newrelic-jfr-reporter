@@ -19,8 +19,7 @@ public class ThreadAllocationStatisticsMapper implements EventMapper {
         var attr = new Attributes()
                 .put("thread.name", t.getJavaName())
                 .put("thread.javaId", t.getJavaThreadId())
-                .put("thread.osName", t.getOSName())
-                .put("thread.osId", t.getOSThreadId());
+                .put("thread.osName", t.getOSName());
 
         return List.of(
                 new Gauge("jfr:ThreadAllocationStatistics.allocated", allocated, time, attr)
