@@ -18,7 +18,8 @@ public class MapperRegistry {
                 MetaspaceSummaryMapper.EVENT_NAME, new JfrStreamEventConsumer(new MetaspaceSummaryMapper(), metricBuffer),
                 ThreadAllocationStatisticsMapper.EVENT_NAME, new JfrStreamEventConsumer(new ThreadAllocationStatisticsMapper(), metricBuffer),
                 ObjectAllocationInNewTLABMapper.EVENT_NAME, new JfrStreamEventConsumer(new ObjectAllocationInNewTLABMapper(), metricBuffer),
-                ObjectAllocationOutsideTLABMapper.EVENT_NAME, new JfrStreamEventConsumer(new ObjectAllocationOutsideTLABMapper(), metricBuffer)
+                ObjectAllocationOutsideTLABMapper.EVENT_NAME, new JfrStreamEventConsumer(new ObjectAllocationOutsideTLABMapper(), metricBuffer),
+                AllocationRequiringGCMapper.EVENT_NAME, new JfrStreamEventConsumer(new AllocationRequiringGCMapper(), metricBuffer)
         );
     }
 

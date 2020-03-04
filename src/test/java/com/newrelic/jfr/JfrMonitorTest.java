@@ -12,11 +12,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class JfrMonitorTest {
 
@@ -33,6 +29,7 @@ class JfrMonitorTest {
         when(recordingStream.enable(ThreadAllocationStatisticsMapper.EVENT_NAME)).thenReturn(eventSettings);
         when(recordingStream.enable(ObjectAllocationInNewTLABMapper.EVENT_NAME)).thenReturn(eventSettings);
         when(recordingStream.enable(ObjectAllocationOutsideTLABMapper.EVENT_NAME)).thenReturn(eventSettings);
+        when(recordingStream.enable(AllocationRequiringGCMapper.EVENT_NAME)).thenReturn(eventSettings);
         doAnswer(invocationOnMock -> {
             latch.countDown();
             return null;
@@ -44,7 +41,7 @@ class JfrMonitorTest {
         testClass.start();
 
         assertTrue(latch.await(10, TimeUnit.SECONDS));
-        verify(eventSettings, times(7)).withPeriod(Duration.ofSeconds(1));
+        verify(eventSettings, times(8)).withPeriod(Duration.ofSeconds(1));
     }
 
 }
