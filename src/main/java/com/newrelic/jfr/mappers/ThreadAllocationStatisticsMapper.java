@@ -17,7 +17,6 @@ public class ThreadAllocationStatisticsMapper implements EventMapper {
         var allocated = ev.getDouble("allocated");
         RecordedThread t = ev.getValue("thread");
         var attr = new Attributes()
-                .put("thread.id", t.getId())
                 .put("thread.name", t.getJavaName())
                 .put("thread.javaId", t.getJavaThreadId())
                 .put("thread.osName", t.getOSName())

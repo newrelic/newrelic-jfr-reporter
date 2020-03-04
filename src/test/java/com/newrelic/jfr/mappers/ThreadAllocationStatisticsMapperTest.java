@@ -21,12 +21,10 @@ class ThreadAllocationStatisticsMapperTest {
 
         // RecordedThread
         var recordedThread = mock(RecordedThread.class);
-        var threadId = 1L;
         var threadName = "main";
         var threadJavaId = 1L;
         var threadOsName = "main";
         var threadOsId = 7683L;
-        when(recordedThread.getId()).thenReturn(threadId);
         when(recordedThread.getJavaName()).thenReturn(threadName);
         when(recordedThread.getJavaThreadId()).thenReturn(threadJavaId);
         when(recordedThread.getOSName()).thenReturn(threadOsName);
@@ -42,7 +40,6 @@ class ThreadAllocationStatisticsMapperTest {
 
         // Expected dimensional metric
         var attr = new Attributes()
-                .put("thread.id", threadId)
                 .put("thread.name", threadName)
                 .put("thread.javaId", threadJavaId)
                 .put("thread.osName", threadOsName)
