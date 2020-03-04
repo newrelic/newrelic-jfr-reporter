@@ -2,9 +2,9 @@ package com.newrelic.jfr;
 
 import com.newrelic.jfr.mappers.EventMapper;
 import com.newrelic.telemetry.metrics.MetricBuffer;
+import jdk.jfr.EventSettings;
 import jdk.jfr.consumer.RecordingStream;
 
-import java.time.Duration;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
@@ -39,8 +39,8 @@ public class JfrMonitor {
 
     private Consumer<EventMapper> registerMapper(RecordingStream recordingStream) {
         return mapper -> {
-            //TODO: Get duration from the mapper
-            recordingStream.enable(mapper.getEventName()).withPeriod(Duration.ofSeconds(1));
+            EventSettings eventSettings = recordingStream.enable(mapper.getEventName());
+            mapper.getPollingDuration().ifPresent(eventSettings::withPeriod);
             recordingStream.onEvent(mapper.getEventName(), new JfrStreamEventConsumer(mapper, metricBufferSupplier));
         };
     }

@@ -5,7 +5,11 @@ import com.newrelic.telemetry.metrics.Gauge;
 import com.newrelic.telemetry.metrics.Metric;
 import jdk.jfr.consumer.RecordedEvent;
 
+import java.time.Duration;
 import java.util.List;
+import java.util.Optional;
+
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class CPULoadMapper implements EventMapper {
 
@@ -25,5 +29,10 @@ public class CPULoadMapper implements EventMapper {
     @Override
     public String getEventName() {
         return EVENT_NAME;
+    }
+
+    @Override
+    public Optional<Duration> getPollingDuration() {
+        return Optional.of(Duration.of(1, SECONDS.toChronoUnit()));
     }
 }
