@@ -22,9 +22,7 @@ class AllocationRequiringGCMapperTest {
 
         // RecordedThread
         var recordedThread = mock(RecordedThread.class);
-        var threadId = 46L;
         var eventThread = "Thread-13";
-        when(recordedThread.getId()).thenReturn(threadId);
         when(recordedThread.getJavaName()).thenReturn(eventThread);
 
         // RecordedEvent
@@ -32,18 +30,14 @@ class AllocationRequiringGCMapperTest {
         var startTime = Instant.ofEpochMilli(now);
         var endTime = Instant.ofEpochMilli(end);
         var size = 32784L;
-        var gcId = 35;
         when(recordedEvent.getStartTime()).thenReturn(startTime);
         when(recordedEvent.getEndTime()).thenReturn(endTime);
         when(recordedEvent.getValue("eventThread")).thenReturn(recordedThread);
-        when(recordedEvent.getInt("gcId")).thenReturn(gcId);
         when(recordedEvent.getLong("size")).thenReturn(size);
 
         // Expected dimensional metric
         var attr = new Attributes()
-                .put("thread.id", threadId)
-                .put("thread.name", eventThread)
-                .put("gcId", gcId);
+                .put("thread.name", eventThread);
         var gauge = new Gauge("jfr:AllocationRequiringGC.allocationSize", recordedEvent.getLong("size"), now, attr);
         var expected = List.of(gauge);
 
