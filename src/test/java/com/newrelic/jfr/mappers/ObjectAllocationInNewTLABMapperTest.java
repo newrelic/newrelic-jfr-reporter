@@ -1,7 +1,7 @@
 package com.newrelic.jfr.mappers;
 
 import com.newrelic.telemetry.Attributes;
-import com.newrelic.telemetry.metrics.Count;
+import com.newrelic.telemetry.metrics.Gauge;
 import jdk.jfr.consumer.RecordedEvent;
 import jdk.jfr.consumer.RecordedThread;
 import org.junit.jupiter.api.Test;
@@ -17,28 +17,26 @@ class ObjectAllocationInNewTLABMapperTest {
 
     @Test
     void testMapper() {
-        var recordedThread = mock(RecordedThread.class);
         var eventThread = "pool-3-thread-1";
-
-        var recordedEvent = mock(RecordedEvent.class);
         var now = System.currentTimeMillis();
-        var end = now + 1;
         var startTime = Instant.ofEpochMilli(now);
-        var endTime = Instant.ofEpochMilli(end);
         long allocationSize = 24;
-
+        long tlabSize = 90210;
         var attr = new Attributes().put("thread", eventThread);
-        var count = new Count("jfr:ObjectAllocationInNewTLAB.allocation", 0.0 + allocationSize, now, end, attr);
-        var expected = List.of(count);
+        var allocation = new Gauge("jfr:ObjectAllocationInNewTLAB.allocation", 0.0 + allocationSize, now, attr);
+        var tlab = new Gauge("jfr:ObjectAllocationInNewTLAB.tlabSize", 0.0 + tlabSize, now, attr);
+        var expected = List.of(tlab, allocation);
 
-        var testClass = new ObjectAllocationInNewTLABMapper();
+        var recordedThread = mock(RecordedThread.class);
+        var recordedEvent = mock(RecordedEvent.class);
 
         when(recordedThread.getJavaName()).thenReturn(eventThread);
-
         when(recordedEvent.getStartTime()).thenReturn(startTime);
-        when(recordedEvent.getEndTime()).thenReturn(endTime);
         when(recordedEvent.getThread("eventThread")).thenReturn(recordedThread);
+        when(recordedEvent.getLong("tlabSize")).thenReturn(tlabSize);
         when(recordedEvent.getLong("allocationSize")).thenReturn(allocationSize);
+
+        var testClass = new ObjectAllocationInNewTLABMapper();
 
         var result = testClass.apply(recordedEvent);
         assertEquals(expected, result);
