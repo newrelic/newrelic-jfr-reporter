@@ -34,7 +34,7 @@ public class AgentLoggerAdapter extends MarkerIgnoringBase {
 
   @Override
   public boolean isTraceEnabled() {
-    return false;
+    return true;
   }
 
   @Override
@@ -64,7 +64,7 @@ public class AgentLoggerAdapter extends MarkerIgnoringBase {
 
   @Override
   public boolean isDebugEnabled() {
-    return false;
+    return true;
   }
 
   @Override
@@ -94,7 +94,7 @@ public class AgentLoggerAdapter extends MarkerIgnoringBase {
 
   @Override
   public boolean isInfoEnabled() {
-    return false;
+    return true;
   }
 
   @Override
@@ -124,7 +124,7 @@ public class AgentLoggerAdapter extends MarkerIgnoringBase {
 
   @Override
   public boolean isWarnEnabled() {
-    return false;
+    return true;
   }
 
   @Override
@@ -154,7 +154,7 @@ public class AgentLoggerAdapter extends MarkerIgnoringBase {
 
   @Override
   public boolean isErrorEnabled() {
-    return false;
+    return true;
   }
 
   @Override
