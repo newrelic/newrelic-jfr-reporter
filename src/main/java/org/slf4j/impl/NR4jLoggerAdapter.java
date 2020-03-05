@@ -3,7 +3,9 @@ package org.slf4j.impl;
 import com.newrelic.api.agent.Logger;
 import com.newrelic.api.agent.NewRelic;
 import java.util.logging.Level;
+import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MarkerIgnoringBase;
+import org.slf4j.helpers.MessageFormatter;
 
 public class NR4jLoggerAdapter extends MarkerIgnoringBase {
 
@@ -19,6 +21,17 @@ public class NR4jLoggerAdapter extends MarkerIgnoringBase {
     return name;
   }
 
+  private void formatAndLog(Level level, String format, Object... arguments) {
+    FormattingTuple tp = MessageFormatter.arrayFormat(format, arguments);
+    Throwable throwable = tp.getThrowable();
+    String message = tp.getMessage();
+    if(throwable != null) {
+      logger.log(level, throwable, message);
+    } else {
+      logger.log(level, message);
+    }
+  }
+
   @Override
   public boolean isTraceEnabled() {
     return false;
@@ -26,27 +39,27 @@ public class NR4jLoggerAdapter extends MarkerIgnoringBase {
 
   @Override
   public void trace(String s) {
-    logger.log(Level.FINEST, s);
+    formatAndLog(Level.FINEST, s);
   }
 
   @Override
   public void trace(String s, Object o) {
-    logger.log(Level.FINEST, s, o);
+    formatAndLog(Level.FINEST, s, o);
   }
 
   @Override
   public void trace(String s, Object o, Object o1) {
-    logger.log(Level.FINEST, s, o, o1);
+    formatAndLog(Level.FINEST, s, o, o1);
   }
 
   @Override
   public void trace(String s, Object... objects) {
-    logger.log(Level.FINEST, s, objects);
+    formatAndLog(Level.FINEST, s, objects);
   }
 
   @Override
   public void trace(String s, Throwable throwable) {
-    logger.log(Level.FINEST, s, throwable);
+    formatAndLog(Level.FINEST, s, throwable);
   }
 
   @Override
@@ -56,27 +69,27 @@ public class NR4jLoggerAdapter extends MarkerIgnoringBase {
 
   @Override
   public void debug(String s) {
-    logger.log(Level.FINEST, s);
+    formatAndLog(Level.FINEST, s);
   }
 
   @Override
   public void debug(String s, Object o) {
-    logger.log(Level.FINEST, s, o);
+    formatAndLog(Level.FINEST, s, o);
   }
 
   @Override
   public void debug(String s, Object o, Object o1) {
-    logger.log(Level.FINEST, s, o, o1);
+    formatAndLog(Level.FINEST, s, o, o1);
   }
 
   @Override
   public void debug(String s, Object... objects) {
-    logger.log(Level.FINEST, s, objects);
+    formatAndLog(Level.FINEST, s, objects);
   }
 
   @Override
   public void debug(String s, Throwable throwable) {
-    logger.log(Level.FINEST, s, throwable);
+    formatAndLog(Level.FINEST, s, throwable);
   }
 
   @Override
@@ -86,27 +99,27 @@ public class NR4jLoggerAdapter extends MarkerIgnoringBase {
 
   @Override
   public void info(String s) {
-    logger.log(Level.INFO, s);
+    formatAndLog(Level.INFO, s);
   }
 
   @Override
   public void info(String s, Object o) {
-    logger.log(Level.INFO, s, o);
+    formatAndLog(Level.INFO, s, o);
   }
 
   @Override
   public void info(String s, Object o, Object o1) {
-    logger.log(Level.INFO, s, o, o1);
+    formatAndLog(Level.INFO, s, o, o1);
   }
 
   @Override
   public void info(String s, Object... objects) {
-    logger.log(Level.INFO, s, objects);
+    formatAndLog(Level.INFO, s, objects);
   }
 
   @Override
   public void info(String s, Throwable throwable) {
-    logger.log(Level.INFO, s, throwable);
+    formatAndLog(Level.INFO, s, throwable);
   }
 
   @Override
@@ -116,27 +129,27 @@ public class NR4jLoggerAdapter extends MarkerIgnoringBase {
 
   @Override
   public void warn(String s) {
-    logger.log(Level.WARNING, s);
+    formatAndLog(Level.WARNING, s);
   }
 
   @Override
   public void warn(String s, Object o) {
-    logger.log(Level.WARNING, s, o);
+    formatAndLog(Level.WARNING, s, o);
   }
 
   @Override
   public void warn(String s, Object... objects) {
-    logger.log(Level.WARNING, s, objects);
+    formatAndLog(Level.WARNING, s, objects);
   }
 
   @Override
   public void warn(String s, Object o, Object o1) {
-    logger.log(Level.WARNING, s, o, o1);
+    formatAndLog(Level.WARNING, s, o, o1);
   }
 
   @Override
   public void warn(String s, Throwable throwable) {
-    logger.log(Level.WARNING, s, throwable);
+    formatAndLog(Level.WARNING, s, throwable);
   }
 
   @Override
@@ -146,26 +159,28 @@ public class NR4jLoggerAdapter extends MarkerIgnoringBase {
 
   @Override
   public void error(String s) {
-    logger.log(Level.SEVERE, s);
+    formatAndLog(Level.SEVERE, s);
   }
 
   @Override
   public void error(String s, Object o) {
-    logger.log(Level.SEVERE, s, o);
+    formatAndLog(Level.SEVERE, s, o);
   }
 
   @Override
   public void error(String s, Object o, Object o1) {
-    logger.log(Level.SEVERE, s, o, o1 );
+    formatAndLog(Level.SEVERE, s, o, o1 );
   }
 
   @Override
   public void error(String s, Object... objects) {
-    logger.log(Level.SEVERE, s, objects);
+    formatAndLog(Level.SEVERE, s, objects);
   }
 
   @Override
   public void error(String s, Throwable throwable) {
-    logger.log(Level.SEVERE, s, throwable);
+    formatAndLog(Level.SEVERE, s, throwable);
   }
+  
+  
 }
