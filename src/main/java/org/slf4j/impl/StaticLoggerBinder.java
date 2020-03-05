@@ -1,5 +1,6 @@
 package org.slf4j.impl;
 
+import com.newrelic.jfr.logger.AgentLoggerFactory;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.spi.LoggerFactoryBinder;
 

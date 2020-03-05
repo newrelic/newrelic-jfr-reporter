@@ -1,4 +1,4 @@
-package org.slf4j.impl;
+package com.newrelic.jfr.logger;
 
 import com.newrelic.api.agent.Logger;
 import com.newrelic.api.agent.NewRelic;

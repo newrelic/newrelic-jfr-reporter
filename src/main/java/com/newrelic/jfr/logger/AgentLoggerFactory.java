@@ -1,4 +1,4 @@
-package org.slf4j.impl;
+package com.newrelic.jfr.logger;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -9,7 +9,7 @@ public class AgentLoggerFactory implements ILoggerFactory {
 
   ConcurrentMap<String, Logger> loggerMap;
 
-  AgentLoggerFactory() {
+  public AgentLoggerFactory() {
     loggerMap = new ConcurrentHashMap<String, Logger>();
   }
 
