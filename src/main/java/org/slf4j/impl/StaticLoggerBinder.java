@@ -13,12 +13,12 @@ public class StaticLoggerBinder implements LoggerFactoryBinder {
 
   public static String REQUESTED_API_VERSION = "1.6.99";
 
-  private static final String loggerFactoryClassStr = NR4jLoggerFactory.class.getName();
+  private static final String loggerFactoryClassStr = AgentLoggerFactory.class.getName();
 
   private final ILoggerFactory loggerFactory;
 
   private StaticLoggerBinder() {
-    loggerFactory = new NR4jLoggerFactory();
+    loggerFactory = new AgentLoggerFactory();
   }
 
   @Override

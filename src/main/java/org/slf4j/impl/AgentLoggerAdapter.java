@@ -7,11 +7,11 @@ import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MarkerIgnoringBase;
 import org.slf4j.helpers.MessageFormatter;
 
-public class NR4jLoggerAdapter extends MarkerIgnoringBase {
+public class AgentLoggerAdapter extends MarkerIgnoringBase {
 
   private final Logger logger;
 
-  public NR4jLoggerAdapter(String name) {
+  public AgentLoggerAdapter(String name) {
     this.name = name;
     this.logger = NewRelic.getAgent().getLogger();
   }
@@ -25,7 +25,7 @@ public class NR4jLoggerAdapter extends MarkerIgnoringBase {
     FormattingTuple tp = MessageFormatter.arrayFormat(format, arguments);
     Throwable throwable = tp.getThrowable();
     String message = tp.getMessage();
-    if(throwable != null) {
+    if (throwable != null) {
       logger.log(level, throwable, message);
     } else {
       logger.log(level, message);
@@ -169,7 +169,7 @@ public class NR4jLoggerAdapter extends MarkerIgnoringBase {
 
   @Override
   public void error(String s, Object o, Object o1) {
-    formatAndLog(Level.SEVERE, s, o, o1 );
+    formatAndLog(Level.SEVERE, s, o, o1);
   }
 
   @Override
@@ -181,6 +181,6 @@ public class NR4jLoggerAdapter extends MarkerIgnoringBase {
   public void error(String s, Throwable throwable) {
     formatAndLog(Level.SEVERE, s, throwable);
   }
-  
-  
+
+
 }
