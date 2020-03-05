@@ -16,9 +16,7 @@ public class ObjectAllocationOutsideTLABMapper implements EventMapper {
         var start = ev.getStartTime().toEpochMilli();
         var end = ev.getEndTime().toEpochMilli();
         RecordedThread t = ev.getValue("eventThread");
-        var attr = new Attributes()
-                .put("thread.name", t.getJavaName())
-                .put("class", ev.getClass("objectClass").getName());
+        var attr = new Attributes().put("thread.name", t.getJavaName());
 
         return List.of(
                 new Count("jfr:ObjectAllocationOutsideTLAB.allocation", 0.0 + ev.getLong("allocationSize"),
