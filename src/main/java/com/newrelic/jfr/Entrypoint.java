@@ -36,11 +36,13 @@ public class Entrypoint {
             String metricIngestUri = agentConfig.getValue(METRIC_INGEST_URI);
             EventMapperRegistry registry = EventMapperRegistry.createDefault();
 
+            boolean jfrAuditMode = agentConfig.getValue("jfr.audit_mode", false);
             var config = Config.builder()
                     .insertApiKey(insertApiKey)
                     .commonAttributes(COMMON_ATTRIBUTES)
                     .metricsIngestUri(metricIngestUri)
                     .registry(registry)
+                    .auditMode(jfrAuditMode)
                     .logger(logger)
                     .build();
 

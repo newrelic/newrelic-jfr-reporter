@@ -14,6 +14,7 @@ public class Config {
     private final URI metricIngestUri;
     private final Logger logger;
     private final EventMapperRegistry registry;
+    private final boolean auditMode;
 
     public Config(Builder builder) {
         this.commonAttributes = builder.commonAttributes;
@@ -21,6 +22,7 @@ public class Config {
         this.metricIngestUri = builder.metricIngestUri;
         this.logger = builder.logger;
         this.registry = builder.registry;
+        this.auditMode = builder.auditMode;
     }
 
     public Attributes getCommonAttributes() {
@@ -43,6 +45,10 @@ public class Config {
         return registry;
     }
 
+    public boolean isAuditMode() {
+        return auditMode;
+    }
+
     public static Builder builder() {
         return new Builder();
     }
@@ -54,6 +60,7 @@ public class Config {
         private URI metricIngestUri = DEFAULT_METRIC_INGEST_URI;
         private Logger logger;
         private EventMapperRegistry registry;
+        private boolean auditMode;
 
         public Builder commonAttributes(Attributes commonAttributes) {
             this.commonAttributes = commonAttributes;
@@ -84,6 +91,11 @@ public class Config {
 
         public Builder registry(EventMapperRegistry registry) {
             this.registry = registry;
+            return this;
+        }
+
+        public Builder auditMode(boolean jfrAuditMode) {
+            this.auditMode = jfrAuditMode;
             return this;
         }
 

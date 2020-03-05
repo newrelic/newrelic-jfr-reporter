@@ -9,8 +9,8 @@ import com.newrelic.telemetry.SimpleMetricBatchSender;
 import com.newrelic.telemetry.TelemetryClient;
 import com.newrelic.telemetry.metrics.MetricBatch;
 import com.newrelic.telemetry.metrics.MetricBatchSender;
+import com.newrelic.telemetry.metrics.MetricBatchSenderBuilder;
 import com.newrelic.telemetry.metrics.MetricBuffer;
-
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.concurrent.Executors;
@@ -27,6 +27,7 @@ public class Reporter {
     private final String insertApiKey;
     private final URI metricIngestUri;
     private final EventMapperRegistry registry;
+    private final boolean auditMode;
 
     Reporter(Config config) {
         this.commonAttributes = config.getCommonAttributes();
@@ -34,6 +35,7 @@ public class Reporter {
         this.insertApiKey = config.getInsertApiKey();
         this.metricIngestUri = config.getMetricIngestUri();
         this.registry = config.getRegistry();
+        this.auditMode = config.isAuditMode();
     }
 
     public void start() throws MalformedURLException {
@@ -55,10 +57,12 @@ public class Reporter {
                                                              Supplier<MetricBuffer> metricBufferSupplier)
             throws MalformedURLException {
 
-        MetricBatchSender metricBatchSender = SimpleMetricBatchSender.builder(insertApiKey)
-                .uriOverride(metricIngestUri)
-                .enableAuditLogging()
-                .build();
+        MetricBatchSenderBuilder builder = SimpleMetricBatchSender.builder(insertApiKey)
+            .uriOverride(metricIngestUri);
+        if(auditMode){
+            builder.enableAuditLogging();
+        }
+        MetricBatchSender metricBatchSender = builder.build();
 
         var telemetryClient = new TelemetryClient(metricBatchSender, null);
 
