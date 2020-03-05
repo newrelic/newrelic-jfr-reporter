@@ -15,9 +15,7 @@ public class ObjectAllocationInNewTLABMapper implements EventMapper {
         var start = ev.getStartTime().toEpochMilli();
         var end = ev.getEndTime().toEpochMilli();
         var attr = new Attributes()
-                .put("thread", ev.getThread("eventThread").getJavaName())
-                .put("class", ev.getClass("objectClass").getName())
-                .put("tlabSize", ev.getLong("tlabSize"));
+                .put("thread", ev.getThread("eventThread").getJavaName());
 
         return List.of(
                 new Count("jfr:ObjectAllocationInNewTLAB.allocation", 0.0 + ev.getLong("allocationSize"), start, end, attr)
