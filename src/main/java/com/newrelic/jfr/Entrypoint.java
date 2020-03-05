@@ -9,6 +9,8 @@ import java.lang.instrument.Instrumentation;
 import java.util.logging.Level;
 
 import static com.newrelic.jfr.Config.INSERT_API_KEY;
+import static com.newrelic.jfr.Config.JFR_AUDIT_MODE;
+import static com.newrelic.jfr.Config.JFR_ENABLED;
 import static com.newrelic.jfr.Config.METRIC_INGEST_URI;
 import static com.newrelic.jfr.attributes.AttributeNames.*;
 
@@ -37,7 +39,7 @@ public class Entrypoint {
       String metricIngestUri = agentConfig.getValue(METRIC_INGEST_URI);
       EventMapperRegistry registry = EventMapperRegistry.createDefault();
 
-      boolean jfrAuditMode = agentConfig.getValue("jfr.audit_mode", false);
+      boolean jfrAuditMode = agentConfig.getValue(JFR_AUDIT_MODE, false);
       var config = Config.builder()
           .insertApiKey(insertApiKey)
           .commonAttributes(COMMON_ATTRIBUTES)
@@ -55,6 +57,6 @@ public class Entrypoint {
   }
 
   static boolean isJfrDisabled(com.newrelic.api.agent.Config agentConfig) {
-    return !agentConfig.getValue("jfr.enabled", false);
+    return !agentConfig.getValue(JFR_ENABLED, false);
   }
 }

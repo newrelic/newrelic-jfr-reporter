@@ -10,6 +10,8 @@ public class Config {
   public static final URI DEFAULT_METRIC_INGEST_URI = URI.create("https://metric-api.newrelic.com");
   public static final String METRIC_INGEST_URI = "metric_ingest_uri";
   public static final String INSERT_API_KEY = "insert_api_key";
+  public static final String JFR_ENABLED = "jfr.enabled";
+  public static final String JFR_AUDIT_MODE = "jfr.audit_mode";
   private final Attributes commonAttributes;
   private final String insertApiKey;
   private final URI metricIngestUri;

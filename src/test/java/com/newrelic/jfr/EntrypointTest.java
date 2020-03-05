@@ -8,6 +8,7 @@ import com.newrelic.api.agent.Config;
 import org.junit.jupiter.api.Test;
 
 class EntrypointTest {
+
   @Test
   void JfrDisabledWhenConfigIsFalse() {
     var mockAgentConfig = mock(Config.class);
