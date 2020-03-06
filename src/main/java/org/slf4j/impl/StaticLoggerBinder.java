@@ -1,5 +1,7 @@
 package org.slf4j.impl;
 
+import com.newrelic.api.agent.Logger;
+import com.newrelic.api.agent.NewRelic;
 import com.newrelic.jfr.logger.AgentLoggerFactory;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.spi.LoggerFactoryBinder;
@@ -19,7 +21,8 @@ public class StaticLoggerBinder implements LoggerFactoryBinder {
   private final ILoggerFactory loggerFactory;
 
   private StaticLoggerBinder() {
-    loggerFactory = new AgentLoggerFactory();
+    Logger agentLogger = NewRelic.getAgent().getLogger();
+    loggerFactory = new AgentLoggerFactory(agentLogger);
   }
 
   @Override

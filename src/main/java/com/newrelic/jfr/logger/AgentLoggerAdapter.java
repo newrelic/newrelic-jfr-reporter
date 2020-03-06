@@ -1,7 +1,6 @@
 package com.newrelic.jfr.logger;
 
 import com.newrelic.api.agent.Logger;
-import com.newrelic.api.agent.NewRelic;
 import java.util.logging.Level;
 import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MarkerIgnoringBase;
@@ -11,9 +10,9 @@ public class AgentLoggerAdapter extends MarkerIgnoringBase {
 
   private final Logger logger;
 
-  public AgentLoggerAdapter(String name) {
+  public AgentLoggerAdapter(String name, Logger agentLogger) {
     this.name = name;
-    this.logger = NewRelic.getAgent().getLogger();
+    this.logger = agentLogger;
   }
 
   @Override
@@ -21,8 +20,8 @@ public class AgentLoggerAdapter extends MarkerIgnoringBase {
     return name;
   }
 
-  private void formatAndLog(Level level, String format, Object... arguments) {
-    FormattingTuple tp = MessageFormatter.arrayFormat(format, arguments);
+  public void formatAndLog(Level level, String format, Object... arguments) {
+    FormattingTuple tp = getFormattingTuple(format, arguments);
     Throwable throwable = tp.getThrowable();
     String message = tp.getMessage();
     if (throwable != null) {
@@ -30,6 +29,10 @@ public class AgentLoggerAdapter extends MarkerIgnoringBase {
     } else {
       logger.log(level, message);
     }
+  }
+
+  public FormattingTuple getFormattingTuple(String format, Object[] arguments) {
+    return MessageFormatter.arrayFormat(format, arguments);
   }
 
   @Override

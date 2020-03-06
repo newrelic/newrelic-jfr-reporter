@@ -8,8 +8,8 @@ public class AgentLoggerFactory implements ILoggerFactory {
   private static final String LOGGER_NAME = "com.newrelic.jfr.logger";
   private AgentLoggerAdapter agentLoggerAdapter;
 
-  public AgentLoggerFactory() {
-    this.agentLoggerAdapter = new AgentLoggerAdapter(LOGGER_NAME);
+  public AgentLoggerFactory(com.newrelic.api.agent.Logger agentLogger) {
+    this.agentLoggerAdapter = new AgentLoggerAdapter(LOGGER_NAME, agentLogger);
   }
 
   @Override
