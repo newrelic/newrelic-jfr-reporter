@@ -51,7 +51,7 @@ class AgentLoggerAdapterTest {
   }
 
   @Test
-  void testLogWithThrowable() {
+  void traceLogWithThrowable() {
     doReturn(tupleWithThrowable).when(spyTestClass).getFormattingTuple(message, zeroObjects);
     testClass.trace(message, throwable);
     verify(mockAgentLogger).log(Level.FINEST, throwable, message);
@@ -59,97 +59,134 @@ class AgentLoggerAdapterTest {
 
   @Test
   void isDebugEnabled() {
+    assertTrue(testClass.isDebugEnabled());
   }
 
   @Test
-  void debug() {
+  void debugLogWithString() {
+    doReturn(tupleNoThrowable).when(spyTestClass).getFormattingTuple(message, zeroObjects);
+    testClass.debug(message);
+    verify(mockAgentLogger).log(Level.FINEST, message);
   }
 
   @Test
-  void testDebug() {
+  void debugLogWithStringAndObject() {
+    doReturn(tupleNoThrowable).when(spyTestClass).getFormattingTuple(message, oneObject);
+    testClass.debug(message, oneObject);
+    verify(mockAgentLogger).log(Level.FINEST, message);
   }
 
   @Test
-  void testDebug1() {
+  void debugLogWithStringAndTwoObjects() {
+    doReturn(tupleNoThrowable).when(spyTestClass).getFormattingTuple(message, twoObjects);
+    testClass.debug(message, twoObjects);
+    verify(mockAgentLogger).log(Level.FINEST, message);
   }
 
   @Test
-  void testDebug2() {
-  }
-
-  @Test
-  void testDebug3() {
+  void debugLogWithThrowable() {
+    doReturn(tupleWithThrowable).when(spyTestClass).getFormattingTuple(message, zeroObjects);
+    testClass.debug(message, throwable);
+    verify(mockAgentLogger).log(Level.FINEST, throwable, message);
   }
 
   @Test
   void isInfoEnabled() {
+    assertTrue(testClass.isInfoEnabled());
   }
 
   @Test
-  void info() {
+  void infoLogWithString() {
+    doReturn(tupleNoThrowable).when(spyTestClass).getFormattingTuple(message, zeroObjects);
+    testClass.info(message);
+    verify(mockAgentLogger).log(Level.INFO, message);
   }
 
   @Test
-  void testInfo() {
+  void infoLogWithStringAndObject() {
+    doReturn(tupleNoThrowable).when(spyTestClass).getFormattingTuple(message, oneObject);
+    testClass.info(message, oneObject);
+    verify(mockAgentLogger).log(Level.INFO, message);
   }
 
   @Test
-  void testInfo1() {
+  void infoLogWithStringAndTwoObjects() {
+    doReturn(tupleNoThrowable).when(spyTestClass).getFormattingTuple(message, twoObjects);
+    testClass.info(message, twoObjects);
+    verify(mockAgentLogger).log(Level.INFO, message);
   }
 
   @Test
-  void testInfo2() {
-  }
-
-  @Test
-  void testInfo3() {
+  void infoLogWithThrowable() {
+    doReturn(tupleWithThrowable).when(spyTestClass).getFormattingTuple(message, zeroObjects);
+    testClass.info(message, throwable);
+    verify(mockAgentLogger).log(Level.INFO, throwable, message);
   }
 
   @Test
   void isWarnEnabled() {
+    assertTrue(testClass.isWarnEnabled());
   }
 
   @Test
-  void warn() {
+  void warnLogWithString() {
+    doReturn(tupleNoThrowable).when(spyTestClass).getFormattingTuple(message, zeroObjects);
+    testClass.warn(message);
+    verify(mockAgentLogger).log(Level.WARNING, message);
   }
 
   @Test
-  void testWarn() {
+  void warnLogWithStringAndObject() {
+    doReturn(tupleNoThrowable).when(spyTestClass).getFormattingTuple(message, oneObject);
+    testClass.warn(message, oneObject);
+    verify(mockAgentLogger).log(Level.WARNING, message);
   }
 
   @Test
-  void testWarn1() {
+  void warnLogWithStringAndTwoObjects() {
+    doReturn(tupleNoThrowable).when(spyTestClass).getFormattingTuple(message, twoObjects);
+    testClass.warn(message, twoObjects);
+    verify(mockAgentLogger).log(Level.WARNING, message);
   }
 
   @Test
-  void testWarn2() {
-  }
-
-  @Test
-  void testWarn3() {
+  void warnLogWithThrowable() {
+    doReturn(tupleWithThrowable).when(spyTestClass).getFormattingTuple(message, zeroObjects);
+    testClass.warn(message, throwable);
+    verify(mockAgentLogger).log(Level.WARNING, throwable, message);
   }
 
   @Test
   void isErrorEnabled() {
+    assertTrue(testClass.isErrorEnabled());
   }
 
   @Test
-  void error() {
+  void errorLogWithString() {
+    doReturn(tupleNoThrowable).when(spyTestClass).getFormattingTuple(message, zeroObjects);
+    testClass.error(message);
+    verify(mockAgentLogger).log(Level.SEVERE, message);
   }
 
   @Test
-  void testError() {
+  void errorLogWithStringAndObject() {
+    doReturn(tupleNoThrowable).when(spyTestClass).getFormattingTuple(message, oneObject);
+    testClass.error(message, oneObject);
+    verify(mockAgentLogger).log(Level.SEVERE, message);
   }
 
   @Test
-  void testError1() {
+  void errorLogWithStringAndTwoObjects() {
+    doReturn(tupleNoThrowable).when(spyTestClass).getFormattingTuple(message, twoObjects);
+    testClass.error(message, twoObjects);
+    verify(mockAgentLogger).log(Level.SEVERE, message);
   }
 
   @Test
-  void testError2() {
+  void errorLogWithThrowable() {
+    doReturn(tupleWithThrowable).when(spyTestClass).getFormattingTuple(message, zeroObjects);
+    testClass.error(message, throwable);
+    verify(mockAgentLogger).log(Level.SEVERE, throwable, message);
   }
 
-  @Test
-  void testError3() {
-  }
 }
