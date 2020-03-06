@@ -13,8 +13,9 @@ public class ObjectAllocationInNewTLABMapper implements EventMapper {
     @Override
     public List<? extends Metric> apply(RecordedEvent ev) {
         var start = ev.getStartTime().toEpochMilli();
-        var attr = new Attributes()
-                .put("thread", ev.getThread("eventThread").getJavaName());
+        var attr = new Attributes();
+        var threadName = Workarounds.getThreadName(ev);
+        threadName.ifPresent(t -> attr.put("thread", t));
 
         return List.of(
                 new Gauge("jfr:ObjectAllocationInNewTLAB.tlabSize", 0.0 + ev.getLong("tlabSize"), start, attr),
