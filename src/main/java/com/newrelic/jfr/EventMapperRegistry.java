@@ -17,8 +17,6 @@ public class EventMapperRegistry {
                 new GarbageCollectionMapper(),
                 new MetaspaceSummaryMapper(),
                 new AllocationRequiringGCMapper(),
-                new ObjectAllocationInNewTLABMapper(),
-                new ObjectAllocationOutsideTLABMapper(),
                 new ThreadAllocationStatisticsMapper()
         ));
     }

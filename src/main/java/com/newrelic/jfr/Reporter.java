@@ -27,7 +27,8 @@ public class Reporter {
   private final Logger logger;
   private final String insertApiKey;
   private final URI metricIngestUri;
-  private final EventMapperRegistry registry;
+  private final EventMapperRegistry mapperRegistry;
+  private final EventSummarizerRegistry summarizerRegistry;
   private final boolean auditMode;
 
   Reporter(Config config) {
@@ -35,7 +36,8 @@ public class Reporter {
     this.logger = config.getLogger();
     this.insertApiKey = config.getInsertApiKey();
     this.metricIngestUri = config.getMetricIngestUri();
-    this.registry = config.getRegistry();
+    this.mapperRegistry = config.getMapperRegistry();
+    this.summarizerRegistry = config.getSummarizerRegistry();
     this.auditMode = config.isAuditMode();
   }
 
@@ -44,7 +46,7 @@ public class Reporter {
     var metricBuffer = new MetricBuffer(commonAttributes);
     var metricBufferReference = new AtomicReference<>(metricBuffer);
     var sender = startTelemetrySdkReporter(batchSendService, metricBufferReference::get);
-    var jfrMonitor = new JfrMonitor(registry, metricBufferReference::get);
+    var jfrMonitor = new JfrMonitor(mapperRegistry, summarizerRegistry, metricBufferReference::get);
 
     logger.log(Level.INFO, "Starting New Relic JFR Monitor with ingest URI => " + metricIngestUri);
 

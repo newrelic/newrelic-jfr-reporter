@@ -17,7 +17,8 @@ class JfrMonitorTest {
     @Test
     void testStartWiresUpConsumerThatHandlesEvent() throws InterruptedException {
         var latch = new CountDownLatch(1);
-        var registry = EventMapperRegistry.createDefault();
+        var mapperRegistry = EventMapperRegistry.createDefault();
+        var summarizerRegistry = EventSummarizerRegistry.createDefault();
 
         var recordingStream = mock(RecordingStream.class);
         var metricBuffer = mock(MetricBuffer.class);
@@ -35,7 +36,7 @@ class JfrMonitorTest {
             return null;
         }).when(recordingStream).start();
 
-        var testClass = new JfrMonitor(registry, () -> metricBuffer, () -> recordingStream);
+        var testClass = new JfrMonitor(mapperRegistry, summarizerRegistry, () -> metricBuffer, () -> recordingStream);
 
         testClass.start();
 
