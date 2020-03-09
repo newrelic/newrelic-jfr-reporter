@@ -8,6 +8,9 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 
+/**
+ * This class aggregates the duration of G1 Garbage Collection JFR events
+ */
 public final class G1GarbageCollectionSummarizer implements EventSummarizer {
 
     private static final String EVENT_NAME = "jdk.G1GarbageCollection";
@@ -18,17 +21,9 @@ public final class G1GarbageCollectionSummarizer implements EventSummarizer {
     private Duration max = Duration.ofNanos(0L);
     private long startTimeMs;
     private long endTimeMs = 0L;
-    Attributes atts;
-
 
     public G1GarbageCollectionSummarizer() {
         startTimeMs = Instant.now().toEpochMilli();
-    }
-
-
-    public G1GarbageCollectionSummarizer(Attributes atts) {
-        startTimeMs = Instant.now().toEpochMilli();
-        this.atts = atts;
     }
 
     @Override
@@ -54,8 +49,15 @@ public final class G1GarbageCollectionSummarizer implements EventSummarizer {
     @Override
     public List<Summary> summarizeAndReset() {
         var attr = new Attributes();
-        var out = new Summary("jfr:G1GarbageCollection.duration", count, sum.toMillis(), min.toMillis(),
-                max.toMillis(), startTimeMs, endTimeMs, attr);
+        var out = new Summary(
+                "jfr:G1GarbageCollection.duration",
+                count,
+                sum.toMillis(),
+                min.toMillis(),
+                max.toMillis(),
+                startTimeMs,
+                endTimeMs,
+                attr);
         reset();
         return List.of(out);
     }

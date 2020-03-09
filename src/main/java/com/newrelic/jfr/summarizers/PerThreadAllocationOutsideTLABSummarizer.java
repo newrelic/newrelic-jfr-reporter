@@ -52,7 +52,15 @@ public final class PerThreadAllocationOutsideTLABSummarizer implements EventSumm
     public List<Summary> summarizeAndReset() {
         var attr = new Attributes();
         attr.put("threadName", threadName);
-        var out = new Summary("jfr:ObjectAllocationOutsideTLAB.allocation", count, sum, min, max, startTimeMs, endTimeMs, attr);
+        var out = new Summary(
+                "jfr:ObjectAllocationOutsideTLAB.allocation",
+                count,
+                sum,
+                min,
+                max,
+                startTimeMs,
+                endTimeMs,
+                attr);
         reset();
         return List.of(out);
     }
@@ -65,5 +73,4 @@ public final class PerThreadAllocationOutsideTLABSummarizer implements EventSumm
         min = Long.MAX_VALUE;
         max = 0L;
     }
-
 }

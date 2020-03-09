@@ -1,9 +1,9 @@
 package com.newrelic.jfr.summarizers;
 
-import com.newrelic.telemetry.Attributes;
 import com.newrelic.telemetry.metrics.Summary;
 import jdk.jfr.consumer.RecordedEvent;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,15 +16,9 @@ import static java.util.stream.Collectors.toList;
  */
 public final class AllocationOutsideTLABSummarizer implements EventSummarizer {
 
-    private final Map<String, EventSummarizer> perThread = new HashMap<>();
-
     public static final String EVENT_NAME = "jdk.ObjectOutsideTLAB";
 
-    Attributes atts;
-
-    public AllocationOutsideTLABSummarizer(Attributes atts) {
-        this.atts = atts;
-    }
+    private final Map<String, EventSummarizer> perThread = new HashMap<>();
 
     @Override
     public String getEventName() {
@@ -34,18 +28,22 @@ public final class AllocationOutsideTLABSummarizer implements EventSummarizer {
     @Override
     public void apply(RecordedEvent ev) {
         // Lookup thread
+        // TODO use WorkArounds.getThreadName(ev)
         var threadName = ev.getThread("eventThread").getJavaName();
         if (perThread.get(threadName) == null) {
             perThread.put(threadName, new PerThreadAllocationOutsideTLABSummarizer(threadName));
         }
-
         // apply to per-thread
         perThread.get(threadName).apply(ev);
-        // As it stands we never prune dead threads - we may need to consider the possibility at some point.
     }
 
     @Override
     public List<Summary> summarizeAndReset() {
-        return perThread.values().stream().map(s -> s.summarizeAndReset()).flatMap(l -> l.stream()).collect(toList());
+        return perThread
+                .values()
+                .stream()
+                .map(EventSummarizer::summarizeAndReset)
+                .flatMap(Collection::stream)
+                .collect(toList());
     }
 }

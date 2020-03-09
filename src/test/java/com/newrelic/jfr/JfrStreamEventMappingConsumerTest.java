@@ -15,14 +15,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
-class JfrStreamEventConsumerTest {
+class JfrStreamEventMappingConsumerTest {
 
     @Test
     void testApplyMetrics() {
         var eventMapper = mock(EventMapper.class);
         var metricBuffer = mock(MetricBuffer.class);
         var event = mock(RecordedEvent.class);
-        var testClass = new JfrStreamEventConsumer(eventMapper, () -> metricBuffer);
+        var testClass = new JfrStreamEventMappingConsumer(eventMapper, () -> metricBuffer);
         var countMetric = new Count("foo", 2.0, 30, 50, new Attributes());
         var gaugeMetric = new Gauge("bar", 4, 566, new Attributes());
         var metrics = List.of(gaugeMetric, countMetric);

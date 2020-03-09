@@ -1,14 +1,13 @@
 package com.newrelic.jfr;
 
-import com.newrelic.jfr.mappers.EventMapper;
+import com.newrelic.jfr.mappers.*;
 import com.newrelic.jfr.summarizers.AllocationOutsideTLABSummarizer;
 import com.newrelic.jfr.summarizers.AllocationTLABSummarizer;
 import com.newrelic.jfr.summarizers.EventSummarizer;
-import com.newrelic.telemetry.Attributes;
+import com.newrelic.jfr.summarizers.G1GarbageCollectionSummarizer;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Stream;
 
 public final class EventSummarizerRegistry {
@@ -20,13 +19,11 @@ public final class EventSummarizerRegistry {
     }
 
     public static EventSummarizerRegistry createDefault() {
-        Attributes baseAttributes = new Attributes();
-        var summarizers = List.of(
-                new AllocationTLABSummarizer(baseAttributes),
-                new AllocationOutsideTLABSummarizer(baseAttributes)
-//                "jdk.G1GarbageCollection", new G1GarbageCollectionSummarizer(baseAttributes)
-        );
-        return new EventSummarizerRegistry(summarizers);
+        return new EventSummarizerRegistry(List.of(
+                new AllocationTLABSummarizer(),
+                new AllocationOutsideTLABSummarizer(),
+                new G1GarbageCollectionSummarizer() // TODO Do we want this summarizer?
+        ));
     }
 
     public Stream<EventSummarizer> stream() {

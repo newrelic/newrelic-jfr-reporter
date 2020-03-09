@@ -1,5 +1,6 @@
-package com.newrelic.jfr.mappers;
+package com.newrelic.jfr.summarizers;
 
+import com.newrelic.jfr.summarizers.Workarounds;
 import jdk.jfr.consumer.RecordedEvent;
 import jdk.jfr.consumer.RecordedThread;
 import org.junit.jupiter.api.Test;
@@ -27,5 +28,4 @@ class WorkaroundsTest {
         when(ev.getValue("eventThread")).thenReturn(new Object[]{"aa", 21, "bbbbbbb"});
         assertTrue(Workarounds.getThreadName(ev).isEmpty());
     }
-
 }

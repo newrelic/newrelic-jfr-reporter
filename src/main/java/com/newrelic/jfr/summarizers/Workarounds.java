@@ -1,4 +1,4 @@
-package com.newrelic.jfr.mappers;
+package com.newrelic.jfr.summarizers;
 
 import jdk.jfr.consumer.RecordedEvent;
 import jdk.jfr.consumer.RecordedThread;
@@ -10,7 +10,7 @@ public class Workarounds {
     /**
      * There are cases where the event has the wrong type inside it
      * for the thread, so calling ev.getThread(name) internally
-     * throws a ClassCastException.  We work around it here by just
+     * throws a ClassCastException. We work around it here by just
      * getting the raw value and checking the type.
      */
     static Optional<String> getThreadName(RecordedEvent ev) {

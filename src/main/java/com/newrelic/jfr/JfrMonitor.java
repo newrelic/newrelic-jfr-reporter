@@ -16,7 +16,6 @@ public class JfrMonitor {
     private final Supplier<MetricBuffer> metricBufferSupplier;
     private final EventMapperRegistry eventMapperRegistry;
     private final EventSummarizerRegistry eventSummarizerRegistry;
-    private ExecutorService jfrMonitorService;
 
     public JfrMonitor(EventMapperRegistry mapperRegistry, EventSummarizerRegistry summarizerRegistry, Supplier<MetricBuffer> metricBufferSupplier ) {
         this(mapperRegistry, summarizerRegistry, metricBufferSupplier, RecordingStream::new);
@@ -30,7 +29,7 @@ public class JfrMonitor {
     }
 
     public void start() {
-        jfrMonitorService = Executors.newSingleThreadExecutor();
+        ExecutorService jfrMonitorService = Executors.newSingleThreadExecutor();
         jfrMonitorService.submit(() -> {
             try (var recordingStream = recordingStreamSupplier.get()) {
                 var enableMappedEvent = eventMapperEnablerFor(recordingStream);
@@ -46,13 +45,12 @@ public class JfrMonitor {
         return mapper -> {
             EventSettings eventSettings = recordingStream.enable(mapper.getEventName());
             mapper.getPollingDuration().ifPresent(eventSettings::withPeriod);
-            recordingStream.onEvent(mapper.getEventName(), new JfrStreamEventConsumer(mapper, metricBufferSupplier));
+            recordingStream.onEvent(mapper.getEventName(), new JfrStreamEventMappingConsumer(mapper, metricBufferSupplier));
         };
     }
     private Consumer<EventSummarizer> eventSummarizerEnablerFor(RecordingStream recordingStream) {
         return summarizer -> {
-            EventSettings eventSettings = recordingStream.enable(summarizer.getEventName());
-//            summarizer.getPollingDuration().ifPresent(eventSettings::withPeriod);
+            recordingStream.enable(summarizer.getEventName());
             recordingStream.onEvent(summarizer.getEventName(), new JfrStreamEventSummarizingConsumer(summarizer, metricBufferSupplier));
         };
     }

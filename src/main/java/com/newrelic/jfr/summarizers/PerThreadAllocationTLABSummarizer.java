@@ -12,8 +12,6 @@ import java.util.List;
  */
 public final class PerThreadAllocationTLABSummarizer implements EventSummarizer {
 
-
-
     private final String threadName;
     private int count = 0;
     private long sum = 0L;
@@ -21,7 +19,6 @@ public final class PerThreadAllocationTLABSummarizer implements EventSummarizer 
     private long max = 0L;
     private long startTimeMs;
     private long endTimeMs = 0L;
-
 
     public PerThreadAllocationTLABSummarizer(String threadName) {
         this.threadName = threadName;
@@ -54,7 +51,15 @@ public final class PerThreadAllocationTLABSummarizer implements EventSummarizer 
     public List<Summary> summarizeAndReset() {
         var attr = new Attributes();
         attr.put("threadName", threadName);
-        var out = new Summary("jfr:ObjectAllocationInNewTLAB.allocation", count, sum, min, max, startTimeMs, endTimeMs, attr);
+        var out = new Summary(
+                "jfr:ObjectAllocationInNewTLAB.allocation",
+                count,
+                sum,
+                min,
+                max,
+                startTimeMs,
+                endTimeMs,
+                attr);
         reset();
         return List.of(out);
     }
