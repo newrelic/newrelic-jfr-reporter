@@ -17,7 +17,11 @@ public class JfrMonitor {
     private ExecutorService jfrMonitorService;
 
     public JfrMonitor(EventMapperRegistry registry, Supplier<MetricBuffer> metricBufferSupplier) {
-        this(registry, metricBufferSupplier, RecordingStream::new);
+        this(registry, metricBufferSupplier, () -> {
+            RecordingStream stream = new RecordingStream();
+            stream.setReuse(false);
+            return stream;
+        });
     }
 
     JfrMonitor(EventMapperRegistry registry, Supplier<MetricBuffer> metricBufferSupplier, Supplier<RecordingStream> recordingStreamSupplier) {
