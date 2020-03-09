@@ -33,8 +33,14 @@ The JFR Reporter can be configured via the agent as follows and requires an [ins
 common:
   jfr:
     enabled: true
+    audit_mode: false
 
   metric_ingest_uri: https://staging-metric-api.newrelic.com
   insert_api_key: 'abc123'
 ```
 
+#### Audit Mode 
+
+Audit mode will enable audit logging in the Telemetry SDK. The New Relic agent logs will include the serialized json of the reported JFR metric batch.  
+
+Be sure to disable audit logging as soon as you are finished using it. This feature may overload the log file if left turned on for extended periods of time. 
