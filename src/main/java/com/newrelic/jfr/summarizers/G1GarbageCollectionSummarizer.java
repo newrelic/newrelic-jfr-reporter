@@ -22,8 +22,8 @@ public final class G1GarbageCollectionSummarizer implements EventSummarizer {
     private long startTimeMs;
     private long endTimeMs = 0L;
 
-    public G1GarbageCollectionSummarizer() {
-        startTimeMs = Instant.now().toEpochMilli();
+    public G1GarbageCollectionSummarizer(long startTimeMs) {
+        this.startTimeMs = startTimeMs;
     }
 
     @Override

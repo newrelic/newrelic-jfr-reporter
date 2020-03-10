@@ -5,6 +5,7 @@ import com.newrelic.jfr.summarizers.ObjectAllocationInNewTLABSummarizer;
 import com.newrelic.jfr.summarizers.EventSummarizer;
 import com.newrelic.jfr.summarizers.G1GarbageCollectionSummarizer;
 
+import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
@@ -21,7 +22,7 @@ public final class EventSummarizerRegistry {
         return new EventSummarizerRegistry(List.of(
                 new ObjectAllocationInNewTLABSummarizer(),
                 new ObjectAllocationOutsideTLABSummarizer(),
-                new G1GarbageCollectionSummarizer() // TODO Do we want this summarizer?
+                new G1GarbageCollectionSummarizer(Instant.now().toEpochMilli()) // TODO Do we want this summarizer?
         ));
     }
 

@@ -2,11 +2,13 @@ package com.newrelic.jfr.summarizers;
 
 import com.newrelic.telemetry.metrics.Summary;
 import jdk.jfr.consumer.RecordingFile;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
+import java.time.Instant;
 import java.util.Comparator;
 
 import static java.util.stream.Collectors.toList;
@@ -14,10 +16,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class FileBasedSummarizerTest {
+    static long summarizerStartTime;
+
+    @BeforeAll
+    static void init() {
+        // start time before earliest event in the recording file
+        summarizerStartTime = 11625755000L;
+    }
 
     @Test
     public void test_summarys() throws URISyntaxException, IOException {
-        var summarizer = new G1GarbageCollectionSummarizer();
+        var summarizer = new G1GarbageCollectionSummarizer(summarizerStartTime);
         // This is a 1-hr recording file of a not-particularly-high-allocating service
         var recordingFile = new RecordingFile(Paths.get(ClassLoader.getSystemResource("hotspot-pid-213-2019_12_10_17_34_33.jfr").toURI()));
         while (recordingFile.hasMoreEvents()) {
@@ -61,7 +70,6 @@ class FileBasedSummarizerTest {
             }
             // (o1, o2) -> o1.getSum() > o2.getSum() ? -1 : 1
         };
-
 
         var summary = everythingSummarizer.summarizeAndReset().get(0);
         assertEquals(67559, summary.getCount(), "67559 allocations expected in file");
