@@ -18,7 +18,11 @@ public class JfrMonitor {
     private final EventSummarizerRegistry eventSummarizerRegistry;
 
     public JfrMonitor(EventMapperRegistry mapperRegistry, EventSummarizerRegistry summarizerRegistry, Supplier<MetricBuffer> metricBufferSupplier ) {
-        this(mapperRegistry, summarizerRegistry, metricBufferSupplier, RecordingStream::new);
+        this(mapperRegistry, summarizerRegistry, metricBufferSupplier, () -> {
+            RecordingStream stream = new RecordingStream();
+            stream.setReuse(false);
+            return stream;
+        });
     }
 
     JfrMonitor(EventMapperRegistry mapperRegistry, EventSummarizerRegistry summarizerRegistry, Supplier<MetricBuffer> metricBufferSupplier, Supplier<RecordingStream> recordingStreamSupplier) {
