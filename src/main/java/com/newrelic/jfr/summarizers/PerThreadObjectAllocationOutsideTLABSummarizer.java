@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * This class aggregates all TLAB allocation JFR events for a single thread
  */
-public final class PerThreadAllocationTLABSummarizer implements EventSummarizer {
+public final class PerThreadObjectAllocationOutsideTLABSummarizer implements EventSummarizer {
 
     private final String threadName;
     private int count = 0;
@@ -20,21 +20,22 @@ public final class PerThreadAllocationTLABSummarizer implements EventSummarizer 
     private long startTimeMs;
     private long endTimeMs = 0L;
 
-    public PerThreadAllocationTLABSummarizer(String threadName) {
+
+    public PerThreadObjectAllocationOutsideTLABSummarizer(String threadName) {
         this.threadName = threadName;
         this.startTimeMs = Instant.now().toEpochMilli();
     }
 
     @Override
     public String getEventName() {
-        return AllocationTLABSummarizer.EVENT_NAME;
+        return ObjectAllocationOutsideTLABSummarizer.EVENT_NAME;
     }
 
     @Override
     public void apply(RecordedEvent ev) {
         endTimeMs = ev.getStartTime().toEpochMilli();
         count++;
-        var alloc = ev.getLong("tlabSize");
+        var alloc = ev.getLong("allocationSize");
         sum = sum + alloc;
 
         if (alloc > max) {
@@ -52,7 +53,7 @@ public final class PerThreadAllocationTLABSummarizer implements EventSummarizer 
         var attr = new Attributes();
         attr.put("threadName", threadName);
         var out = new Summary(
-                "jfr:ObjectAllocationInNewTLAB.allocation",
+                "jfr:ObjectAllocationOutsideTLAB.allocation",
                 count,
                 sum,
                 min,

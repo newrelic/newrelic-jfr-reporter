@@ -1,8 +1,7 @@
 package com.newrelic.jfr;
 
-import com.newrelic.jfr.mappers.*;
-import com.newrelic.jfr.summarizers.AllocationOutsideTLABSummarizer;
-import com.newrelic.jfr.summarizers.AllocationTLABSummarizer;
+import com.newrelic.jfr.summarizers.ObjectAllocationOutsideTLABSummarizer;
+import com.newrelic.jfr.summarizers.ObjectAllocationInNewTLABSummarizer;
 import com.newrelic.jfr.summarizers.EventSummarizer;
 import com.newrelic.jfr.summarizers.G1GarbageCollectionSummarizer;
 
@@ -20,8 +19,8 @@ public final class EventSummarizerRegistry {
 
     public static EventSummarizerRegistry createDefault() {
         return new EventSummarizerRegistry(List.of(
-                new AllocationTLABSummarizer(),
-                new AllocationOutsideTLABSummarizer(),
+                new ObjectAllocationInNewTLABSummarizer(),
+                new ObjectAllocationOutsideTLABSummarizer(),
                 new G1GarbageCollectionSummarizer() // TODO Do we want this summarizer?
         ));
     }

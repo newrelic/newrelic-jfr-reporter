@@ -14,7 +14,7 @@ import static java.util.stream.Collectors.toList;
  * This class handles all TLAB allocation JFR events, and delegates them to the actual
  * aggregators, which operate on a per-thread basis
  */
-public final class AllocationTLABSummarizer implements EventSummarizer {
+public final class ObjectAllocationInNewTLABSummarizer implements EventSummarizer {
 
     public static final String EVENT_NAME = "jdk.ObjectAllocationInNewTLAB";
 
@@ -31,7 +31,7 @@ public final class AllocationTLABSummarizer implements EventSummarizer {
         // TODO use WorkArounds.getThreadName(ev)
         var threadName = ev.getThread("eventThread").getJavaName();
         if (perThread.get(threadName) == null) {
-            perThread.put(threadName, new PerThreadAllocationTLABSummarizer(threadName));
+            perThread.put(threadName, new PerThreadObjectAllocationInNewTLABSummarizer(threadName));
         }
         // apply to per-thread
         perThread.get(threadName).apply(ev);
