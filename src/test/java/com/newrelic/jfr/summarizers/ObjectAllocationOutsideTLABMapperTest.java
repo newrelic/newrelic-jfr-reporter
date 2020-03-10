@@ -24,6 +24,8 @@ class ObjectAllocationOutsideTLABMapperTest {
 
     RecordedEvent recordedEvent;
 
+    // TODO Delete this test
+
     @BeforeEach
     void setup() {
         recordedEvent = mock(RecordedEvent.class);

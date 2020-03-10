@@ -23,14 +23,7 @@ class FileBasedSummarizerTest {
         while (recordingFile.hasMoreEvents()) {
             var event = recordingFile.readEvent();
             assertNotNull(event);
-//            if (event.getEventType().getName().startsWith("jdk.G1GarbageCollection")) {
-//                summarizer.apply(event);
-//            }
-
-            if (event.getEventType().getName().startsWith("jdk.ObjectAllocationOutsideTLAB")) {
-                summarizer.apply(event);
-            }
-            if (event.getEventType().getName().startsWith("jdk.ObjectAllocationOutsideTLAB")) {
+            if (event.getEventType().getName().startsWith("jdk.G1GarbageCollection")) {
                 summarizer.apply(event);
             }
         }
