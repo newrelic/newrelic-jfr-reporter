@@ -28,13 +28,14 @@ public final class ObjectAllocationInNewTLABSummarizer implements EventSummarize
     @Override
     public void apply(RecordedEvent ev) {
         // Lookup thread
-        // TODO use WorkArounds.getThreadName(ev)
-        var threadName = ev.getThread("eventThread").getJavaName();
-        if (perThread.get(threadName) == null) {
-            perThread.put(threadName, new PerThreadObjectAllocationInNewTLABSummarizer(threadName));
-        }
-        // apply to per-thread
-        perThread.get(threadName).apply(ev);
+        var threadName = Workarounds.getThreadName(ev);
+        threadName.ifPresent(thread -> {
+            if (perThread.get(thread) == null) {
+                perThread.put(thread, new PerThreadObjectAllocationInNewTLABSummarizer(thread));
+            }
+            // apply to per-thread
+            perThread.get(thread).apply(ev);
+        });
     }
 
     @Override
