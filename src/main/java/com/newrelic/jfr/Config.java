@@ -16,7 +16,8 @@ public class Config {
   private final String insertApiKey;
   private final URI metricIngestUri;
   private final Logger logger;
-  private final EventMapperRegistry registry;
+  private final EventMapperRegistry mapperRegistry;
+  private final EventSummarizerRegistry summarizerRegistry;
   private final boolean auditMode;
 
   public Config(Builder builder) {
@@ -24,7 +25,8 @@ public class Config {
     this.insertApiKey = builder.insertApiKey;
     this.metricIngestUri = builder.metricIngestUri;
     this.logger = builder.logger;
-    this.registry = builder.registry;
+    this.mapperRegistry = builder.mapperRegistry;
+    this.summarizerRegistry = builder.summarizerRegistry;
     this.auditMode = builder.auditMode;
   }
 
@@ -44,8 +46,12 @@ public class Config {
     return logger;
   }
 
-  public EventMapperRegistry getRegistry() {
-    return registry;
+  public EventMapperRegistry getMapperRegistry() {
+    return mapperRegistry;
+  }
+
+  public EventSummarizerRegistry getSummarizerRegistry() {
+    return summarizerRegistry;
   }
 
   public boolean isAuditMode() {
@@ -62,7 +68,8 @@ public class Config {
     private String insertApiKey;
     private URI metricIngestUri = DEFAULT_METRIC_INGEST_URI;
     private Logger logger;
-    private EventMapperRegistry registry;
+    private EventMapperRegistry mapperRegistry;
+    private EventSummarizerRegistry summarizerRegistry;
     private boolean auditMode;
 
     public Builder commonAttributes(Attributes commonAttributes) {
@@ -92,8 +99,13 @@ public class Config {
       return this;
     }
 
-    public Builder registry(EventMapperRegistry registry) {
-      this.registry = registry;
+    public Builder mapperRegistry(EventMapperRegistry mapperRegistry) {
+      this.mapperRegistry = mapperRegistry;
+      return this;
+    }
+
+    public Builder summarizerRegistry(EventSummarizerRegistry summarizerRegistry) {
+      this.summarizerRegistry = summarizerRegistry;
       return this;
     }
 
@@ -105,5 +117,6 @@ public class Config {
     public Config build() {
       return new Config(this);
     }
+
   }
 }
