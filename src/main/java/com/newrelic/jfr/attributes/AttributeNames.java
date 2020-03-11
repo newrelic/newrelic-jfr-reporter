@@ -3,7 +3,7 @@ package com.newrelic.jfr.attributes;
 public class AttributeNames {
     public static final String APP_NAME = "app.name";
     public static final String COLLECTOR_NAME = "collector.name";
-    public static final String ENTITY_GUID = "app.name";
+    public static final String ENTITY_GUID = "entity.guid";
     public static final String HOSTNAME = "host.hostname";
     public static final String INSTRUMENTATION_NAME = "instrumentation.name";
     public static final String INSTRUMENTATION_PROVIDER = "instrumentation.provider";

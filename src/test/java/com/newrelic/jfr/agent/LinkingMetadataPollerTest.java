@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import static com.newrelic.jfr.attributes.AttributeNames.ENTITY_GUID;
 import static com.newrelic.jfr.attributes.AttributeNames.HOSTNAME;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -45,10 +46,11 @@ class LinkingMetadataPollerTest {
 
     @Test
     void testSuccess() {
-        var expectedAttributes = Map.of(HOSTNAME, "MockHostname");
+        var expectedAttributes = Map.of(HOSTNAME, "MockHostname", ENTITY_GUID, "entity");
 
         Consumer<Map<String,String>> mockAttributesConsumer = mock(Consumer.class);
         mockLinkingMetadata.put("hostname", "MockHostname");
+        mockLinkingMetadata.put("entity.guid", "entity");
         when(agent.getLinkingMetadata()).thenReturn(mockLinkingMetadata);
 
         var testClass = new LinkingMetadataPoller(agent, mockAttributesConsumer);
