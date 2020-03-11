@@ -4,6 +4,7 @@ import com.newrelic.telemetry.Attributes;
 import com.newrelic.telemetry.metrics.Metric;
 import com.newrelic.telemetry.metrics.Summary;
 import jdk.jfr.consumer.RecordedEvent;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -17,71 +18,85 @@ import static org.mockito.Mockito.when;
 
 class G1GarbageCollectionSummarizerTest {
 
-    @Test
-    void testSingleEventSummary() {
-        var numOfEvents = 1;
+    private static Summary defaultSummary;
 
-        var summaryStartTime = Instant.now().toEpochMilli();
-        var event1StartTime = summaryStartTime + numOfEvents;
-        var event1DurationNanos = 13700000;
-        var event1DurationMillis = Duration.ofNanos(event1DurationNanos).toMillis();
-
-        var expectedSummaryEvent = new Summary(
-                "jfr:G1GarbageCollection.duration",
-                numOfEvents, // count
-                event1DurationMillis, // sum
-                event1DurationMillis, // min
-                event1DurationMillis, // max
-                summaryStartTime, // startTimeMs
-                event1StartTime, // endTimeMs: the summary metric endTimeMs is the eventStartTime of each RecordedEvent
+    @BeforeAll
+    static void init() {
+        defaultSummary = new Summary(
+                "jfr:ObjectAllocationInNewTLAB.allocation",
+                0,
+                Duration.ofNanos(0L).toMillis(),
+                Duration.ofNanos(Long.MAX_VALUE).toMillis(),
+                Duration.ofNanos(0L).toMillis(),
+                Instant.now().toEpochMilli(),
+                0L,
                 new Attributes());
+    }
+
+    @Test
+    void testSingleEventSummaryAndReset() {
+        var summaryStartTime = Instant.now().toEpochMilli();
 
         var event = mock(RecordedEvent.class);
-        List<Metric> expected = List.of(expectedSummaryEvent);
+        var numOfEvents = 1;
+        var eventStartTime = summaryStartTime + 1;
+        var eventDurationNanos = 13700000;
+        var eventDurationMillis = Duration.ofNanos(eventDurationNanos).toMillis();
+
+        var expectedSummaryMetric = new Summary(
+                "jfr:G1GarbageCollection.duration",
+                numOfEvents, // count
+                eventDurationMillis, // sum
+                eventDurationMillis, // min
+                eventDurationMillis, // max
+                summaryStartTime, // startTimeMs
+                eventStartTime, // endTimeMs: the summary metric endTimeMs is the eventStartTime of each RecordedEvent
+                new Attributes());
+
+        List<Metric> expected = List.of(expectedSummaryMetric);
         var testClass = new G1GarbageCollectionSummarizer(summaryStartTime);
 
-        when(event.getStartTime()).thenReturn(Instant.ofEpochMilli(event1StartTime));
-        when(event.getDuration("duration")).thenReturn(Duration.ofNanos(event1DurationNanos));
+        when(event.getStartTime()).thenReturn(Instant.ofEpochMilli(eventStartTime));
+        when(event.getDuration("duration")).thenReturn(Duration.ofNanos(eventDurationNanos));
 
         testClass.apply(event);
         final List<Summary> result = testClass.summarizeAndReset().collect(toList());
+        final Summary resetResultSummary = testClass.summarizeAndReset().collect(toList()).get(0);
 
         assertEquals(expected, result);
+
+        // Summary should be reset to default values
+        assertEquals(defaultSummary.getCount(), resetResultSummary.getCount());
+        assertEquals(defaultSummary.getSum(), resetResultSummary.getSum());
+        assertEquals(defaultSummary.getMin(), resetResultSummary.getMin());
+        assertEquals(defaultSummary.getMax(), resetResultSummary.getMax());
     }
 
     @Test
     void testMultipleEventSummaryAndReset() {
-        final var defaultCount = 0;
-        final var defaultSum = Duration.ofNanos(0L).toMillis();
-        final var defaultMin = Duration.ofNanos(Long.MAX_VALUE).toMillis();
-        final var defaultMax = Duration.ofNanos(0L).toMillis();
-
         var summaryStartTime = Instant.now().toEpochMilli();
 
-        var numOfEvents = 1;
         var event1 = mock(RecordedEvent.class);
-        // add numOfEvents to make the event start time later than the summary
-        var event1StartTime = summaryStartTime + numOfEvents;
+        var numOfEvents = 1;
+        var event1StartTime = summaryStartTime + 1;
         var event1DurationNanos = 13700000;
 
-        numOfEvents = ++numOfEvents;
         var event2 = mock(RecordedEvent.class);
-        // add numOfEvents to make the event start time later than the summary and previous event
-        var event2StartTime = summaryStartTime + numOfEvents;
+        numOfEvents = ++numOfEvents;
+        var event2StartTime = summaryStartTime + 2;
         var event2DurationNanos = 24800000; // max duration of final summary
         var event2DurationMillis = Duration.ofNanos(event2DurationNanos).toMillis();
 
-        numOfEvents = ++numOfEvents;
         var event3 = mock(RecordedEvent.class);
-        // add numOfEvents to make the event start time later than the summary and previous event
-        var event3StartTime = summaryStartTime + numOfEvents;
+        numOfEvents = ++numOfEvents;
+        var event3StartTime = summaryStartTime + 3;
         var event3DurationNanos = 1000000; // min duration of final summary
         var event3DurationMillis = Duration.ofNanos(event3DurationNanos).toMillis();
 
         var summedDurationNanos = event1DurationNanos + event2DurationNanos + event3DurationNanos;
         var summedDurationMillis = Duration.ofNanos(summedDurationNanos).toMillis();
 
-        var expectedSummary = new Summary(
+        var expectedSummaryMetric = new Summary(
                 "jfr:G1GarbageCollection.duration",
                 numOfEvents, // count
                 summedDurationMillis, // sum
@@ -91,7 +106,7 @@ class G1GarbageCollectionSummarizerTest {
                 event3StartTime, // endTimeMs: the summary metric endTimeMs is the eventStartTime of each RecordedEvent
                 new Attributes());
 
-        List<Metric> expected = List.of(expectedSummary);
+        List<Metric> expected = List.of(expectedSummaryMetric);
 
         var testClass = new G1GarbageCollectionSummarizer(summaryStartTime);
 
@@ -110,19 +125,14 @@ class G1GarbageCollectionSummarizerTest {
         testClass.apply(event3);
 
         final List<Summary> result = testClass.summarizeAndReset().collect(toList());
-        final Summary resultSummary = result.get(0);
         final Summary resetResultSummary = testClass.summarizeAndReset().collect(toList()).get(0);
 
         assertEquals(expected, result);
-        assertEquals(numOfEvents, resultSummary.getCount());
-        assertEquals(summedDurationMillis, resultSummary.getSum());
-        assertEquals(event3DurationMillis, resultSummary.getMin());
-        assertEquals(event2DurationMillis, resultSummary.getMax());
 
         // Summary should be reset to default values
-        assertEquals(defaultCount, resetResultSummary.getCount());
-        assertEquals(defaultSum, resetResultSummary.getSum());
-        assertEquals(defaultMin, resetResultSummary.getMin());
-        assertEquals(defaultMax, resetResultSummary.getMax());
+        assertEquals(defaultSummary.getCount(), resetResultSummary.getCount());
+        assertEquals(defaultSummary.getSum(), resetResultSummary.getSum());
+        assertEquals(defaultSummary.getMin(), resetResultSummary.getMin());
+        assertEquals(defaultSummary.getMax(), resetResultSummary.getMax());
     }
 }
