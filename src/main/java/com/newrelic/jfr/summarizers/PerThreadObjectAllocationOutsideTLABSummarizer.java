@@ -22,7 +22,6 @@ public final class PerThreadObjectAllocationOutsideTLABSummarizer implements Eve
 
     public PerThreadObjectAllocationOutsideTLABSummarizer(String threadName, long startTimeMs) {
         this.threadName = threadName;
-        // FIXME get time from initial event
         this.startTimeMs = startTimeMs;
     }
 
