@@ -5,7 +5,6 @@ import com.newrelic.telemetry.metrics.Summary;
 import jdk.jfr.consumer.RecordedEvent;
 
 import java.time.Instant;
-import java.util.List;
 import java.util.stream.Stream;
 
 /**
@@ -21,10 +20,10 @@ public final class PerThreadObjectAllocationOutsideTLABSummarizer implements Eve
     private long startTimeMs;
     private long endTimeMs = 0L;
 
-
-    public PerThreadObjectAllocationOutsideTLABSummarizer(String threadName) {
+    public PerThreadObjectAllocationOutsideTLABSummarizer(String threadName, long startTimeMs) {
         this.threadName = threadName;
-        this.startTimeMs = Instant.now().toEpochMilli();
+        // FIXME get time from initial event
+        this.startTimeMs = startTimeMs;
     }
 
     @Override

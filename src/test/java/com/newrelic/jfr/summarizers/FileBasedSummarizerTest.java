@@ -44,7 +44,7 @@ class FileBasedSummarizerTest {
     @Test
     public void test_allocs() throws URISyntaxException, IOException {
         // Test all allocs
-        var everythingSummarizer = new PerThreadObjectAllocationInNewTLABSummarizer("everything");
+        var everythingSummarizer = new PerThreadObjectAllocationInNewTLABSummarizer("everything", summarizerStartTime);
         var allocsByThread = new ObjectAllocationInNewTLABSummarizer();
         var recordingFile = new RecordingFile(Paths.get(ClassLoader.getSystemResource("hotspot-pid-213-2019_12_10_17_34_33.jfr").toURI()));
         while (recordingFile.hasMoreEvents()) {

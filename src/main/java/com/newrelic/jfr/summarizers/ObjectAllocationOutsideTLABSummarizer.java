@@ -27,7 +27,8 @@ public final class ObjectAllocationOutsideTLABSummarizer implements EventSummari
         var threadName = Workarounds.getThreadName(ev);
         threadName.ifPresent(thread -> {
             if (perThread.get(thread) == null) {
-                perThread.put(thread, new PerThreadObjectAllocationOutsideTLABSummarizer(thread));
+                perThread.put(thread, new PerThreadObjectAllocationOutsideTLABSummarizer(thread,
+                        ev.getStartTime().toEpochMilli()));
             }
             perThread.get(thread).apply(ev);
         });

@@ -5,7 +5,6 @@ import com.newrelic.telemetry.metrics.Summary;
 import jdk.jfr.consumer.RecordedEvent;
 
 import java.time.Instant;
-import java.util.List;
 import java.util.stream.Stream;
 
 /**
@@ -21,9 +20,9 @@ public final class PerThreadObjectAllocationInNewTLABSummarizer implements Event
     private long startTimeMs;
     private long endTimeMs = 0L;
 
-    public PerThreadObjectAllocationInNewTLABSummarizer(String threadName) {
+    public PerThreadObjectAllocationInNewTLABSummarizer(String threadName, long startTimeMs) {
         this.threadName = threadName;
-        this.startTimeMs = Instant.now().toEpochMilli();
+        this.startTimeMs = startTimeMs;
     }
 
     @Override

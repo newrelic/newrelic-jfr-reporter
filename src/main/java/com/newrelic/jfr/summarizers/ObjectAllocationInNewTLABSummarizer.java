@@ -27,7 +27,8 @@ public final class ObjectAllocationInNewTLABSummarizer implements EventSummarize
         var threadName = Workarounds.getThreadName(ev);
         threadName.ifPresent(thread -> {
             if (perThread.get(thread) == null) {
-                perThread.put(thread, new PerThreadObjectAllocationInNewTLABSummarizer(thread));
+                perThread.put(thread, new PerThreadObjectAllocationInNewTLABSummarizer(thread,
+                        ev.getStartTime().toEpochMilli()));
             }
             perThread.get(thread).apply(ev);
         });
