@@ -29,7 +29,6 @@ public final class JfrStreamEventSummarizingConsumer implements Consumer<Recorde
     @Override
     public void accept(RecordedEvent event) {
         summarizer.apply(event);
-        // FIXME requires configurability
         var metricBuffer = metricBufferSupplier.get();
         if (LocalDateTime.now().isAfter(lastSent.plusSeconds(SUMMARY_PERIOD))) {
             for (var summary : summarizer.summarizeAndReset()) {
