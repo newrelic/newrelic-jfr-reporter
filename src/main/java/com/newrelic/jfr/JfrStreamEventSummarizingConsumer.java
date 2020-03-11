@@ -2,11 +2,13 @@ package com.newrelic.jfr;
 
 import com.newrelic.jfr.summarizers.EventSummarizer;
 import com.newrelic.telemetry.metrics.MetricBuffer;
+import com.newrelic.telemetry.metrics.Summary;
 import jdk.jfr.consumer.RecordedEvent;
 
 import java.time.LocalDateTime;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 /**
  * A very thin binding that applies an EventSummarizer to aggregate a JFR Event into
@@ -31,9 +33,7 @@ public final class JfrStreamEventSummarizingConsumer implements Consumer<Recorde
         summarizer.apply(event);
         var metricBuffer = metricBufferSupplier.get();
         if (LocalDateTime.now().isAfter(lastSent.plusSeconds(SUMMARY_PERIOD))) {
-            for (var summary : summarizer.summarizeAndReset()) {
-                metricBuffer.addMetric(summary);
-            }
+            summarizer.summarizeAndReset().forEach(metricBuffer::addMetric);
             lastSent = LocalDateTime.now();
         }
     }

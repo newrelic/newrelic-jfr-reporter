@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
-import java.time.Instant;
 import java.util.Comparator;
 
 import static java.util.stream.Collectors.toList;
@@ -36,7 +35,7 @@ class FileBasedSummarizerTest {
                 summarizer.apply(event);
             }
         }
-        var summary = summarizer.summarizeAndReset().get(0);
+        var summary = summarizer.summarizeAndReset().collect(toList()).get(0);
         // Numbers confirmed from JMC
         assertEquals(84, summary.getCount(), "84 GCs expected");
         assertEquals(481.0, summary.getSum(), 0.001, "481.0 total pause time expected");
@@ -60,20 +59,14 @@ class FileBasedSummarizerTest {
         var sizeComparer = new Comparator<Summary>() {
             @Override
             public int compare(Summary o1, Summary o2) {
-                if (o1.getSum() == o2.getSum()) {
-                    return 0;
-                }
-                if (o1.getSum() > o2.getSum()) {
-                    return -1;
-                }
-                return 1;
+                return Double.compare(o2.getSum(), o1.getSum());
             }
             // (o1, o2) -> o1.getSum() > o2.getSum() ? -1 : 1
         };
 
-        var summary = everythingSummarizer.summarizeAndReset().get(0);
+        var summary = everythingSummarizer.summarizeAndReset().collect(toList()).get(0);
         assertEquals(67559, summary.getCount(), "67559 allocations expected in file");
-        var individualSummaries = allocsByThread.summarizeAndReset();
+        var individualSummaries = allocsByThread.summarizeAndReset().collect(toList());
         assertEquals(181, individualSummaries.size(), "181 threads actually allocated");
         var highAllocs = individualSummaries.stream().filter(s -> s.getCount() > 60).collect(toList());
         assertEquals(34, highAllocs.size(), "34 threads actually allocated more than 60 times in file");

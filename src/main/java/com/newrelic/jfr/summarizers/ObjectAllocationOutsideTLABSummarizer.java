@@ -3,12 +3,9 @@ package com.newrelic.jfr.summarizers;
 import com.newrelic.telemetry.metrics.Summary;
 import jdk.jfr.consumer.RecordedEvent;
 
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import static java.util.stream.Collectors.toList;
+import java.util.stream.Stream;
 
 /**
  * This class handles all TLAB allocation JFR events, and delegates them to the actual
@@ -37,12 +34,10 @@ public final class ObjectAllocationOutsideTLABSummarizer implements EventSummari
     }
 
     @Override
-    public List<Summary> summarizeAndReset() {
+    public Stream<Summary> summarizeAndReset() {
         return perThread
                 .values()
                 .stream()
-                .map(EventSummarizer::summarizeAndReset)
-                .flatMap(Collection::stream)
-                .collect(toList());
+                .flatMap(EventSummarizer::summarizeAndReset);
     }
 }

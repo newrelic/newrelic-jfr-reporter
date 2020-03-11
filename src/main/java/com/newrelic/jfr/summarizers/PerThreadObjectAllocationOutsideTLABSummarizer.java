@@ -6,6 +6,7 @@ import jdk.jfr.consumer.RecordedEvent;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * This class aggregates all TLAB allocation JFR events for a single thread
@@ -49,7 +50,7 @@ public final class PerThreadObjectAllocationOutsideTLABSummarizer implements Eve
     }
 
     @Override
-    public List<Summary> summarizeAndReset() {
+    public Stream<Summary> summarizeAndReset() {
         var attr = new Attributes();
         attr.put("threadName", threadName);
         var out = new Summary(
@@ -62,7 +63,7 @@ public final class PerThreadObjectAllocationOutsideTLABSummarizer implements Eve
                 endTimeMs,
                 attr);
         reset();
-        return List.of(out);
+        return Stream.of(out);
     }
 
     public void reset() {

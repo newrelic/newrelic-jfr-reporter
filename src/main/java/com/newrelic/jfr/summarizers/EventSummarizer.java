@@ -3,7 +3,7 @@ package com.newrelic.jfr.summarizers;
 import com.newrelic.telemetry.metrics.Summary;
 import jdk.jfr.consumer.RecordedEvent;
 
-import java.util.List;
+import java.util.stream.Stream;
 
 public interface EventSummarizer {
 
@@ -23,5 +23,5 @@ public interface EventSummarizer {
      * Summarizes data on a collection of JFR Events
      * @return List of Summary metrics for JFR Events
      */
-    List<Summary> summarizeAndReset();
+    Stream<Summary> summarizeAndReset();
 }

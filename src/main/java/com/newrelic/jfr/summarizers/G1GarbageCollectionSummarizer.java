@@ -7,6 +7,7 @@ import jdk.jfr.consumer.RecordedEvent;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * This class aggregates the duration of G1 Garbage Collection JFR events
@@ -47,7 +48,7 @@ public final class G1GarbageCollectionSummarizer implements EventSummarizer {
     }
 
     @Override
-    public List<Summary> summarizeAndReset() {
+    public Stream<Summary> summarizeAndReset() {
         var attr = new Attributes();
         var out = new Summary(
                 "jfr:G1GarbageCollection.duration",
@@ -59,7 +60,7 @@ public final class G1GarbageCollectionSummarizer implements EventSummarizer {
                 endTimeMs,
                 attr);
         reset();
-        return List.of(out);
+        return Stream.of(out);
     }
 
     public void reset() {
