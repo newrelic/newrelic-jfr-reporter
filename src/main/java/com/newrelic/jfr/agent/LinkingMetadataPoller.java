@@ -7,6 +7,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 
+import static com.newrelic.jfr.attributes.AttributeNames.ENTITY_GUID;
 import static com.newrelic.jfr.attributes.AttributeNames.HOSTNAME;
 
 class LinkingMetadataPoller {
@@ -30,8 +31,13 @@ class LinkingMetadataPoller {
                 if (hostname != null && !hostname.isEmpty()) {
                     gotLinkingMetadata.set(true);
                     attributesListener.accept(Map.of(HOSTNAME, hostname));
-                    return true;
                 }
+
+                var entityGuid = linkingMetadata.get("entity.guid");
+                if (entityGuid != null) {
+                    attributesListener.accept(Map.of(ENTITY_GUID, entityGuid));
+                }
+                return true;
             }
         } catch (Exception e) {
             agent.getLogger().log(Level.FINEST, "New Relic JFR Monitor failed to get agent linking metadata. " +
