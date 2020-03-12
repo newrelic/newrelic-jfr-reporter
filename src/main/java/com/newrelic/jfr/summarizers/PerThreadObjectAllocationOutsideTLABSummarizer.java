@@ -22,7 +22,6 @@ public final class PerThreadObjectAllocationOutsideTLABSummarizer implements Eve
 
     public PerThreadObjectAllocationOutsideTLABSummarizer(String threadName, long startTimeMs) {
         this.threadName = threadName;
-        // FIXME get time from initial event
         this.startTimeMs = startTimeMs;
     }
 
@@ -50,8 +49,8 @@ public final class PerThreadObjectAllocationOutsideTLABSummarizer implements Eve
 
     @Override
     public Stream<Summary> summarizeAndReset() {
-        var attr = new Attributes();
-        attr.put("threadName", threadName);
+        var attr = new Attributes()
+                .put("threadName", threadName);
         var out = new Summary(
                 "jfr:ObjectAllocationOutsideTLAB.allocation",
                 count,
