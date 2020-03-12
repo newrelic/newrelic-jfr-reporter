@@ -27,7 +27,7 @@ class LinkingMetadataPoller {
         }
         try {
             Map<String, String> linkingMetadata = agent.getLinkingMetadata();
-            if (linkingMetadata != null) {
+            if (!linkingMetadata.isEmpty()) {
                 var hostname = linkingMetadata.getOrDefault("hostname", "");
                 var entityGuid = linkingMetadata.get("entity.guid");
                 var attrMap = new HashMap<String, String>();
