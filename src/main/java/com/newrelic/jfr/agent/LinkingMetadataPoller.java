@@ -34,14 +34,13 @@ class LinkingMetadataPoller {
                 if (hostname != null && !hostname.isEmpty() ) {
                     attrMap.put(HOSTNAME, hostname);
 
-                    if (entityGuid != null) {
-                        attrMap.put(ENTITY_GUID, entityGuid);
-                    }
-                    attributesListener.accept(attrMap);
-                    gotLinkingMetadata.set(true);
-                    return true;
                 }
-
+                if (entityGuid != null) {
+                    attrMap.put(ENTITY_GUID, entityGuid);
+                }
+                attributesListener.accept(attrMap);
+                gotLinkingMetadata.set(true);
+                return true;
             }
         } catch (Exception e) {
             agent.getLogger().log(Level.FINEST, "New Relic JFR Monitor failed to get agent linking metadata. " +
