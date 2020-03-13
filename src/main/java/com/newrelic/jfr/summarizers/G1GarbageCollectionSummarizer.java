@@ -6,7 +6,6 @@ import jdk.jfr.consumer.RecordedEvent;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.List;
 import java.util.stream.Stream;
 
 /**
