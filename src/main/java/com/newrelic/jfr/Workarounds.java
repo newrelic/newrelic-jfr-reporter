@@ -1,4 +1,4 @@
-package com.newrelic.jfr.summarizers;
+package com.newrelic.jfr;
 
 import jdk.jfr.consumer.RecordedEvent;
 import jdk.jfr.consumer.RecordedThread;
@@ -13,7 +13,7 @@ public class Workarounds {
      * throws a ClassCastException. We work around it here by just
      * getting the raw value and checking the type.
      */
-    static Optional<String> getThreadName(RecordedEvent ev) {
+    public static Optional<String> getThreadName(RecordedEvent ev) {
         Object thisField = ev.getValue("eventThread");
         if (thisField instanceof RecordedThread) {
             return Optional.of(((RecordedThread) thisField).getJavaName());

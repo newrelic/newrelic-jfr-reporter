@@ -1,5 +1,6 @@
 package com.newrelic.jfr.summarizers;
 
+import com.newrelic.jfr.Workarounds;
 import com.newrelic.telemetry.metrics.Summary;
 import jdk.jfr.consumer.RecordedEvent;
 

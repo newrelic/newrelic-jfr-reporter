@@ -1,6 +1,6 @@
 package com.newrelic.jfr.summarizers;
 
-import com.newrelic.jfr.summarizers.Workarounds;
+import com.newrelic.jfr.Workarounds;
 import jdk.jfr.consumer.RecordedEvent;
 import jdk.jfr.consumer.RecordedThread;
 import org.junit.jupiter.api.Test;

@@ -1,10 +1,10 @@
 package com.newrelic.jfr.mappers;
 
+import com.newrelic.jfr.Workarounds;
 import com.newrelic.telemetry.Attributes;
 import com.newrelic.telemetry.metrics.Gauge;
 import com.newrelic.telemetry.metrics.Metric;
 import jdk.jfr.consumer.RecordedEvent;
-import jdk.jfr.consumer.RecordedThread;
 
 import java.util.List;
 
@@ -13,11 +13,10 @@ public class AllocationRequiringGCMapper implements EventMapper {
 
     @Override
     public List<? extends Metric> apply(RecordedEvent ev) {
+        var attr = new Attributes();
         var timestamp = ev.getStartTime().toEpochMilli();
-        RecordedThread t = ev.getValue("eventThread");
-        var attr = new Attributes()
-                .put("thread.name", t.getJavaName());
-
+        var threadName = Workarounds.getThreadName(ev);
+        threadName.ifPresent(thread -> attr.put("thread.name", thread));
         return List.of(
                 new Gauge("jfr:AllocationRequiringGC.allocationSize", ev.getLong("size"), timestamp, attr)
         );
