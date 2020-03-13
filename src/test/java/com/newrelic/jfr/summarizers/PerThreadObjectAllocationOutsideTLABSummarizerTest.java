@@ -41,7 +41,7 @@ class PerThreadObjectAllocationOutsideTLABSummarizerTest {
         var numOfEvents = 1;
         var eventStartTime = Instant.now().toEpochMilli();
         var eventAllocationSize = 1500L;
-        var attr = new Attributes().put("threadName", eventThreadName);
+        var attr = new Attributes().put("thread.name", eventThreadName);
 
         var expectedSummaryMetric = new Summary(
                 "jfr:ObjectAllocationOutsideTLAB.allocation",
@@ -85,7 +85,7 @@ class PerThreadObjectAllocationOutsideTLABSummarizerTest {
         var numOfEvents = 1;
         var event1StartTime = Instant.now().toEpochMilli();
         var event1AllocationSize = 847L;
-        var attr = new Attributes().put("threadName", eventThreadName);
+        var attr = new Attributes().put("thread.name", eventThreadName);
 
         var event2 = mock(RecordedEvent.class);
         numOfEvents = ++numOfEvents;
