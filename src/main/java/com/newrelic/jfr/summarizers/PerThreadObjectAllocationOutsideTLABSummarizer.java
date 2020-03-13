@@ -50,7 +50,7 @@ public final class PerThreadObjectAllocationOutsideTLABSummarizer implements Eve
     @Override
     public Stream<Summary> summarizeAndReset() {
         var attr = new Attributes()
-                .put("threadName", threadName);
+                .put("thread.name", threadName);
         var out = new Summary(
                 "jfr:ObjectAllocationOutsideTLAB.allocation",
                 count,
