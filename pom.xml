@@ -6,7 +6,7 @@
 
     <groupId>com.newrelic.agent.java</groupId>
     <artifactId>jfr-reporter</artifactId>
-    <version>0.1.1-SNAPSHOT</version>
+    <version>0.0.1-TestSonatypeStaging</version>
 
     <name>jfr-reporter</name>
     <organization>
@@ -175,9 +175,9 @@
     </build>
     <distributionManagement>
       <repository>
-        <id>newrelic-local-release</id>
-        <name>New Relic local release respository</name>
-        <url>https://pdx-artifacts.pdx.vm.datanerd.us/newrelic-release-local</url>
+          <id>sonatype-staging</id>
+          <name>New Relic sonatype staging</name>
+          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         <layout>default</layout>
       </repository>
         <snapshotRepository>
