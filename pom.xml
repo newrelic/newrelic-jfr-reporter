@@ -6,7 +6,7 @@
 
     <groupId>com.newrelic.agent.extension</groupId>
     <artifactId>jfr-reporter</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.2.4-SNAPSHOT</version>
 
     <name>jfr-reporter</name>
     <organization>
@@ -133,9 +133,35 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.22.2</version>
             </plugin>
+            <!-- deployment. Staging to nexus requires everything to come from the same IP
+                 and Chicago VPN breaks that! This plugin should help. -->
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
                 <version>2.8.2</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.8</version>
+                <executions>
+                    <execution>
+                        <id>default-deploy</id>
+                        <phase>deploy</phase>
+                        <!-- By default, this is the phase deploy goal will bind to -->
+                        <goals>
+                            <goal>deploy</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <serverId>sonatype-staging</serverId>
+                    <stagingProfileId>99c671e2ec9d3</stagingProfileId>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
