@@ -1,11 +1,24 @@
 #!/usr/bin/env bash
 
-echo -n "$SIGNING_SECRETKEYRINGFILE" | openssl base64 -d > secring.gpg
+export SSH_HOME=/tmp/foo
+export SSH_PASSPHRASE_FILE=$PWD/my-passphrase
+export GPG_TTY=
 
-./gradlew clean test publish \
-  -PsonatypeUsername=$SONATYPE_USERNAME \
-  -PsonatypePassword=$SONATYPE_PASSWORD \
-  -Psigning.keyId=$SIGNING_KEYID \
-  -Psigning.password=$SIGNING_PASSWORD \
-  -Psigning.secretKeyRingFile=secring.gpg \
-  --info
+echo -n "$SIGNING_SECRETKEYRINGFILE" | openssl base64 -d > $PWD/secring.gpg
+
+rm -fR $SSH_HOME
+mkdir $SSH_HOME
+chmod 700 $SSH_HOME
+
+rm -f $SSH_PASSPHRASE_FILE
+touch $SSH_PASSPHRASE_FILE
+chmod 600 $SSH_PASSPHRASE_FILE
+echo $SIGNING_PASSWORD >>$SSH_PASSPHRASE_FILE
+
+gpg --homedir $SSH_HOME --passphrase-file $SSH_PASSPHRASE_FILE --pinentry-mode loopback --batch --import $PWD/secring.gpg
+rm $PWD/secring.gpg
+
+mvn -s settings.xml clean deploy -Dgpg.homedir=$SSH_HOME -Dgpg.keyname=$SIGNING_KEYID
+
+rm -fR $SSH_HOME
+rm -f $SSH_PASSPHRASE_FILE
