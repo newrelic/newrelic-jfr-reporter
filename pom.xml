@@ -6,7 +6,7 @@
 
     <groupId>com.newrelic.agent.extension</groupId>
     <artifactId>jfr-reporter</artifactId>
-    <version>0.2.4-SNAPSHOT</version>
+    <version>0.2.5-SNAPSHOT</version>
 
     <name>jfr-reporter</name>
     <organization>
@@ -216,6 +216,29 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <gpgArguments>
+                        <argument>--batch</argument>
+                        <argument>--pinentry-mode</argument>
+                        <argument>loopback</argument>
+                        <argument>--passphrase-file</argument>
+                        <argument>${env.SSH_PASSPHRASE_FILE}</argument>
+                    </gpgArguments>
+                </configuration>
             </plugin>
         </plugins>
     </build>
