@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -ex
+
 export SSH_HOME=/tmp/foo
 export SSH_PASSPHRASE_FILE=$PWD/my-passphrase
 export GPG_TTY=
@@ -18,7 +20,7 @@ echo $SIGNING_PASSWORD >>$SSH_PASSPHRASE_FILE
 gpg --homedir $SSH_HOME --passphrase-file $SSH_PASSPHRASE_FILE --pinentry-mode loopback --batch --import $PWD/secring.gpg
 rm $PWD/secring.gpg
 
-mvn -s settings.xml clean deploy -Dgpg.homedir=$SSH_HOME -Dgpg.keyname=$SIGNING_KEYID
+mvn -e -X -s settings.xml clean deploy -Dgpg.homedir=$SSH_HOME -Dgpg.keyname=$SIGNING_KEYID
 
 rm -fR $SSH_HOME
 rm -f $SSH_PASSPHRASE_FILE
