@@ -34,4 +34,4 @@ build:
   build_artifact:
     command: mvn package
   publish:
-    command: mvn -s settings.xml deploy
+    command: ./release.sh
