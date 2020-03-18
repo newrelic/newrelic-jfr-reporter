@@ -21,7 +21,7 @@ public interface EventMapper extends Function<RecordedEvent, List<? extends Metr
 
     /**
      * Optionally returns a polling duration for JFR events, if present
-     * @return Optional<Duration> polling duration
+     * @return {@link Optional} of {@link Duration} representing polling duration; empty {@link Optional} if no polling
      */
     default Optional<Duration> getPollingDuration() {
         return Optional.empty();
