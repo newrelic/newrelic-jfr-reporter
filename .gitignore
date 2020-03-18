@@ -5,6 +5,7 @@
 build/
 out/
 target/
+dependency-reduced-pom.xml
 
 # Ignore IntelliJ files
 .DS_Store
