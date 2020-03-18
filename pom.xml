@@ -6,7 +6,7 @@
 
     <groupId>com.newrelic.agent.extension</groupId>
     <artifactId>jfr-reporter</artifactId>
-    <version>0.0.1-TestSonatypeStaging</version>
+    <version>0.0.1-SNAPSHOT</version>
 
     <name>jfr-reporter</name>
     <organization>
