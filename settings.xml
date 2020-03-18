@@ -8,5 +8,10 @@
       <username>${env.ARTIFACTORY_USERNAME}</username>
       <password>${env.ARTIFACTORY_PASSWORD}</password>
     </server>
+    <server>
+      <id>sonatype-staging</id>
+      <username>${env.SONATYPE_USERNAME}</username>
+      <password>${env.SONATYPE_PASSWORD}</password>
+    </server>
   </servers>
 </settings>

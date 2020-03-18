@@ -26,6 +26,11 @@ build:
         shared_path: artifactory
       - name: ARTIFACTORY_PASSWORD
         shared_path: artifactory
+      - name: SONATYPE_USERNAME
+      - name: SONATYPE_PASSWORD
+      - name: SIGNING_KEYID
+      - name: SIGNING_PASSWORD
+      - name: SIGNING_SECRETKEYRINGFILE
   build_artifact:
     command: mvn package
   publish:
