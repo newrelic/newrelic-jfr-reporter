@@ -232,6 +232,12 @@
                 </executions>
                 <configuration>
                     <gpgArguments>
+                        <!--
+                         IMPORTANT: For other arguments to gpg, see release.sh. We can probably consolidate all the args in one place.
+                         batch: never ever attempt to prompt for anything (this script is completely detached from any input terminal).
+                         pinentry-mode: gpg forks pinentry (or something). "loopback" tells it to prompt the caller. Then gpg will use the passphrase-file.
+                         passphrase-file: the passphrase that is required to access the keys.
+                         -->
                         <argument>--batch</argument>
                         <argument>--pinentry-mode</argument>
                         <argument>loopback</argument>
