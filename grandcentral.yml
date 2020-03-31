@@ -10,7 +10,7 @@ test_suites:
     command: mvn test
     environment:
       dockerfile: |
-        FROM cf-registry.nr-ops.net/newrelic/ubuntu-1804-java:14-30-ea-1
+        FROM cf-registry.nr-ops.net/newrelic/ubuntu-1804-java:14_36
         RUN apt-get update && apt-get install -y maven
     reports:
       junit:
@@ -18,7 +18,7 @@ test_suites:
 build:
   environment:
     dockerfile: |
-      FROM cf-registry.nr-ops.net/newrelic/ubuntu-1804-java:14-30-ea-1
+      FROM cf-registry.nr-ops.net/newrelic/ubuntu-1804-java:14_36
       RUN apt-get update && apt-get install -y maven gpg
       RUN mkdir -p ${HOME}/
     secret_env_vars:

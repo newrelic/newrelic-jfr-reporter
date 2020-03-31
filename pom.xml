@@ -231,6 +231,8 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <keyname>${env.SIGNING_KEYID}</keyname>
+                    <homedir>${env.NR_GPG_HOME}</homedir>
                     <gpgArguments>
                         <!--
                          IMPORTANT: For other arguments to gpg, see release.sh. We can probably consolidate all the args in one place.
@@ -242,7 +244,7 @@
                         <argument>--pinentry-mode</argument>
                         <argument>loopback</argument>
                         <argument>--passphrase-file</argument>
-                        <argument>${env.SSH_PASSPHRASE_FILE}</argument>
+                        <argument>${env.NR_GPG_PASSPHRASE_FILE}</argument>
                     </gpgArguments>
                 </configuration>
             </plugin>
