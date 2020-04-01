@@ -1,15 +1,16 @@
 package com.newrelic.jfr.agent;
 
-import com.newrelic.api.agent.Agent;
+import static com.newrelic.jfr.attributes.AttributeNames.ENTITY_GUID;
+import static com.newrelic.jfr.attributes.AttributeNames.HOSTNAME;
 
+import com.newrelic.api.agent.Agent;
+import com.newrelic.api.agent.NewRelic;
+import com.newrelic.jfr.MetricNames;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 import java.util.logging.Level;
-
-import static com.newrelic.jfr.attributes.AttributeNames.ENTITY_GUID;
-import static com.newrelic.jfr.attributes.AttributeNames.HOSTNAME;
 
 class LinkingMetadataPoller {
     private final AtomicBoolean gotLinkingMetadata = new AtomicBoolean(false);
@@ -43,6 +44,7 @@ class LinkingMetadataPoller {
                 return true;
             }
         } catch (Exception e) {
+          NewRelic.incrementCounter(MetricNames.SUPPORTABILITY_JFR_LINKING_METADATA_FAILED);
             agent.getLogger().log(Level.FINEST, "New Relic JFR Monitor failed to get agent linking metadata. " +
                     "Another attempt will be made when the agent is fully initialized.");
         }
