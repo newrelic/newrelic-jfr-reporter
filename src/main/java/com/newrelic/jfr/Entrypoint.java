@@ -1,18 +1,19 @@
 package com.newrelic.jfr;
 
-import com.newrelic.api.agent.Agent;
-import com.newrelic.api.agent.Logger;
-import com.newrelic.api.agent.NewRelic;
-import com.newrelic.telemetry.Attributes;
-
-import java.lang.instrument.Instrumentation;
-import java.util.logging.Level;
-
 import static com.newrelic.jfr.Config.INSERT_API_KEY;
 import static com.newrelic.jfr.Config.JFR_AUDIT_MODE;
 import static com.newrelic.jfr.Config.JFR_ENABLED;
 import static com.newrelic.jfr.Config.METRIC_INGEST_URI;
-import static com.newrelic.jfr.attributes.AttributeNames.*;
+import static com.newrelic.jfr.attributes.AttributeNames.COLLECTOR_NAME;
+import static com.newrelic.jfr.attributes.AttributeNames.INSTRUMENTATION_NAME;
+import static com.newrelic.jfr.attributes.AttributeNames.INSTRUMENTATION_PROVIDER;
+
+import com.newrelic.api.agent.Agent;
+import com.newrelic.api.agent.Logger;
+import com.newrelic.api.agent.NewRelic;
+import com.newrelic.telemetry.Attributes;
+import java.lang.instrument.Instrumentation;
+import java.util.logging.Level;
 
 public class Entrypoint {
 
@@ -51,9 +52,11 @@ public class Entrypoint {
           .logger(logger)
           .build();
 
-      var reporter = Reporter.build(config);
+      var reporter = Reporter.build(config, agent);
       reporter.start();
     } catch (Throwable t) {
+      agent.getMetricAggregator()
+          .incrementCounter(MetricNames.SUPPORTABILITY_JFR_START_FAILED);
       logger.log(Level.SEVERE, t, "Unable to attach New Relic JFR Monitor");
     }
   }

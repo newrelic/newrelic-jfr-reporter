@@ -1,7 +1,7 @@
 package com.newrelic.jfr;
 
+import com.newrelic.api.agent.Agent;
 import com.newrelic.api.agent.Logger;
-import com.newrelic.api.agent.NewRelic;
 import com.newrelic.jfr.agent.AgentAttributesChangeListener;
 import com.newrelic.jfr.agent.AgentPoller;
 import com.newrelic.telemetry.Attributes;
@@ -30,8 +30,9 @@ public class Reporter {
   private final EventMapperRegistry mapperRegistry;
   private final EventSummarizerRegistry summarizerRegistry;
   private final boolean auditMode;
+  private final Agent agent;
 
-  Reporter(Config config) {
+  Reporter(Config config, Agent agent) {
     this.commonAttributes = config.getCommonAttributes();
     this.logger = config.getLogger();
     this.insertApiKey = config.getInsertApiKey();
@@ -39,6 +40,7 @@ public class Reporter {
     this.mapperRegistry = config.getMapperRegistry();
     this.summarizerRegistry = config.getSummarizerRegistry();
     this.auditMode = config.isAuditMode();
+    this.agent = agent;
   }
 
   public void start() throws MalformedURLException {
@@ -49,12 +51,13 @@ public class Reporter {
     var jfrMonitor = new JfrMonitor(mapperRegistry, summarizerRegistry, metricBufferReference::get);
 
     logger.log(Level.INFO, "Starting New Relic JFR Monitor with ingest URI => " + metricIngestUri);
-
+    agent.getMetricAggregator()
+        .incrementCounter(MetricNames.SUPPORTABILITY_JFR_START_OK);
     jfrMonitor.start();
 
     var agentChangeListener = new AgentAttributesChangeListener(logger, commonAttributes,
         metricBufferReference, sender);
-    AgentPoller.create(NewRelic.getAgent(), agentChangeListener).run();
+    AgentPoller.create(agent, agentChangeListener).run();
   }
 
   private Consumer<MetricBuffer> startTelemetrySdkReporter(
@@ -86,8 +89,8 @@ public class Reporter {
     return send;
   }
 
-  public static Reporter build(Config config) {
-    return new Reporter(config);
+  public static Reporter build(Config config, Agent agent) {
+    return new Reporter(config, agent);
   }
 
 }
