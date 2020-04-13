@@ -52,7 +52,7 @@ public class Entrypoint {
           .logger(logger)
           .build();
 
-      var reporter = Reporter.build(config);
+      var reporter = Reporter.build(config, agent);
       reporter.start();
     } catch (Throwable t) {
       agent.getMetricAggregator()
