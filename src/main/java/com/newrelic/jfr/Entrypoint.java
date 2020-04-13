@@ -55,7 +55,8 @@ public class Entrypoint {
       var reporter = Reporter.build(config);
       reporter.start();
     } catch (Throwable t) {
-      NewRelic.incrementCounter(MetricNames.SUPPORTABILITY_JFR_START_FAILED);
+      agent.getMetricAggregator()
+          .incrementCounter(MetricNames.SUPPORTABILITY_JFR_START_FAILED);
       logger.log(Level.SEVERE, t, "Unable to attach New Relic JFR Monitor");
     }
   }

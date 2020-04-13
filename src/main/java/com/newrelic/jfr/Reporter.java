@@ -49,7 +49,8 @@ public class Reporter {
     var jfrMonitor = new JfrMonitor(mapperRegistry, summarizerRegistry, metricBufferReference::get);
 
     logger.log(Level.INFO, "Starting New Relic JFR Monitor with ingest URI => " + metricIngestUri);
-    NewRelic.incrementCounter(MetricNames.SUPPORTABILITY_JFR_START_OK);
+    NewRelic.getAgent().getMetricAggregator()
+        .incrementCounter(MetricNames.SUPPORTABILITY_JFR_START_OK);
     jfrMonitor.start();
 
     var agentChangeListener = new AgentAttributesChangeListener(logger, commonAttributes,
