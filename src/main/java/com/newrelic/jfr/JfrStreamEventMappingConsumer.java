@@ -1,6 +1,6 @@
 package com.newrelic.jfr;
 
-import com.newrelic.jfr.mappers.EventMapper;
+import com.newrelic.jfr.tometric.EventToMetric;
 import com.newrelic.telemetry.metrics.MetricBuffer;
 import jdk.jfr.consumer.RecordedEvent;
 
@@ -12,10 +12,10 @@ import java.util.function.Supplier;
  * a list of New Relic dimensional Metrics and adds those to a MetricBuffer.
  */
 public class JfrStreamEventMappingConsumer implements Consumer<RecordedEvent> {
-    private final EventMapper mapper;
+    private final EventToMetric mapper;
     private final Supplier<MetricBuffer> metricBufferSupplier;
 
-    public JfrStreamEventMappingConsumer(EventMapper mapper, Supplier<MetricBuffer> metricBufferSupplier) {
+    public JfrStreamEventMappingConsumer(EventToMetric mapper, Supplier<MetricBuffer> metricBufferSupplier) {
         this.mapper = mapper;
         this.metricBufferSupplier = metricBufferSupplier;
     }

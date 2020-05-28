@@ -16,7 +16,7 @@ public class Config {
   private final String insertApiKey;
   private final URI metricIngestUri;
   private final Logger logger;
-  private final EventMapperRegistry mapperRegistry;
+  private final ToMetricRegistry toMetricRegistry;
   private final EventSummarizerRegistry summarizerRegistry;
   private final boolean auditMode;
 
@@ -25,7 +25,7 @@ public class Config {
     this.insertApiKey = builder.insertApiKey;
     this.metricIngestUri = builder.metricIngestUri;
     this.logger = builder.logger;
-    this.mapperRegistry = builder.mapperRegistry;
+    this.toMetricRegistry = builder.mapperRegistry;
     this.summarizerRegistry = builder.summarizerRegistry;
     this.auditMode = builder.auditMode;
   }
@@ -46,8 +46,8 @@ public class Config {
     return logger;
   }
 
-  public EventMapperRegistry getMapperRegistry() {
-    return mapperRegistry;
+  public ToMetricRegistry getToMetricRegistry() {
+    return toMetricRegistry;
   }
 
   public EventSummarizerRegistry getSummarizerRegistry() {
@@ -68,7 +68,7 @@ public class Config {
     private String insertApiKey;
     private URI metricIngestUri = DEFAULT_METRIC_INGEST_URI;
     private Logger logger;
-    private EventMapperRegistry mapperRegistry;
+    private ToMetricRegistry mapperRegistry;
     private EventSummarizerRegistry summarizerRegistry;
     private boolean auditMode;
 
@@ -99,7 +99,7 @@ public class Config {
       return this;
     }
 
-    public Builder mapperRegistry(EventMapperRegistry mapperRegistry) {
+    public Builder toMetricRegistry(ToMetricRegistry mapperRegistry) {
       this.mapperRegistry = mapperRegistry;
       return this;
     }
