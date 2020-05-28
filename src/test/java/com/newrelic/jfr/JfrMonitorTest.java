@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.time.Duration;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.doAnswer;
@@ -27,14 +28,13 @@ class JfrMonitorTest {
         var recordingStream = mock(RecordingStream.class);
         var metricBuffer = mock(MetricBuffer.class);
         var eventSettings = mock(EventSettings.class);
-        when(recordingStream.enable("jdk.CPULoad")).thenReturn(eventSettings);
-        when(recordingStream.enable("jdk.GCHeapSummary")).thenReturn(eventSettings);
-        when(recordingStream.enable("jdk.GarbageCollection")).thenReturn(eventSettings);
-        when(recordingStream.enable("jdk.MetaspaceSummary")).thenReturn(eventSettings);
-        when(recordingStream.enable("jdk.AllocationRequiringGC")).thenReturn(eventSettings);
-        when(recordingStream.enable("jdk.ObjectAllocationInNewTLAB")).thenReturn(eventSettings);
-        when(recordingStream.enable("jdk.ObjectAllocationOutsideTLAB")).thenReturn(eventSettings);
-        when(recordingStream.enable("jdk.ThreadAllocationStatistics")).thenReturn(eventSettings);
+        var expectedWithPeriodCalls = new AtomicInteger(0);
+        mapperRegistry.all().forEach(toMetric -> {
+            when(recordingStream.enable(toMetric.getEventName())).thenReturn(eventSettings);
+            if (toMetric.getPollingDuration().isPresent()) {
+                expectedWithPeriodCalls.incrementAndGet();
+            }
+        });
         doAnswer(invocationOnMock -> {
             latch.countDown();
             return null;
@@ -45,7 +45,7 @@ class JfrMonitorTest {
         testClass.start();
 
         assertTrue(latch.await(10, TimeUnit.SECONDS));
-        verify(eventSettings, times(1)).withPeriod(Duration.ofSeconds(1));
+        verify(eventSettings, times(expectedWithPeriodCalls.get())).withPeriod(Duration.ofSeconds(1));
     }
 
 }
