@@ -1,6 +1,12 @@
 package com.newrelic.jfr;
 
-import com.newrelic.jfr.mappers.*;
+import com.newrelic.jfr.mappers.CPULoadMapper;
+import com.newrelic.jfr.mappers.EventMapper;
+import com.newrelic.jfr.mappers.GCHeapSummaryMapper;
+import com.newrelic.jfr.mappers.GarbageCollectionMapper;
+import com.newrelic.jfr.mappers.MetaspaceSummaryMapper;
+import com.newrelic.jfr.mappers.ThreadAllocationStatisticsMapper;
+import com.newrelic.jfr.tometric.AllocationRequiringGCMapper;
 
 import java.util.Collection;
 import java.util.List;
