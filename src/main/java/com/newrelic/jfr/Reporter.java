@@ -11,6 +11,7 @@ import com.newrelic.telemetry.metrics.MetricBatch;
 import com.newrelic.telemetry.metrics.MetricBatchSender;
 import com.newrelic.telemetry.metrics.MetricBatchSenderBuilder;
 import com.newrelic.telemetry.metrics.MetricBuffer;
+
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.concurrent.Executors;
@@ -27,7 +28,7 @@ public class Reporter {
   private final Logger logger;
   private final String insertApiKey;
   private final URI metricIngestUri;
-  private final EventMapperRegistry mapperRegistry;
+  private final ToMetricRegistry toMetricRegistry;
   private final EventSummarizerRegistry summarizerRegistry;
   private final boolean auditMode;
   private final Agent agent;
@@ -37,7 +38,7 @@ public class Reporter {
     this.logger = config.getLogger();
     this.insertApiKey = config.getInsertApiKey();
     this.metricIngestUri = config.getMetricIngestUri();
-    this.mapperRegistry = config.getMapperRegistry();
+    this.toMetricRegistry = config.getToMetricRegistry();
     this.summarizerRegistry = config.getSummarizerRegistry();
     this.auditMode = config.isAuditMode();
     this.agent = agent;
@@ -48,7 +49,7 @@ public class Reporter {
     var metricBuffer = new MetricBuffer(commonAttributes);
     var metricBufferReference = new AtomicReference<>(metricBuffer);
     var sender = startTelemetrySdkReporter(batchSendService, metricBufferReference::get);
-    var jfrMonitor = new JfrMonitor(mapperRegistry, summarizerRegistry, metricBufferReference::get);
+    var jfrMonitor = new JfrMonitor(toMetricRegistry, summarizerRegistry, metricBufferReference::get);
 
     logger.log(Level.INFO, "Starting New Relic JFR Monitor with ingest URI => " + metricIngestUri);
     agent.getMetricAggregator()

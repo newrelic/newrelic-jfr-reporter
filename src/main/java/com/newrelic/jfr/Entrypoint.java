@@ -1,5 +1,13 @@
 package com.newrelic.jfr;
 
+import com.newrelic.api.agent.Agent;
+import com.newrelic.api.agent.Logger;
+import com.newrelic.api.agent.NewRelic;
+import com.newrelic.telemetry.Attributes;
+
+import java.lang.instrument.Instrumentation;
+import java.util.logging.Level;
+
 import static com.newrelic.jfr.Config.INSERT_API_KEY;
 import static com.newrelic.jfr.Config.JFR_AUDIT_MODE;
 import static com.newrelic.jfr.Config.JFR_ENABLED;
@@ -7,13 +15,6 @@ import static com.newrelic.jfr.Config.METRIC_INGEST_URI;
 import static com.newrelic.jfr.attributes.AttributeNames.COLLECTOR_NAME;
 import static com.newrelic.jfr.attributes.AttributeNames.INSTRUMENTATION_NAME;
 import static com.newrelic.jfr.attributes.AttributeNames.INSTRUMENTATION_PROVIDER;
-
-import com.newrelic.api.agent.Agent;
-import com.newrelic.api.agent.Logger;
-import com.newrelic.api.agent.NewRelic;
-import com.newrelic.telemetry.Attributes;
-import java.lang.instrument.Instrumentation;
-import java.util.logging.Level;
 
 public class Entrypoint {
 
@@ -38,15 +39,15 @@ public class Entrypoint {
     try {
       String insertApiKey = agentConfig.getValue(INSERT_API_KEY);
       String metricIngestUri = agentConfig.getValue(METRIC_INGEST_URI);
-      EventMapperRegistry eventMapperRegistry = EventMapperRegistry.createDefault();
+      ToMetricRegistry toMetricRegistry = ToMetricRegistry.createDefault();
       EventSummarizerRegistry eventSummarizerRegistry = EventSummarizerRegistry.createDefault();
 
       boolean jfrAuditMode = agentConfig.getValue(JFR_AUDIT_MODE, false);
       var config = Config.builder()
-          .insertApiKey(insertApiKey)
-          .commonAttributes(COMMON_ATTRIBUTES)
-          .metricsIngestUri(metricIngestUri)
-          .mapperRegistry(eventMapperRegistry)
+              .insertApiKey(insertApiKey)
+              .commonAttributes(COMMON_ATTRIBUTES)
+              .metricsIngestUri(metricIngestUri)
+              .toMetricRegistry(toMetricRegistry)
           .summarizerRegistry(eventSummarizerRegistry)
           .auditMode(jfrAuditMode)
           .logger(logger)

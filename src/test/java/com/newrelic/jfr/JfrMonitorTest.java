@@ -10,14 +10,18 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class JfrMonitorTest {
 
     @Test
     void testStartWiresUpConsumerThatHandlesEvent() throws InterruptedException {
         var latch = new CountDownLatch(1);
-        var mapperRegistry = EventMapperRegistry.createDefault();
+        var mapperRegistry = ToMetricRegistry.createDefault();
         var summarizerRegistry = EventSummarizerRegistry.createDefault();
 
         var recordingStream = mock(RecordingStream.class);

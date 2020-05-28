@@ -1,6 +1,6 @@
 package com.newrelic.jfr;
 
-import com.newrelic.jfr.mappers.EventMapper;
+import com.newrelic.jfr.tometric.EventToMetric;
 import com.newrelic.telemetry.Attributes;
 import com.newrelic.telemetry.metrics.Count;
 import com.newrelic.telemetry.metrics.Gauge;
@@ -19,7 +19,7 @@ class JfrStreamEventMappingConsumerTest {
 
     @Test
     void testApplyMetrics() {
-        var eventMapper = mock(EventMapper.class);
+        var eventMapper = mock(EventToMetric.class);
         var metricBuffer = mock(MetricBuffer.class);
         var event = mock(RecordedEvent.class);
         var testClass = new JfrStreamEventMappingConsumer(eventMapper, () -> metricBuffer);
