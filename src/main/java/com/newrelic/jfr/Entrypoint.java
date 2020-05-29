@@ -40,7 +40,7 @@ public class Entrypoint {
       String insertApiKey = agentConfig.getValue(INSERT_API_KEY);
       String metricIngestUri = agentConfig.getValue(METRIC_INGEST_URI);
       ToMetricRegistry toMetricRegistry = ToMetricRegistry.createDefault();
-      EventSummarizerRegistry eventSummarizerRegistry = EventSummarizerRegistry.createDefault();
+      ToSummaryRegistry eventSummarizerRegistry = ToSummaryRegistry.createDefault();
 
       boolean jfrAuditMode = agentConfig.getValue(JFR_AUDIT_MODE, false);
       var config = Config.builder()

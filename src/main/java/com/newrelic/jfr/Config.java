@@ -17,7 +17,7 @@ public class Config {
   private final URI metricIngestUri;
   private final Logger logger;
   private final ToMetricRegistry toMetricRegistry;
-  private final EventSummarizerRegistry summarizerRegistry;
+  private final ToSummaryRegistry toSummaryRegistry;
   private final boolean auditMode;
 
   public Config(Builder builder) {
@@ -26,7 +26,7 @@ public class Config {
     this.metricIngestUri = builder.metricIngestUri;
     this.logger = builder.logger;
     this.toMetricRegistry = builder.mapperRegistry;
-    this.summarizerRegistry = builder.summarizerRegistry;
+    this.toSummaryRegistry = builder.summarizerRegistry;
     this.auditMode = builder.auditMode;
   }
 
@@ -50,8 +50,8 @@ public class Config {
     return toMetricRegistry;
   }
 
-  public EventSummarizerRegistry getSummarizerRegistry() {
-    return summarizerRegistry;
+  public ToSummaryRegistry getToSummaryRegistry() {
+    return toSummaryRegistry;
   }
 
   public boolean isAuditMode() {
@@ -69,7 +69,7 @@ public class Config {
     private URI metricIngestUri = DEFAULT_METRIC_INGEST_URI;
     private Logger logger;
     private ToMetricRegistry mapperRegistry;
-    private EventSummarizerRegistry summarizerRegistry;
+    private ToSummaryRegistry summarizerRegistry;
     private boolean auditMode;
 
     public Builder commonAttributes(Attributes commonAttributes) {
@@ -104,7 +104,7 @@ public class Config {
       return this;
     }
 
-    public Builder summarizerRegistry(EventSummarizerRegistry summarizerRegistry) {
+    public Builder summarizerRegistry(ToSummaryRegistry summarizerRegistry) {
       this.summarizerRegistry = summarizerRegistry;
       return this;
     }
