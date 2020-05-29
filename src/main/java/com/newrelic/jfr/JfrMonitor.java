@@ -1,7 +1,7 @@
 package com.newrelic.jfr;
 
-import com.newrelic.jfr.summarizers.EventSummarizer;
 import com.newrelic.jfr.tometric.EventToMetric;
+import com.newrelic.jfr.tosummary.EventToSummary;
 import com.newrelic.telemetry.metrics.MetricBuffer;
 import jdk.jfr.EventSettings;
 import jdk.jfr.consumer.RecordingStream;
@@ -15,9 +15,9 @@ public class JfrMonitor {
     private final Supplier<RecordingStream> recordingStreamSupplier;
     private final Supplier<MetricBuffer> metricBufferSupplier;
     private final ToMetricRegistry toMetricRegistry;
-    private final EventSummarizerRegistry eventSummarizerRegistry;
+    private final ToSummaryRegistry toSummaryRegistry;
 
-    public JfrMonitor(ToMetricRegistry mapperRegistry, EventSummarizerRegistry summarizerRegistry, Supplier<MetricBuffer> metricBufferSupplier) {
+    public JfrMonitor(ToMetricRegistry mapperRegistry, ToSummaryRegistry summarizerRegistry, Supplier<MetricBuffer> metricBufferSupplier) {
         this(mapperRegistry, summarizerRegistry, metricBufferSupplier, () -> {
             RecordingStream stream = new RecordingStream();
             stream.setReuse(false);
@@ -25,10 +25,10 @@ public class JfrMonitor {
         });
     }
 
-    JfrMonitor(ToMetricRegistry mapperRegistry, EventSummarizerRegistry summarizerRegistry, Supplier<MetricBuffer> metricBufferSupplier, Supplier<RecordingStream> recordingStreamSupplier) {
+    JfrMonitor(ToMetricRegistry mapperRegistry, ToSummaryRegistry summarizerRegistry, Supplier<MetricBuffer> metricBufferSupplier, Supplier<RecordingStream> recordingStreamSupplier) {
         this.recordingStreamSupplier = recordingStreamSupplier;
         this.toMetricRegistry = mapperRegistry;
-        this.eventSummarizerRegistry = summarizerRegistry;
+        this.toSummaryRegistry = summarizerRegistry;
         this.metricBufferSupplier = metricBufferSupplier;
     }
 
@@ -39,7 +39,7 @@ public class JfrMonitor {
                 var enableMappedEvent = eventMapperEnablerFor(recordingStream);
                 var enableSummarizedEvent = eventSummarizerEnablerFor(recordingStream);
                 toMetricRegistry.all().forEach(enableMappedEvent);
-                eventSummarizerRegistry.stream().forEach(enableSummarizedEvent);
+                toSummaryRegistry.all().forEach(enableSummarizedEvent);
                 recordingStream.start(); //run forever
             }
         });
@@ -53,7 +53,7 @@ public class JfrMonitor {
         };
     }
 
-    private Consumer<EventSummarizer> eventSummarizerEnablerFor(RecordingStream recordingStream) {
+    private Consumer<EventToSummary> eventSummarizerEnablerFor(RecordingStream recordingStream) {
         return summarizer -> {
             recordingStream.enable(summarizer.getEventName());
             recordingStream.onEvent(summarizer.getEventName(), new JfrStreamEventSummarizingConsumer(summarizer, metricBufferSupplier));

@@ -29,7 +29,7 @@ public class Reporter {
   private final String insertApiKey;
   private final URI metricIngestUri;
   private final ToMetricRegistry toMetricRegistry;
-  private final EventSummarizerRegistry summarizerRegistry;
+  private final ToSummaryRegistry summarizerRegistry;
   private final boolean auditMode;
   private final Agent agent;
 
@@ -39,7 +39,7 @@ public class Reporter {
     this.insertApiKey = config.getInsertApiKey();
     this.metricIngestUri = config.getMetricIngestUri();
     this.toMetricRegistry = config.getToMetricRegistry();
-    this.summarizerRegistry = config.getSummarizerRegistry();
+    this.summarizerRegistry = config.getToSummaryRegistry();
     this.auditMode = config.isAuditMode();
     this.agent = agent;
   }
