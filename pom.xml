@@ -54,7 +54,7 @@
         <dependency>
             <groupId>com.newrelic.telemetry</groupId>
             <artifactId>telemetry</artifactId>
-            <version>0.4.0</version>
+            <version>0.6.0</version>
         </dependency>
         <dependency>
             <groupId>com.newrelic</groupId>
@@ -63,8 +63,13 @@
         </dependency>
         <dependency>
             <groupId>com.newrelic.telemetry</groupId>
-            <artifactId>telemetry-http-okhttp</artifactId>
-            <version>0.4.0</version>
+            <artifactId>telemetry-http-java11</artifactId>
+            <version>0.6.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.26</version>
         </dependency>
         <dependency>
             <groupId>com.newrelic.agent.java</groupId>
