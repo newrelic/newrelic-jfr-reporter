@@ -4,7 +4,7 @@ An agent extension for sending JFR profiling data to New Relic.
 
 ## Building
 
-`mvn package`
+`./gradlew build`
 
 or via grandcentral with
 
@@ -18,7 +18,7 @@ The extension requires the JVM to be run with JDK 14 which isn't presently suppo
 <dependency>
     <groupId>com.newrelic.agent.java</groupId>
     <artifactId>jfr-reporter</artifactId>
-    <version>0.1.1-SNAPSHOT</version>
+    <version>0.2.0-SNAPSHOT</version>
     <scope>provided</scope>
 </dependency>
 ```

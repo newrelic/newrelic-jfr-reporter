@@ -7,7 +7,7 @@ disable_default_environments: true
 deploy_mechanism: none
 test_suites:
   - name: Unit Tests
-    command: mvn test
+    command: ./gradlew clean test
     environment:
       dockerfile: |
         FROM cf-registry.nr-ops.net/newrelic/ubuntu-1804-java:14_36
