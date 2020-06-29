@@ -12,8 +12,8 @@ test_suites:
       dockerfile: |
         FROM cf-registry.nr-ops.net/newrelic/ubuntu-1804-java:14_36
     reports:
-      junit: {}
-
+      junit:
+        pattern: '**/test-results/test/*.xml'
 build:
   environment:
     dockerfile: |
