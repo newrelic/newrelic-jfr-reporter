@@ -8,7 +8,7 @@ import java.net.URI;
 public class Config {
 
   public static final URI DEFAULT_METRIC_INGEST_URI = URI.create("https://metric-api.newrelic.com");
-  public static final URI DEFAULT_EVENT_INGEST_URI = URI.create("https://metric-api.newrelic.com");
+  public static final URI DEFAULT_EVENT_INGEST_URI = URI.create("https://insights-collector.newrelic.com/v1/accounts/events");
   public static final String METRIC_INGEST_URI = "metric_ingest_uri";
   public static final String INSERT_API_KEY = "insert_api_key";
   public static final String JFR_ENABLED = "jfr.enabled";
