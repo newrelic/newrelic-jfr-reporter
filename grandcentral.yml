@@ -14,7 +14,7 @@ test_suites:
         RUN apt-get update && apt-get install -y maven
     reports:
       junit:
-        pattern: '**/target/surefire-reports/**/*.xml'
+        pattern: 'build/test-results/test/*.xml'
 build:
   environment:
     dockerfile: |
