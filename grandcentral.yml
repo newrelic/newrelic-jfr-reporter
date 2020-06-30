@@ -13,7 +13,7 @@ test_suites:
         FROM cf-registry.nr-ops.net/newrelic/ubuntu-1804-java:14_36
     reports:
       junit:
-        pattern: '**/build/test-results/**/*.xml'
+        pattern: '../jfr-reporter/**/build/test-results/**/*.xml'
 build:
   environment:
     dockerfile: |
