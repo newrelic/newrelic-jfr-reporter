@@ -7,19 +7,17 @@ disable_default_environments: true
 deploy_mechanism: none
 test_suites:
   - name: Unit Tests
-    command: mvn test
+    command: ./gradlew clean test
     environment:
       dockerfile: |
         FROM cf-registry.nr-ops.net/newrelic/ubuntu-1804-java:14_36
-        RUN apt-get update && apt-get install -y maven
     reports:
       junit:
-        pattern: '**/target/surefire-reports/**/*.xml'
+        pattern: '**/test-results/**/*.xml'
 build:
   environment:
     dockerfile: |
       FROM cf-registry.nr-ops.net/newrelic/ubuntu-1804-java:14_36
-      RUN apt-get update && apt-get install -y maven gpg
       RUN mkdir -p ${HOME}/
     secret_env_vars:
       - name: ARTIFACTORY_USERNAME
@@ -28,10 +26,10 @@ build:
         shared_path: artifactory
       - name: SONATYPE_USERNAME
       - name: SONATYPE_PASSWORD
-      - name: SIGNING_KEYID
+      - name: SIGNING_KEY
+      - name: SIGNING_KEY_ID
       - name: SIGNING_PASSWORD
-      - name: SIGNING_SECRETKEYRINGFILE
   build_artifact:
-    command: mvn package
+    command: ./gradlew shadowJar
   publish:
-    command: ./release.sh
+    command: ./gradlew publish
