@@ -71,7 +71,7 @@ public class Reporter {
       throws MalformedURLException {
 
     Supplier<HttpPoster> httpPosterCreator =
-            () -> new Java11HttpPoster(Duration.of(10, ChronoUnit.SECONDS));
+            () -> new OkHttpPoster(Duration.of(10, ChronoUnit.SECONDS));
 
     var metricBatchSender =
             MetricBatchSender.create(
