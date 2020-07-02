@@ -8,6 +8,7 @@ import java.net.URI;
 public class Config {
 
   public static final URI DEFAULT_METRIC_INGEST_URI = URI.create("https://metric-api.newrelic.com");
+  public static final URI DEFAULT_EVENT_INGEST_URI = URI.create("https://insights-collector.newrelic.com/v1/accounts/events");
   public static final String METRIC_INGEST_URI = "metric_ingest_uri";
   public static final String INSERT_API_KEY = "insert_api_key";
   public static final String JFR_ENABLED = "jfr.enabled";
@@ -15,6 +16,7 @@ public class Config {
   private final Attributes commonAttributes;
   private final String insertApiKey;
   private final URI metricIngestUri;
+  private final URI eventIngestUri;
   private final Logger logger;
   private final ToMetricRegistry toMetricRegistry;
   private final ToSummaryRegistry toSummaryRegistry;
@@ -24,6 +26,7 @@ public class Config {
     this.commonAttributes = builder.commonAttributes;
     this.insertApiKey = builder.insertApiKey;
     this.metricIngestUri = builder.metricIngestUri;
+    this.eventIngestUri = builder.eventIngestUri;
     this.logger = builder.logger;
     this.toMetricRegistry = builder.mapperRegistry;
     this.toSummaryRegistry = builder.summarizerRegistry;
@@ -40,6 +43,10 @@ public class Config {
 
   public URI getMetricIngestUri() {
     return metricIngestUri;
+  }
+
+  public URI getEventIngestUri() {
+    return eventIngestUri;
   }
 
   public Logger getLogger() {
@@ -64,9 +71,11 @@ public class Config {
 
   public static class Builder {
 
+
     private Attributes commonAttributes;
     private String insertApiKey;
     private URI metricIngestUri = DEFAULT_METRIC_INGEST_URI;
+    private URI eventIngestUri = DEFAULT_EVENT_INGEST_URI;
     private Logger logger;
     private ToMetricRegistry mapperRegistry;
     private ToSummaryRegistry summarizerRegistry;

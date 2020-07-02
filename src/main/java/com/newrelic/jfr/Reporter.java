@@ -4,9 +4,9 @@ import com.newrelic.api.agent.Agent;
 import com.newrelic.api.agent.Logger;
 import com.newrelic.jfr.agent.AgentAttributesChangeListener;
 import com.newrelic.jfr.agent.AgentPoller;
-import com.newrelic.telemetry.Attributes;
-import com.newrelic.telemetry.SimpleMetricBatchSender;
-import com.newrelic.telemetry.TelemetryClient;
+import com.newrelic.telemetry.*;
+import com.newrelic.telemetry.events.EventBatchSender;
+import com.newrelic.telemetry.http.HttpPoster;
 import com.newrelic.telemetry.metrics.MetricBatch;
 import com.newrelic.telemetry.metrics.MetricBatchSender;
 import com.newrelic.telemetry.metrics.MetricBatchSenderBuilder;
@@ -14,6 +14,8 @@ import com.newrelic.telemetry.metrics.MetricBuffer;
 
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -28,6 +30,7 @@ public class Reporter {
   private final Logger logger;
   private final String insertApiKey;
   private final URI metricIngestUri;
+  private final URI eventIngestUri;
   private final ToMetricRegistry toMetricRegistry;
   private final ToSummaryRegistry summarizerRegistry;
   private final boolean auditMode;
@@ -38,6 +41,7 @@ public class Reporter {
     this.logger = config.getLogger();
     this.insertApiKey = config.getInsertApiKey();
     this.metricIngestUri = config.getMetricIngestUri();
+    this.eventIngestUri = config.getEventIngestUri();
     this.toMetricRegistry = config.getToMetricRegistry();
     this.summarizerRegistry = config.getToSummaryRegistry();
     this.auditMode = config.isAuditMode();
@@ -66,14 +70,26 @@ public class Reporter {
       Supplier<MetricBuffer> metricBufferSupplier)
       throws MalformedURLException {
 
-    MetricBatchSenderBuilder builder = SimpleMetricBatchSender.builder(insertApiKey)
-        .uriOverride(metricIngestUri);
-    if (auditMode) {
-      builder.enableAuditLogging();
-    }
+    Supplier<HttpPoster> httpPosterCreator =
+            () -> new OkHttpPoster(Duration.of(10, ChronoUnit.SECONDS));
 
-    MetricBatchSender metricBatchSender = builder.build();
-    var telemetryClient = new TelemetryClient(metricBatchSender, null);
+    var metricBatchSender =
+            MetricBatchSender.create(
+                    MetricBatchSenderFactory.fromHttpImplementation(httpPosterCreator)
+                            .configureWith(insertApiKey)
+                            .endpointWithPath(metricIngestUri.toURL())
+                            .auditLoggingEnabled(auditMode)
+                            .build());
+
+    var eventBatchSender =
+            EventBatchSender.create(
+                    EventBatchSenderFactory.fromHttpImplementation(httpPosterCreator)
+                            .configureWith(insertApiKey)
+                            .endpointWithPath(eventIngestUri.toURL())
+                            .auditLoggingEnabled(auditMode)
+                            .build());
+
+    var telemetryClient = new TelemetryClient(metricBatchSender, null, eventBatchSender, null);
 
     Consumer<MetricBuffer> send = metricBuffer -> {
       MetricBatch batch = metricBuffer.createBatch();
