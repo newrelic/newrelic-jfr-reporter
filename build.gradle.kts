@@ -19,7 +19,7 @@ plugins {
     signing
 }
 
-version = "0.2.0-SNAPSHOT"
+version = "0.2.0"
 group = "com.newrelic.agent.extension"
 
 java {
@@ -33,7 +33,7 @@ dependencies {
     api("com.newrelic.agent.java:newrelic-api:5.13.0")
     implementation("com.newrelic.telemetry:telemetry:0.6.1")
     implementation("com.newrelic.telemetry:telemetry-http-okhttp:0.6.1")
-    implementation("com.newrelic:jfr-mappers:0.1.0-SNAPSHOT")
+    implementation("com.newrelic:jfr-mappers:0.3.0")
     implementation("org.slf4j:slf4j-api:1.7.26")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.2")
