@@ -27,6 +27,7 @@ java {
     targetCompatibility = JavaVersion.VERSION_14
     disableAutoTargetJvm()
     withSourcesJar()
+    withJavadocJar()
 }
 
 dependencies {
@@ -74,13 +75,26 @@ publishing {
             version = project.version as String?
             from(components["java"])
             pom {
+                name.set(project.name)
                 description.set("New Relic Java Flight Recorder (JFR) Agent Extension")
+                url.set("https://github.com/newrelic/newrelic-jfr-reporter")
                 licenses {
                     license {
                         name.set("Proprietary")
                         distribution.set("manual")
                         comments.set("Open Source licenses can be found in LICENSE and THIRD_PARTY_NOTICES.md")
                     }
+                }
+                developers {
+                    developer {
+                        id.set("newrelic")
+                        name.set("New Relic")
+                        email.set("opensource@newrelic.com")
+                    }
+                }
+                scm {
+                    url.set("git@github.com:newrelic/newrelic-jfr-reporter.git")
+                    connection.set("scm:git:git@github.com:newrelic/newrelic-jfr-reporter.git")
                 }
             }
         }
