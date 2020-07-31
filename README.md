@@ -18,14 +18,14 @@ The extension requires the JVM to be run with JDK 14 which isn't presently suppo
 <dependency>
     <groupId>com.newrelic.agent.java</groupId>
     <artifactId>jfr-reporter</artifactId>
-    <version>0.2.0-SNAPSHOT</version>
+    <version>0.2.0</version>
     <scope>provided</scope>
 </dependency>
 ```
 
 ## Usage
 
-The `jfr-reporter-0.1.1-SNAPSHOT.jar` must be present in the `newrelic/extensions/` directory during agent startup and requires the JVM to be run with JDK 14.
+The `jfr-reporter-0.2.0.jar` must be present in the `newrelic/extensions/` directory during agent startup and requires the JVM to be run with JDK 14.
 
 The JFR Reporter can be configured via the agent as follows and requires an [insert API key](https://docs.newrelic.com/docs/apis/get-started/intro-apis/types-new-relic-api-keys#event-insert-key) to send dimensional metrics in to metric ingest API:
 
