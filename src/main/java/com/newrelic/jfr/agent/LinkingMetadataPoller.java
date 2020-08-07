@@ -12,6 +12,9 @@ import java.util.function.Consumer;
 import java.util.logging.Level;
 
 class LinkingMetadataPoller {
+    public static final String HOSTNAME_KEY = "hostname";
+    public static final String ENTITY_GUID_KEY = "entity.guid";
+    public static final String UNKNOWN_HOST = "unknown";
     private final AtomicBoolean gotLinkingMetadata = new AtomicBoolean(false);
     private final Agent agent;
     private final Consumer<Map<String,String>> attributesListener;
@@ -27,17 +30,15 @@ class LinkingMetadataPoller {
         }
         try {
             Map<String, String> linkingMetadata = agent.getLinkingMetadata();
-            if (!linkingMetadata.isEmpty()) {
-                var hostname = linkingMetadata.getOrDefault("hostname", "");
-                var entityGuid = linkingMetadata.get("entity.guid");
+            if (haveNecessaryMetadata(linkingMetadata)) {
+                var hostname = linkingMetadata.get(HOSTNAME_KEY);
+                if(hostname == null || (hostname.isEmpty())){
+                    hostname = UNKNOWN_HOST;
+                }
+                var entityGuid = linkingMetadata.get(ENTITY_GUID_KEY);
                 var attrMap = new HashMap<String, String>();
-                if (hostname != null && !hostname.isEmpty() ) {
-                    attrMap.put(HOSTNAME, hostname);
-
-                }
-                if (entityGuid != null) {
-                    attrMap.put(ENTITY_GUID, entityGuid);
-                }
+                attrMap.put(HOSTNAME, hostname);
+                attrMap.put(ENTITY_GUID, entityGuid);
                 attributesListener.accept(attrMap);
                 gotLinkingMetadata.set(true);
                 return true;
@@ -49,5 +50,11 @@ class LinkingMetadataPoller {
                     "Another attempt will be made when the agent is fully initialized.");
         }
         return false;
+    }
+
+    private boolean haveNecessaryMetadata(Map<String, String> linkingMetadata) {
+        return !linkingMetadata.isEmpty() &&
+                (linkingMetadata.get(ENTITY_GUID_KEY) != null) &&
+                (!linkingMetadata.get(ENTITY_GUID_KEY).isEmpty());
     }
 }

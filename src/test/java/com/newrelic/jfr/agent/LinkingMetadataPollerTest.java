@@ -82,4 +82,28 @@ class LinkingMetadataPollerTest {
         verifyNoMoreInteractions(mockAttributesConsumer);
     }
 
+    @Test
+    void testTriesUntilEntityGuidPresent() {
+        var expectedAttributes = Map.of(HOSTNAME, "unknown", ENTITY_GUID, "bbbaaacccaaa");
+
+        Consumer<Map<String,String>> mockAttributesConsumer = mock(Consumer.class);
+        when(agent.getLinkingMetadata()).thenReturn(mockLinkingMetadata);
+
+        var testClass = new LinkingMetadataPoller(agent, mockAttributesConsumer);
+
+        assertFalse(testClass.poll());
+
+        mockLinkingMetadata.put("hostname", null);
+
+        assertFalse(testClass.poll());
+        verifyNoInteractions(mockAttributesConsumer);
+
+        mockLinkingMetadata.put("entity.guid", "bbbaaacccaaa");
+        assertTrue(testClass.poll());
+        verify(mockAttributesConsumer).accept(expectedAttributes);
+
+        assertTrue(testClass.poll());
+        verifyNoMoreInteractions(mockAttributesConsumer);
+    }
+
 }
