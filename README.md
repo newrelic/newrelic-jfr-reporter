@@ -24,7 +24,7 @@ common:
     enabled: true
     audit_mode: false
 
-  metric_ingest_uri: https://staging-metric-api.newrelic.com
+  metric_ingest_uri: https://metric-api.newrelic.com
   insert_api_key: 'abc123'
 ```
 
