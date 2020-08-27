@@ -19,7 +19,9 @@ plugins {
     signing
 }
 
-version = "0.3.0-SNAPSHOT"
+val baseVersion = "0.3.0"
+val isRelease = project.findProperty("release") == "true"
+version = baseVersion + if(isRelease) "" else "-SNAPSHOT"
 group = "com.newrelic.agent.extension"
 
 java {
@@ -103,7 +105,7 @@ publishing {
         maven {
             val releasesRepoUrl = project.uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
             val snapshotsRepoUrl = project.uri("https://oss.sonatype.org/content/repositories/snapshots/")
-            url = if (project.version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl
+            url = if (isRelease) releasesRepoUrl else snapshotsRepoUrl
             credentials {
                 username = System.getenv("SONATYPE_USERNAME")
                 if ((username?.length ?: 0) == 0) {
