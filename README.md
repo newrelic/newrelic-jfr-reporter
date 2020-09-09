@@ -1,7 +1,6 @@
 [![Community Project header](https://github.com/newrelic/opensource-website/raw/master/src/images/categories/Community_Project.png)](https://opensource.newrelic.com/oss-category/#community-project)
 
 # newrelic-jfr-reporter 
-[build badges go here when available]
 
 An agent extension for sending JFR profiling data to New Relic.
 
