@@ -1,11 +1,12 @@
-name: release publication build
+name: publish release version explicitly
 
 on:
-  push:
-    branches: [ main ]
+  release:
+    types:
+      - published
 
 jobs:
-  build-and-publish:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
