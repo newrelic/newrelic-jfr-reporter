@@ -52,7 +52,7 @@ New Relic hosts and moderates an online forum where customers can interact with 
 the [New Relic Explorers Hub](https://discuss.newrelic.com/).
 
 ## Contributing
-We encourage your contributions to improve [project name]! Keep in mind when you submit your pull request, you'll need to sign the CLA via the click-through using CLA-Assistant. You only have to sign the CLA one time per project.
+We encourage your contributions to improve newrelic-jfr-reporter Keep in mind when you submit your pull request, you'll need to sign the CLA via the click-through using CLA-Assistant. You only have to sign the CLA one time per project.
 If you have any questions, or to execute our corporate CLA, required if your contribution is on behalf of a company,  please drop us an email at opensource@newrelic.com.
 
 ## License
