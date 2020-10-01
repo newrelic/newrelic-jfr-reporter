@@ -71,7 +71,7 @@ tasks.shadowJar {
 
 publishing {
     publications {
-        create<MavenPublication>("mavenJava") {
+        create<MavenPublication>("maven") {
             groupId = project.group as String?
             artifactId = "jfr-reporter"
             version = project.version as String?
@@ -118,4 +118,12 @@ publishing {
             }
         }
     }
+}
+
+signing {
+    val signingKey: String? by project
+    val signingKeyId: String? by project
+    val signingPassword: String? by project
+    useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
+    this.sign(publishing.publications["maven"])
 }
