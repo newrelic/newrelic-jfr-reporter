@@ -19,7 +19,7 @@ plugins {
     signing
 }
 
-val baseVersion = "0.3.0"
+val baseVersion = "0.4.0"
 val isRelease = project.findProperty("release") == "true"
 version = baseVersion + if(isRelease) "" else "-SNAPSHOT"
 group = "com.newrelic.agent.extension"
