@@ -23,8 +23,14 @@ common:
     enabled: true
     audit_mode: false
 
-  metric_ingest_uri: https://metric-api.newrelic.com
+  metric_ingest_uri: https://metric-api.newrelic.com/metric/v1
   insert_api_key: 'abc123'
+```
+
+For reporting to the EU region, replace `metric_ingest_uri`:
+
+```yaml
+  metric_ingest_uri: https//:metric-api.eu.newrelic.com/metric/v1
 ```
 
 #### Audit Mode 
