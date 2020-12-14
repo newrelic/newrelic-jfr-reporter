@@ -30,7 +30,7 @@ common:
 For reporting to the EU region, replace `metric_ingest_uri`:
 
 ```yaml
-  metric_ingest_uri: https//:metric-api.eu.newrelic.com/metric/v1
+  metric_ingest_uri: https://metric-api.eu.newrelic.com/metric/v1
 ```
 
 #### Audit Mode 
