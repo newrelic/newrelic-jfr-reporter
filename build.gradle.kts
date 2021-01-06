@@ -36,7 +36,7 @@ dependencies {
     api("com.newrelic.agent.java:newrelic-api:6.1.0")
     implementation("com.newrelic.telemetry:telemetry:0.8.0")
     implementation("com.newrelic.telemetry:telemetry-http-okhttp:0.8.0")
-    implementation("com.newrelic:jfr-mappers:0.5.0")
+    implementation("com.newrelic:jfr-mappers:1.0.0")
     implementation("org.slf4j:slf4j-api:1.7.26")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.2")
