@@ -14,7 +14,6 @@ import com.newrelic.telemetry.events.EventBatchSender;
 import com.newrelic.telemetry.http.HttpPoster;
 import com.newrelic.telemetry.metrics.MetricBatch;
 import com.newrelic.telemetry.metrics.MetricBatchSender;
-import com.newrelic.telemetry.metrics.MetricBatchSenderBuilder;
 import com.newrelic.telemetry.metrics.MetricBuffer;
 
 import java.net.MalformedURLException;
@@ -82,7 +81,7 @@ public class Reporter {
             MetricBatchSender.create(
                     MetricBatchSenderFactory.fromHttpImplementation(httpPosterCreator)
                             .configureWith(insertApiKey)
-                            .endpointWithPath(metricIngestUri.toURL())
+                            .endpoint(metricIngestUri.toURL())
                             .auditLoggingEnabled(auditMode)
                             .build());
 
@@ -90,7 +89,7 @@ public class Reporter {
             EventBatchSender.create(
                     EventBatchSenderFactory.fromHttpImplementation(httpPosterCreator)
                             .configureWith(insertApiKey)
-                            .endpointWithPath(eventIngestUri.toURL())
+                            .endpoint(eventIngestUri.toURL())
                             .auditLoggingEnabled(auditMode)
                             .build());
 
