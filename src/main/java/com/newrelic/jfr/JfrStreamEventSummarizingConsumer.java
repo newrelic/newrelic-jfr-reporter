@@ -37,6 +37,7 @@ public final class JfrStreamEventSummarizingConsumer implements Consumer<Recorde
         var metricBuffer = metricBufferSupplier.get();
         if (LocalDateTime.now().isAfter(lastSent.plusSeconds(SUMMARY_PERIOD))) {
             summarizer.summarize().forEach(metricBuffer::addMetric);
+            summarizer.reset();
             lastSent = LocalDateTime.now();
         }
     }
