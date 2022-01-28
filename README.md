@@ -1,6 +1,9 @@
 [![Archived header](https://github.com/newrelic/open-source-office/raw/master/examples/categories/images/Archived.png)](https://github.com/newrelic/open-source-office/blob/master/examples/categories/index.md#archived)
 
-# THIS EXTENSION HAS BEEN DEPRECATED
+# Archival Notice
+
+❗Notice: This project has been archived _as is_ and is no longer actively maintained.
+
 With JFR capabilities added directly to the New Relic Java Agent, this extension is no longer necessary and has been decprecated.
 
 # newrelic-jfr-reporter 
