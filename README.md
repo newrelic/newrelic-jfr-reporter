@@ -1,4 +1,7 @@
-[![Community Project header](https://github.com/newrelic/opensource-website/raw/master/src/images/categories/Community_Project.png)](https://opensource.newrelic.com/oss-category/#community-project)
+[![Archived header](https://github.com/newrelic/open-source-office/raw/master/examples/categories/images/Archived.png)](https://github.com/newrelic/open-source-office/blob/master/examples/categories/index.md#archived)
+
+# THIS EXTENSION HAS BEEN DEPRECATED
+With JFR capabilities added directly to the New Relic Java Agent, this extension is no longer necessary and has been decprecated.
 
 # newrelic-jfr-reporter 
 
